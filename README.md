@@ -26,6 +26,9 @@ Public Commands:
 ------------------------
 
  * !update - Shows Version Info and Update Thread
+ * !update rr - Shows Version Info and Update Thread for Resonant Rise
+ * !update ftb - Shows Version Info and Update Thread for FTB packs
+ * !update pixelmon - Shows Version Info and Update Thread for Pixelmon
  * !help - Help Function
  * !help mytown - Display Wiki on Mytown
  * !help balance - Display Simple info on in-game Money
@@ -41,6 +44,8 @@ Admin and OP only:
 ------------------------
 
   * !tps - Displays Helk's TPS info
+  * !tps rr - Displays TPS for only RR servers
+  * !tps ftb - Displays TPS for FTB servers
   * !edgebot update -  Force File Update
   * !check * - Fish Bans Checker -- usage !check <username> -- EG !check fuzzy88
   * !dj loop - Power Loop image display
@@ -54,4 +59,3 @@ Special Commands:
   
 Things:
 ------------------------
-
