@@ -1,6 +1,6 @@
 #*************************************************
 #MCBOT
-#Programed by Citidel
+#Programed by Citidel \  Will Robinson
 #Open Code
 #Originally made for OTEgamers.com
 #*************************************************
@@ -25,6 +25,9 @@ set annonmsg ""
 #*************************************************
 bind join - * join:ote
 bind pubm - "*!update" ote:update
+bind pubm - "*!update pixelmon" ote:updatepixel
+bind pubm - "*!update rr" ote:update
+bind pubm - "*!update ftb" ote:updateftb
 bind pubm - "*!help" ote:help
 bind pubm - "*!help mytown" ote:mytown
 bind pubm - "*!help balance" ote:money
@@ -33,6 +36,8 @@ bind pubm - "*!help shops" ote:shops
 bind pubm - "*!help warp" ote:warp
 bind pubm - "*!help mining" ote:mining
 bind pubm - "*!tps" ote:tps
+bind pubm - "*!tps rr" ote:tpsrr
+bind pubm - "*!tps ftb" ote:tpsftb
 bind pubm - "*!edgebot" ote:commands
 bind pubm - "*!edgebot update" ote:read
 bind pubm - "*!dj loop" ote:loops
@@ -46,6 +51,7 @@ bind pubm - "*!smug" ote:wot
 bind pubm - "*!endportal" ote:end
 bind pubm - "*!banned *" ote:banned
 bind pubm - "*!minecheck" ote:minechk
+bind pubm - "*!minestatus" ote:minechk
 #*************************************************
 #Program Procedures
 #each Proc should have a comment detailing how it operates
@@ -56,7 +62,7 @@ if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_"} {
 			}
 }
 proc ote:wot {nick uhost hand chan text} {
-if {$nick == "DrSmugleaf" || $nick == "DrSmugleaf_"} {
+if {[isop $nick $chan] || $nick == "DrSmugleaf" || $nick == "DrSmugleaf_"} {
 		if {[expr {int(rand() * 3)} ]< 2} {
 			putserv "PRIVMSG $chan :  U WOT!?!"
 			} else {
@@ -86,11 +92,6 @@ if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_"} {
 			putserv "PRIVMSG $chan : Guess What $otecheck ? YOU'VE WON! FOLLOW THIS LINK: http://goo.gl/IaXkZl"
 			}
 }
-#proc ote:bannedpm {nick uhost hand text} {
-#		set otecheck [regsub -all {\!banned } $text ""]
-#			putserv "PRIVMSG $nick : $text"
-#			putserv "PRIVMSG $subchannel : Guess What $otecheck ? YOU'VE WON! FOLLOW THIS LINK: http://goo.gl/IaXkZl"
-#}
 
 proc ote:end {nick uhost hand chan text} {
 			putserv "PRIVMSG $chan :  $nick the end portal is at: X: -855 Z: -4 Y: 29"
@@ -121,7 +122,7 @@ if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:
 	putserv "NOTICE $nick : Checking Fishbans:[lindex $output 0] = [lindex $output 1]"
 	putserv "NOTICE $nick : User Name: [lindex [lindex $output 3] 1]"
 	putserv "NOTICE $nick : Total Bans: [lindex [lindex $output 3] 5]"
-	putserv "NOTICE $nick : [lindex [lindex [lindex $output 3] 7] 0]: [lindex [lindex [lindex $output 3] 7] 1] || [lindex [lindex [lindex $output 3] 7] 2]: [lindex [lindex [lindex $output 3] 7] 3] || [lindex [lindex [lindex $output 3] 7] 4]: [lindex [lindex [lindex $output 3] 7] 5] || [lindex [lindex [lindex $output 3] 7] 6]: [lindex [lindex [lindex $output 3] 7] 7] || [lindex [lindex [lindex $output 3] 7] 8]: [lindex [lindex [lindex $output 3] 7] 9]"
+	putserv "NOTICE $nick : [lindex [lindex [lindex $output 3] 7] 0]: [lindex [lindex [lindex $output 3] 7] 1] || [lindex [lindex [lindex $output 3] 7] 2]: [lindex [lindex [lindex $output 3] 7] 3] || [lindex [lindex [lindex $output 3] 7] 4]: [lindex [lindex [lindex $output 3] 7] 5] || [lindex [lindex [lindex $output 3] 7] 6]: [lindex [lindex [lindex $output 3] 7] 7] || Auth: [lindex [lindex [lindex $output 3] 7] 9]"
 	putserv "NOTICE $nick :  http://fishbans.com/u/$otecheck"
 	unset otecheck apireturn output
 	}
@@ -259,11 +260,36 @@ if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:
     set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
 	set output [::json::json2dict $apireturn]
 	set tps [split [lindex $output 1] " "]
-        putserv "PRIVMSG $chan :RR1 TPS: [lindex $tps 1]  || RR2 TPS: [lindex $tps 3] || Unleashed TPS: [lindex $tps 5]"
+        putserv "PRIVMSG $chan :RR1:[lindex [lindex [lindex $output 1] 1] 1]-\002\00303[lindex [lindex [lindex $output 1] 1] 3] \003\002 || RR2:[lindex [lindex [lindex $output 1] 3] 1]-\002\00303[lindex [lindex [lindex $output 1] 3] 3]\003\002 || Unleashed:[lindex [lindex [lindex $output 1] 5] 1]-\002\00303[lindex [lindex [lindex $output 1] 5] 3] \003\002"
 		unset apireturn output tps
 	} else {
 	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
-       #putserv "NOTICE $nick :RR1 TPS: $rr1tps  || RR2 TPS: $rr2tps || Unleashed TPS: $unletps"
+       #putserv "NOTICE $nick :RR1 : $rr1tps  || RR2 : $rr2tps || Unleashed : $unletps"
+	}
+}
+
+proc ote:tpsrr {nick uhost hand chan text} { 
+if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+    set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
+	set output [::json::json2dict $apireturn]
+	set tps [split [lindex $output 1] " "]
+        putserv "PRIVMSG $chan :RR1:[lindex [lindex [lindex $output 1] 1] 1]-\002\00303[lindex [lindex [lindex $output 1] 1] 3] \003\002 || RR2:[lindex [lindex [lindex $output 1] 3] 1]-\002\00303[lindex [lindex [lindex $output 1] 3] 3]\003\002"
+		unset apireturn output tps
+	} else {
+	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
+       #putserv "NOTICE $nick :RR1 : $rr1tps  || RR2 : $rr2tps || Unleashed : $unletps"
+	}
+}
+proc ote:tpsftb {nick uhost hand chan text} { 
+if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+    set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
+	set output [::json::json2dict $apireturn]
+	set tps [split [lindex $output 1] " "]
+        putserv "PRIVMSG $chan :Unleashed:[lindex [lindex [lindex $output 1] 5] 1]-\002\00303[lindex [lindex [lindex $output 1] 5] 3] \003\002"
+		unset apireturn output tps
+	} else {
+	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
+       #putserv "NOTICE $nick :RR1 : $rr1tps  || RR2 : $rr2tps || Unleashed : $unletps"
 	}
 }
 #*************************************************
@@ -273,19 +299,19 @@ proc ote:minechk {nick uhost hand chan text} {
 	set apireturn [ote:tpsget "http://status.mojang.com/check"]
 	set output [::json::json2dict $apireturn]
 	if {[lindex [lindex $output 2] 1] == "green"} {
-		set mjlogin \00309UP\00300
+		set mjlogin \00303UP\003
 	} else {
-		set mjlogin \00300,04DOWN\00300
+		set mjlogin \00300,04DOWN\003
 	}
 	if {[lindex [lindex $output 3] 1] == "green"} {
-		set mjsessions \00309UP\00300
+		set mjsessions \00303UP\003
 	} else {
-		set mjsessions \00300,04DOWN\00300
+		set mjsessions \00300,04DOWN\003
 	}
 		if {[lindex [lindex $output 5] 1] == "green"} {
-		set mjauth \00309UP\00300
+		set mjauth \00303UP\003
 	} else {
-		set mjauth \00300,04DOWN\00300
+		set mjauth \00300,04DOWN\003
 	}
 	putserv "PRIVMSG $chan :Minecaft Service Status: \002[string totitle [lindex [split [lindex [split [lindex $output 2] " "] 0] .] 0] ]: $mjlogin  || [string totitle [lindex [split [lindex [split [lindex $output 3] " "] 0] .] 0] ]: $mjsessions || [string totitle [lindex [split [lindex [split [lindex $output 6] " "] 0] .] 0] ]: $mjauth\002 "
    unset apireturn output
@@ -302,10 +328,27 @@ proc ote:update {nick uhost hand chan text} {
 	set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/version"]
 	set output [::json::json2dict $apireturn]
 	set tps [split [lindex $output 1] " "]
-    putserv "PRIVMSG $chan :RR1 and RR2 Version: [lindex $tps 3]  || Unleashed Version: [lindex $tps 5]"
+    putserv "PRIVMSG $chan :RR1 and RR2 Version: [lindex $tps 3]"
     putserv "PRIVMSG $chan :Please go to: $upthread for update info"
 	unset apireturn output tps
-	}
+}
+	
+proc ote:updateftb {nick uhost hand chan text} { 
+	global upthread
+        # Send message to user.
+	set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/version"]
+	set output [::json::json2dict $apireturn]
+	set tps [split [lindex $output 1] " "]
+    putserv "PRIVMSG $chan :Unleashed Version: [lindex $tps 5]"
+    putserv "PRIVMSG $chan :Please go to: http://www.otegamers.com/topic/6383- for update info"
+	unset apireturn output tps
+}
+proc ote:updatepixel {nick uhost hand chan text} { 
+	global upthread
+        # Send message to user.
+	putserv "PRIVMSG $chan :Please go to: http://www.otegamers.com/topic/7683- for Update and Pack info"
+}
+
 #*************************************************
 #Help Command Procedure
 #*************************************************
