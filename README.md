@@ -46,6 +46,7 @@ Admin and OP only:
   * !tps - Displays Helk's TPS info
   * !tps rr - Displays TPS for only RR servers
   * !tps ftb - Displays TPS for FTB servers
+  * !tps px || !tps pixelmon - Displays TPS for the Pixelmon Servers
   * !edgebot update -  Force File Update
   * !check * - Fish Bans Checker -- usage !check <username> -- EG !check fuzzy88
   * !dj loop - Power Loop image display
