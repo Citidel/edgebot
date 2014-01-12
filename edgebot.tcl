@@ -1,6 +1,6 @@
 #*************************************************
 #MCBOT
-#Programed by Citidel \  Will Robinson
+#Programed by Citidel
 #Open Code
 #Originally made for OTEgamers.com
 #*************************************************
@@ -38,6 +38,8 @@ bind pubm - "*!help mining" ote:mining
 bind pubm - "*!tps" ote:tps
 bind pubm - "*!tps rr" ote:tpsrr
 bind pubm - "*!tps ftb" ote:tpsftb
+bind pubm - "*!tps px" ote:tpspx
+bind pubm - "*!tps pixelmon" ote:tpspx
 bind pubm - "*!edgebot" ote:commands
 bind pubm - "*!edgebot update" ote:read
 bind pubm - "*!dj loop" ote:loops
@@ -82,12 +84,12 @@ if {$nick == "RR1"} {
 		}
 }
 proc ote:loops {nick uhost hand chan text} {
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_"} {
+if {[isop $nick $chan] == 1 } {
 			putserv "PRIVMSG $chan :  This is how to not create a Power Loop: http://puu.sh/5Uv1o"
 			}
 }
 proc ote:banned {nick uhost hand chan text} {
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_"} {
+if {[isop $nick $chan] == 1 } {
 		set otecheck [regsub -all {\!banned } $text ""]
 			putserv "PRIVMSG $chan : Guess What $otecheck ? YOU'VE WON! FOLLOW THIS LINK: http://goo.gl/IaXkZl"
 			}
@@ -114,7 +116,7 @@ set ignadmin {Cozza38 Helkarakse Citidel Shotexpert Duf ArbitraryHubris DJDarkSt
 #Fishbans Check, Will check fishbans based off of user Input
 #*************************************************
 proc ote:check {nick uhost hand chan text} {
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+if {[isop $nick $chan] == 1  || [ote:adminchk $text] == 1} {
 		package require json 1.1.2
 		set otecheck [regsub -all {\!check } $text ""]
 		set apireturn [ote:tpsget "http://callback.api.fishbans.com/stats/$otecheck/otecallback"]
@@ -155,7 +157,7 @@ proc ote:readbot {ev} {
 #Will read and upate data based on MCIRCBOT.cfg on Connect
 #*************************************************
 proc ote:read {nick uhost hand chan text} {
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_"} {
+if {[isop $nick $chan] == 1 } {
 	putquick "NOTICE $nick : reading Data"
 	global upthread
 	set count 0
@@ -232,7 +234,7 @@ proc ote:striphtml { htmlText } {
 #*************************************************
 #*************************************************
 proc ote:setann {nick uhost hand chan text} {
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+if {[isop $nick $chan] == 1  || [ote:adminchk $text] == 1} {
 		putserv "NOTICE $nick : usage: !admin announce <time> <message> | time should be 10-59 message can be any lenght..."
 	global anntim
 	global annonmsg
@@ -256,11 +258,11 @@ global annonmsg
 #TPS Display Command
 #*************************************************	
 proc ote:tps {nick uhost hand chan text} { 
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+if {[isop $nick $chan] == 1  || [ote:adminchk $text] == 1} {
     set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
 	set output [::json::json2dict $apireturn]
 	set tps [split [lindex $output 1] " "]
-        putserv "PRIVMSG $chan :RR1:[lindex [lindex [lindex $output 1] 1] 1]-\002\00303[lindex [lindex [lindex $output 1] 1] 3] \003\002 || RR2:[lindex [lindex [lindex $output 1] 3] 1]-\002\00303[lindex [lindex [lindex $output 1] 3] 3]\003\002 || Unleashed:[lindex [lindex [lindex $output 1] 5] 1]-\002\00303[lindex [lindex [lindex $output 1] 5] 3] \003\002"
+        putserv "PRIVMSG $chan :RR1:[lindex [lindex [lindex $output 1] 0] 3]-\002\00303[lindex [lindex [lindex $output 1] 0] 5] \003\002 || RR2:[lindex [lindex [lindex $output 1] 1] 3]-\002\00303[lindex [lindex [lindex $output 1] 1] 5]\003\002 || Unleashed:[lindex [lindex [lindex $output 1] 2] 3]-\002\00303[lindex [lindex [lindex $output 1] 2] 5]\003\002 || Pixelmon:[lindex [lindex [lindex $output 1] 3] 3]-\002\00303[lindex [lindex [lindex $output 1] 3] 5] \003\002"
 		unset apireturn output tps
 	} else {
 	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
@@ -269,11 +271,11 @@ if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:
 }
 
 proc ote:tpsrr {nick uhost hand chan text} { 
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+if {[isop $nick $chan] == 1  || [ote:adminchk $text] == 1} {
     set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
 	set output [::json::json2dict $apireturn]
 	set tps [split [lindex $output 1] " "]
-        putserv "PRIVMSG $chan :RR1:[lindex [lindex [lindex $output 1] 1] 1]-\002\00303[lindex [lindex [lindex $output 1] 1] 3] \003\002 || RR2:[lindex [lindex [lindex $output 1] 3] 1]-\002\00303[lindex [lindex [lindex $output 1] 3] 3]\003\002"
+        putserv "PRIVMSG $chan :RR1:[lindex [lindex [lindex $output 1] 0] 3]-\002\00303[lindex [lindex [lindex $output 1] 0] 5] \003\002 || RR2:[lindex [lindex [lindex $output 1] 1] 3]-\002\00303[lindex [lindex [lindex $output 1] 1] 5]\003\002"
 		unset apireturn output tps
 	} else {
 	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
@@ -281,11 +283,23 @@ if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:
 	}
 }
 proc ote:tpsftb {nick uhost hand chan text} { 
-if {[isop $nick $chan] == 1 ||$nick == "Citidel" || $nick == "Citidel_" || [ote:adminchk $text] == 1} {
+if {[isop $nick $chan] == 1  || [ote:adminchk $text] == 1} {
     set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
 	set output [::json::json2dict $apireturn]
 	set tps [split [lindex $output 1] " "]
-        putserv "PRIVMSG $chan :Unleashed:[lindex [lindex [lindex $output 1] 5] 1]-\002\00303[lindex [lindex [lindex $output 1] 5] 3] \003\002"
+        putserv "PRIVMSG $chan :Unleashed:[lindex [lindex [lindex $output 1] 2] 3]-\002\00303[lindex [lindex [lindex $output 1] 2] 5] \003\002"
+		unset apireturn output tps
+	} else {
+	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
+       #putserv "NOTICE $nick :RR1 : $rr1tps  || RR2 : $rr2tps || Unleashed : $unletps"
+	}
+}
+proc ote:tpspx {nick uhost hand chan text} { 
+if {[isop $nick $chan] == 1  || [ote:adminchk $text] == 1} {
+    set apireturn [ote:tpsget "http://dev.otegamers.com/api/v1/edge/tps"]
+	set output [::json::json2dict $apireturn]
+	set tps [split [lindex $output 1] " "]
+        putserv "PRIVMSG $chan :Pixelmon:[lindex [lindex [lindex $output 1] 3] 3]-\002\00303[lindex [lindex [lindex $output 1] 3] 5] \003\002"
 		unset apireturn output tps
 	} else {
 	   putserv "PRIVMSG $chan :!tps is restricted to Ops or Admins"
