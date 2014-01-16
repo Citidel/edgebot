@@ -5,16 +5,22 @@ using System.Text;
 using ChatSharp;
 using ChatSharp.Events;
 
+
 namespace TestChatSharp
 {
+
 	class Program
 	{
+		public class OTEmsg {
+			public static string welcomemsg = "User Joined Channel" ;
+		}
 		static void Main(string[] args)
 		{
 			var client = new IrcClient("irc.esper.net", new IrcUser("EdgeSharp", "EdgeSharp"));
 			client.NetworkError += (s, e) => Console.WriteLine("Error: " + e.SocketError);
 			client.RawMessageRecieved += (s, e) => Console.WriteLine("<< {0}", e.Message);
 			client.RawMessageSent += (s, e) => Console.WriteLine(">> {0}", e.Message);
+			client.ConnectionComplete += (s, e) => client.JoinChannel("#otegamers");
 			client.UserMessageRecieved += (s, e) =>
 			{
 				if (e.PrivateMessage.Message.StartsWith(".join "))
@@ -39,6 +45,18 @@ namespace TestChatSharp
 			{
 				Console.WriteLine("<{0}> {1}", e.PrivateMessage.User.Nick, e.PrivateMessage.Message);
 			};
+			client.ChannelMessageRecieved += (s, e) =>
+			{
+				Console.WriteLine("<{0}> {1}",e.IrcMessage.RawMessage , e.PrivateMessage.Message);
+				if(e.IrcMessage.RawMessage.Contains(" JOIN :"))
+				{
+					Console.WriteLine("Hi <{0}>", e.PrivateMessage.Message);
+				}
+				if(e.IrcMessage.RawMessage.Contains(" QUIT :"))
+				{
+					Console.WriteLine("Bye <{0}>", e.PrivateMessage.Message);
+				}
+				};
 			client.ConnectAsync();
 			while (true) ;
 		}
