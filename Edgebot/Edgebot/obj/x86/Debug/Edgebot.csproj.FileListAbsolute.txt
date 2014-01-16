@@ -3,3 +3,10 @@ C:\Users\Citidel\Documents\Projects\Edgebot\Edgebot\bin\Debug\Edgebot.exe
 C:\Users\Citidel\Documents\Projects\Edgebot\Edgebot\bin\Debug\Edgebot.pdb
 C:\Users\Citidel\Documents\Projects\Edgebot\Edgebot\obj\x86\Debug\Edgebot.exe
 C:\Users\Citidel\Documents\Projects\Edgebot\Edgebot\obj\x86\Debug\Edgebot.pdb
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\bin\Debug\Edgebot.exe
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\bin\Debug\Edgebot.pdb
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\obj\x86\Debug\Edgebot.exe
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\obj\x86\Debug\Edgebot.pdb
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\bin\Debug\ChatSharp.dll
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\bin\Debug\ChatSharp.pdb

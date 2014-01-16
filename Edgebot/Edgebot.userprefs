@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Edgebot\Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Edgebot\System.Net.IRC.cs">
     <Files>
       <File FileName="Edgebot\Program.cs" Line="34" Column="4" />
-      <File FileName="Edgebot\System.Net.IRC.cs" Line="167" Column="4" />
+      <File FileName="Edgebot\System.Net.IRC.cs" Line="159" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

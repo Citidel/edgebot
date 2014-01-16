@@ -132,7 +132,7 @@ namespace System.Net {
 			this.IrcWriter.Flush();
 			this.IrcWriter.WriteLine(String.Format("NICK {0}", this.IrcNick));
 			this.IrcWriter.Flush();
-			this.IrcWriter.WriteLine(String.Format("JOIN {0}", this.IrcChannel));
+			this.IrcWriter.WriteLine(String.Format("JOIN {0}", this.IrcChannel));//
 			this.IrcWriter.Flush();
 
 			// Listen for commands
@@ -145,6 +145,7 @@ namespace System.Net {
 					commandParts = ircCommand.Split(' ');
 					if (commandParts[0].Substring(0, 1) == ":") {
 						commandParts[0] = commandParts[0].Remove(0, 1);
+
 					}
 					
 					if (commandParts[0] == this.IrcServer) {
@@ -161,7 +162,6 @@ namespace System.Net {
 					} else if (commandParts[0] == "PING") {
 						// Server PING, send PONG back
 						this.IrcPing(commandParts);
-						this.IrcWriter.WriteLine("/join #otegmrs");	
 					} else {
 						// Normal message
 						string commandAction = commandParts[1];
