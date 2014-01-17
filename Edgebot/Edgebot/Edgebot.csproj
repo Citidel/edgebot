@@ -31,10 +31,10 @@
     <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="ChatSharp">
-      <HintPath>..\..\..\ChatSharp\ChatSharp\bin\Debug\ChatSharp.dll</HintPath>
+      <HintPath>References\ChatSharp.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EdgeData.cs" />

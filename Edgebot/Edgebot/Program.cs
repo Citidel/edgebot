@@ -1,4 +1,3 @@
-using System.Linq;
 using ChatSharp;
 using System;
 
@@ -11,8 +10,8 @@ namespace Edgebot
 
         static void Main()
         {
-            var client = new IrcClient("irc.esper.net:5555", new IrcUser("EdgeTest", "EdgeTest"));
-            client.ConnectionComplete += (s, e) => client.JoinChannel("#otegamers");
+            var client = new IrcClient(EdgeData.Host, new IrcUser(EdgeData.Nickname, EdgeData.Username));
+            client.ConnectionComplete += (s, e) => client.JoinChannel(EdgeData.Channel);
 
             client.NetworkError += (s, e) => Console.WriteLine("Error: " + e.SocketError);
 
@@ -22,7 +21,7 @@ namespace Edgebot
             client.ChannelMessageRecieved += (s, e) => Console.WriteLine("<{0}> {1}", e.PrivateMessage.User.Nick, e.PrivateMessage.Message);
             client.UserJoinedChannel += (sender, args) =>
             {
-                if (Debug && EdgeData.Developers.Any(str => str.Equals(args.User.Nick)))
+                if (Debug && EdgeUtils.IsDev(args.User.Nick))
                 {
                     EdgeUtils.SendNotice(client, String.Format(EdgeData.JoinMessage, args.User.Nick), args.User.Nick);
                 }
