@@ -32,7 +32,15 @@ namespace Edgebot
         {
             if (exception != null)
             {
-                Console.WriteLine(exception.StackTrace);
+                EdgeUtils.Log(exception.StackTrace);
+            }
+        }
+
+        public static void Log(string message, params object[] args)
+        {
+            if (Program.Debug)
+            {
+                EdgeUtils.Log(message, args);
             }
         }
     }

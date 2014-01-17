@@ -15,7 +15,7 @@ namespace Edgebot
                 {
                     if (t.Result == null)
                     {
-                        Console.WriteLine("EdgeConn: Result is null");
+                        EdgeUtils.Log("EdgeConn: Result is null");
                     }
                     else
                     {
@@ -36,7 +36,7 @@ namespace Edgebot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.StackTrace);
+                    EdgeUtils.Log(ex.StackTrace);
                 }
 
                 return jsonResult;
@@ -45,7 +45,7 @@ namespace Edgebot
 
         private static JObject GetHttpResponse(string url, string method)
         {
-            Console.WriteLine("EdgeConn: Getting response from {0}", url);
+            EdgeUtils.Log("EdgeConn: Getting response from {0}", url);
             var webRequest = (HttpWebRequest)WebRequest.Create(url);
             webRequest.Method = method.ToUpper();
             webRequest.ContentType = "application/json";
@@ -64,7 +64,7 @@ namespace Edgebot
                         }
                         catch (Exception)
                         {
-                            Console.WriteLine("EdgeConn: Unable to parse stream response: {0}", reader.ReadToEnd());
+                            EdgeUtils.Log("EdgeConn: Unable to parse stream response: {0}", reader.ReadToEnd());
                             return null;
                         }
                     }
@@ -72,7 +72,7 @@ namespace Edgebot
                 else
                 {
                     if (webResponse != null)
-                        Console.WriteLine("EdgeConn: Error fetching data. Server returned status code : {0}", webResponse.StatusCode);
+                        EdgeUtils.Log("EdgeConn: Error fetching data. Server returned status code : {0}", webResponse.StatusCode);
                 }
 
                 return jsonResult;

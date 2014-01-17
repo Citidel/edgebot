@@ -9,7 +9,7 @@ namespace Edgebot
 {
     class Program
     {
-        private const bool Debug = true;
+        public const bool Debug = true;
         private static IrcClient _client;
 
         static void Main()
@@ -17,10 +17,10 @@ namespace Edgebot
             _client = new IrcClient(EdgeData.Host, new IrcUser(EdgeData.Nickname, EdgeData.Username));
             _client.ConnectionComplete += (s, e) => _client.JoinChannel(EdgeData.Channel);
 
-            _client.NetworkError += (s, e) => Console.WriteLine("Error: " + e.SocketError);
+            _client.NetworkError += (s, e) => EdgeUtils.Log("Error: " + e.SocketError);
 
-            _client.RawMessageRecieved += (s, e) => Console.WriteLine("RAWRCV {0}", e.Message);
-            _client.RawMessageSent += (s, e) => Console.WriteLine("RAWSNT {0}", e.Message);
+            _client.RawMessageRecieved += (s, e) => EdgeUtils.Log("RAWRCV {0}", e.Message);
+            _client.RawMessageSent += (s, e) => EdgeUtils.Log("RAWSNT {0}", e.Message);
 
             _client.PrivateMessageRecieved += (sender, args) =>
             {
@@ -46,10 +46,10 @@ namespace Edgebot
                     }
                 }
 
-                Console.WriteLine("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+                EdgeUtils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
 
-            _client.ChannelMessageRecieved += (sender, args) => Console.WriteLine("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+            _client.ChannelMessageRecieved += (sender, args) => EdgeUtils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             _client.UserJoinedChannel += (sender, args) =>
             {
                 if (Debug && EdgeUtils.IsDev(args.User.Nick))
