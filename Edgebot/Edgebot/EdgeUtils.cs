@@ -14,5 +14,10 @@ namespace Edgebot
             var to = string.Join(",", destinations);
             client.SendRawMessage("NOTICE {0} :{1}", to, message);
         }
+
+        public static bool IsDev(string nickname)
+        {
+            return EdgeData.Developers.Any(str => str.Equals(nickname));
+        }
     }
 }
