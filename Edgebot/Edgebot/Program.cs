@@ -38,6 +38,10 @@ namespace Edgebot
                             case "tps":
                                 TpsHandler(paramList);
                                 break;
+
+                            default:
+                                EdgeUtils.SendChannel(_client, "Dev command not found.");
+                                break;
                         }
                     }
                 }
