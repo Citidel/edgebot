@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using ChatSharp;
 
@@ -32,7 +31,7 @@ namespace Edgebot
         {
             if (exception != null)
             {
-                EdgeUtils.Log(exception.StackTrace);
+                Log(exception.StackTrace);
             }
         }
 
@@ -40,7 +39,7 @@ namespace Edgebot
         {
             if (Program.Debug)
             {
-                EdgeUtils.Log(message, args);
+                Console.WriteLine(message, args);
             }
         }
     }
