@@ -12,5 +12,7 @@ namespace Edgebot
         public const String Nickname = "EdgeSharp";
         public const String Username = "EdgeSharp";
         public const String Channel = "#otegamers";
+
+        public const String UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
     }
 }
