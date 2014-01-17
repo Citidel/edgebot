@@ -1,64 +1,37 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ChatSharp;
-using ChatSharp.Events;
+using System;
 
-
-namespace TestChatSharp
+namespace Edgebot
 {
 
-	class Program
-	{
-		public class OTEmsg {
-			public static string welcomemsg = "User Joined Channel" ;
-		}
-		static void Main(string[] args)
-		{
-			var client = new IrcClient("irc.esper.net", new IrcUser("EdgeSharp", "EdgeSharp"));
-			client.NetworkError += (s, e) => Console.WriteLine("Error: " + e.SocketError);
-			client.RawMessageRecieved += (s, e) => Console.WriteLine("<< {0}", e.Message);
-			client.RawMessageSent += (s, e) => Console.WriteLine(">> {0}", e.Message);
-			client.ConnectionComplete += (s, e) => client.JoinChannel("#otegamers");
-			client.UserMessageRecieved += (s, e) =>
-			{
-				if (e.PrivateMessage.Message.StartsWith(".join "))
-					client.Channels.Join(e.PrivateMessage.Message.Substring(6));
-				else if (e.PrivateMessage.Message.StartsWith(".list "))
-				{
-					var channel = client.Channels[e.PrivateMessage.Message.Substring(6)];
-					var list = channel.Users.Select(u => u.Nick).Aggregate((a, b) => a + "," + b);
-					client.SendMessage(list, e.PrivateMessage.User.Nick);
-				}
-				else if (e.PrivateMessage.Message.StartsWith(".whois "))
-					client.WhoIs(e.PrivateMessage.Message.Substring(7), null);
-				else if (e.PrivateMessage.Message.StartsWith(".raw "))
-					client.SendRawMessage(e.PrivateMessage.Message.Substring(5));
-				else if (e.PrivateMessage.Message.StartsWith(".mode "))
-				{
-					var parts = e.PrivateMessage.Message.Split(' ');
-					client.ChangeMode(parts[1], parts[2]);
-				}
-			};
-			client.ChannelMessageRecieved += (s, e) =>
-			{
-				Console.WriteLine("<{0}> {1}", e.PrivateMessage.User.Nick, e.PrivateMessage.Message);
-			};
-			client.ChannelMessageRecieved += (s, e) =>
-			{
-				Console.WriteLine("<{0}> {1}",e.IrcMessage.RawMessage , e.PrivateMessage.Message);
-				if(e.IrcMessage.RawMessage.Contains(" JOIN :"))
-				{
-					Console.WriteLine("Hi <{0}>", e.PrivateMessage.Message);
-				}
-				if(e.IrcMessage.RawMessage.Contains(" QUIT :"))
-				{
-					Console.WriteLine("Bye <{0}>", e.PrivateMessage.Message);
-				}
-				};
-			client.ConnectAsync();
-			while (true) ;
-		}
-	}
+    class Program
+    {
+        private const bool Debug = true;
+
+        static void Main()
+        {
+            var client = new IrcClient("irc.esper.net:5555", new IrcUser("EdgeTest", "EdgeTest"));
+            client.ConnectionComplete += (s, e) => client.JoinChannel("#otegamers");
+
+            client.NetworkError += (s, e) => Console.WriteLine("Error: " + e.SocketError);
+
+            client.RawMessageRecieved += (s, e) => Console.WriteLine("RAWRCV {0}", e.Message);
+            client.RawMessageSent += (s, e) => Console.WriteLine("RAWSNT {0}", e.Message);
+
+            client.ChannelMessageRecieved += (s, e) => Console.WriteLine("<{0}> {1}", e.PrivateMessage.User.Nick, e.PrivateMessage.Message);
+            client.UserJoinedChannel += (sender, args) =>
+            {
+                if (Debug && EdgeData.Developers.Any(str => str.Equals(args.User.Nick)))
+                {
+                    EdgeUtils.SendNotice(client, String.Format(EdgeData.JoinMessage, args.User.Nick), args.User.Nick);
+                }
+            };
+
+            client.ConnectAsync();
+            while (true)
+            {
+            }
+        }
+    }
 }
