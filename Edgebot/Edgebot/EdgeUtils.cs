@@ -37,10 +37,16 @@ namespace Edgebot
 
         public static void Log(string message, params object[] args)
         {
-            if (Program.Debug)
-            {
-                Console.WriteLine(message, args);
-            }
+            if (!Program.Debug) return;
+            Console.WriteLine(message, args);
+            System.Diagnostics.Debug.Write(String.Format(message, args));
+        }
+
+        public static void Log(object message)
+        {
+            if (!Program.Debug) return;
+            Console.WriteLine(message);
+            System.Diagnostics.Debug.Write(message);
         }
     }
 }
