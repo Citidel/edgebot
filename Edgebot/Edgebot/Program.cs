@@ -39,7 +39,7 @@ namespace Edgebot
                                 TpsHandler(paramList);
                                 break;
                             case "check":
-                                FishHandler(paramList);
+                                FishHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
 
                             default:
@@ -93,18 +93,20 @@ namespace Edgebot
                 }
             }, EdgeUtils.HandleException);
         }
-        private static void FishHandler(IList<string> paramList)
+        private static void FishHandler(IList<string> paramList, string nick)
         {
             // Use api to retrieve data from the tps url
+            EdgeUtils.Log(string.Concat(EdgeData.UrlFish + paramList[2]));
             EdgeConn.GetData(string.Concat(EdgeData.UrlFish + paramList[2]), "get", jObject =>
             {
+                EdgeUtils.Log("<0>", jObject.ToString());
                 var outputString = "";
-                // parse the output string using linq
-                outputString = jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonFish>(row.ToString())).Where(fish => fish.stats.username.Contains(paramList[2])).Aggregate(outputString, (current, fish) => current + (fish.stats.username.ToUpper() + "- Total Bans:" + fish.stats.totalbans.ToString()));
+                // parse the output string using linq   
+                outputString = string.Concat("\\u0002Username:\\u0002 ", (string)jObject["stats"].SelectToken("username"), " \\002Total Bans:\\002 ", (string)jObject["stats"].SelectToken("totalbans"), " \\002URL:\\002 ", string.Concat(EdgeData.UrlFish + paramList[2]));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
-                    EdgeUtils.SendNotice(_client, outputString.Substring(0, outputString.Length - 4), "Citidel");
+                    EdgeUtils.SendNotice(_client, outputString, nick);
                 }
             }, EdgeUtils.HandleException);
         }
