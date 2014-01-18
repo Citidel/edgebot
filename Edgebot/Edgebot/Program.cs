@@ -38,6 +38,9 @@ namespace Edgebot
                             case "tps":
                                 TpsHandler(paramList);
                                 break;
+                            case "check":
+                                FishHandler(paramList);
+                                break;
 
                             default:
                                 EdgeUtils.SendChannel(_client, "Dev command not found.");
@@ -87,6 +90,21 @@ namespace Edgebot
                 {
                     // output to channel
                     EdgeUtils.SendChannel(_client, outputString.Substring(0, outputString.Length - 4));
+                }
+            }, EdgeUtils.HandleException);
+        }
+        private static void FishHandler(IList<string> paramList)
+        {
+            // Use api to retrieve data from the tps url
+            EdgeConn.GetData(string.Concat(EdgeData.UrlFish + paramList[2]), "get", jObject =>
+            {
+                var outputString = "";
+                // parse the output string using linq
+                outputString = jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonFish>(row.ToString())).Where(fish => fish.stats.username.Contains(paramList[2])).Aggregate(outputString, (current, fish) => current + (fish.stats.username.ToUpper() + "- Total Bans:" + fish.stats.totalbans.ToString()));
+                if (!String.IsNullOrEmpty(outputString))
+                {
+                    // output to channel
+                    EdgeUtils.SendNotice(_client, outputString.Substring(0, outputString.Length - 4), "Citidel");
                 }
             }, EdgeUtils.HandleException);
         }
