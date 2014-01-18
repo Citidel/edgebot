@@ -36,7 +36,14 @@ namespace Edgebot
                         switch (paramList[1])
                         {
                             case "tps":
-                                TpsHandler(paramList);
+                                if (EdgeUtils.IsOp(_client, args.PrivateMessage.User.Nick))
+                                {
+                                    TpsHandler(paramList);
+                                }
+                                else
+                                {
+                                    EdgeUtils.SendChannel(_client, "This command is restricted to ops only.");
+                                }
                                 break;
 
                             // !dev wiki <keyword>
