@@ -36,7 +36,19 @@ namespace Edgebot
                         switch (paramList[1])
                         {
                             case "tps":
-                                TpsHandler(paramList);
+                                if (EdgeUtils.IsOp(_client, args.PrivateMessage.User.Nick))
+                                {
+                                    TpsHandler(paramList);
+                                }
+                                else
+                                {
+                                    EdgeUtils.SendChannel(_client, "This command is restricted to ops only.");
+                                }
+                                break;
+
+                            // !dev wiki <keyword>
+                            case "wiki":
+                                WikiHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
                             case "check":
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
@@ -107,12 +119,51 @@ namespace Edgebot
                 }
 
                 var outputString = "";
+                const string delimiter = " || ";
                 // parse the output string using linq
-                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + tps.Count + " || ")) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + tps.Count + " || "));
+                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + EdgeUtils.FormatColor(tps.Count, EdgeColors.Green) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + EdgeUtils.FormatColor(tps.Count, EdgeColors.Green) + delimiter));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
-                    EdgeUtils.SendChannel(_client, outputString.Substring(0, outputString.Length - 4));
+                    EdgeUtils.SendChannel(_client, outputString.Substring(0, outputString.Length - delimiter.Length));
+                }
+            }, EdgeUtils.HandleException);
+        }
+
+        private static void WikiHandler(IList<string> paramList, string nickname)
+        {
+            var filter = "";
+            try
+            {
+                filter = paramList[2];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
+
+            var url = !String.IsNullOrEmpty(filter) ? EdgeData.UrlWiki + "/" + filter : EdgeData.UrlWiki + "/all";
+            EdgeConn.GetData(url, "get", jObject =>
+            {
+                if ((bool)jObject["success"])
+                {
+                    string outputString;
+                    const string delimiter = ", ";
+                    if (!String.IsNullOrEmpty(filter))
+                    {
+                        var wiki = JsonConvert.DeserializeObject<JsonWiki>(jObject["result"].ToString());
+                        outputString = "Wiki URL for '" + wiki.Keyword + "' - " + wiki.Url;
+                    }
+                    else
+                    {
+                        outputString = jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonWiki>(row.ToString())).Aggregate("The following keywords are valid: ", (current, wiki) => current + (wiki.Keyword + delimiter));
+                        outputString = outputString.Substring(0, outputString.Length - delimiter.Length);
+                    }
+
+                    EdgeUtils.SendNotice(_client, outputString, nickname);
+                }
+                else
+                {
+                    EdgeUtils.SendNotice(_client, (string)jObject["message"], nickname);
                 }
             }, EdgeUtils.HandleException);
         }
