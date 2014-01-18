@@ -70,6 +70,12 @@ namespace Edgebot
                                 UpdateHandler(paramList);
                                 break;
 
+                            // !dev minecheck | !dev minestatus
+                            case "minecheck":
+                            case "minestatus":
+                                MineCheckHandler();
+                                break;
+
                             default:
                                 EdgeUtils.SendChannel(_client, "Dev command not found.");
                                 break;
@@ -95,6 +101,18 @@ namespace Edgebot
             while (true)
             {
             }
+        }
+
+        private static void MineCheckHandler()
+        {
+            EdgeConn.GetData(EdgeData.UrlMojangStatus, "get", jObject =>
+            {
+                var jArray = jObject.ToObject<Dictionary<string, string>>();
+                foreach (var row in jArray)
+                {
+                    EdgeUtils.Log("{0}:{1}", row.Key, row.Value);
+                }
+            }, EdgeUtils.HandleException);
         }
 
         private static void TpsHandler(IList<string> paramList)
