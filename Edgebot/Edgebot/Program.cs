@@ -4,7 +4,6 @@ using ChatSharp;
 using System;
 using Edgebot.JSON;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Edgebot
 {

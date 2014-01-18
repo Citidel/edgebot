@@ -27,6 +27,11 @@ namespace Edgebot
             return EdgeData.Developers.Any(str => str.Equals(nickname));
         }
 
+        public static bool IsOp(IrcClient client, string nickname)
+        {
+            return client.Channels.Select(channel => channel.UsersByMode['o']).Any(users => users.Contains(nickname));
+        }
+
         public static void HandleException(Exception exception)
         {
             if (exception != null)
@@ -38,6 +43,7 @@ namespace Edgebot
         public static void Log(string message, params object[] args)
         {
             if (!Program.Debug) return;
+            if (message == null) return;
             Console.WriteLine(message, args);
             System.Diagnostics.Debug.Write(String.Format(message, args) + "\n");
         }
@@ -45,6 +51,7 @@ namespace Edgebot
         public static void Log(object message)
         {
             if (!Program.Debug) return;
+            if (message == null) return;
             Console.WriteLine(message);
             System.Diagnostics.Debug.Write(message + "\n");
         }
