@@ -32,6 +32,16 @@ namespace Edgebot
             return client.Channels.Select(channel => channel.UsersByMode['o']).Any(users => users.Contains(nickname));
         }
 
+        public static string FormatText(object inputString, char colorCode)
+        {
+            return String.Format("{0}" + inputString + "{1}", colorCode, EdgeColors.Normal);
+        }
+
+        public static string FormatColor(object inputString, string formatCode)
+        {
+            return String.Format("{0}" + inputString + "{1}", formatCode, EdgeColors.Normal);
+        }
+
         public static void HandleException(Exception exception)
         {
             if (exception != null)
