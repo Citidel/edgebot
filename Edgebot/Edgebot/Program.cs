@@ -102,11 +102,12 @@ namespace Edgebot
                 EdgeUtils.Log("<0>", jObject.ToString());
                 var outputString = "";
                 // parse the output string using linq   
-                outputString = string.Concat("\\u0002Username:\\u0002 ", (string)jObject["stats"].SelectToken("username"), " \\002Total Bans:\\002 ", (string)jObject["stats"].SelectToken("totalbans"), " \\002URL:\\002 ", string.Concat(EdgeData.UrlFish + paramList[2]));
+                outputString = string.Concat("Username: ", (string)jObject["stats"].SelectToken("username"), " Total Bans: ", (string)jObject["stats"].SelectToken("totalbans"), " URL: ", string.Concat(EdgeData.UrlFishLink + paramList[2]));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
-                    EdgeUtils.SendNotice(_client, outputString, nick);
+                   // _client.SendRawMessage("NOTICE {0} :{1}", nick, outputString.ToString());
+                   EdgeUtils.SendNotice(_client, outputString, nick);
                 }
             }, EdgeUtils.HandleException);
         }
