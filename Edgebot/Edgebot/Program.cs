@@ -50,26 +50,9 @@ namespace Edgebot
                             case "wiki":
                                 WikiHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
+
                             case "check":
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
-                                break;
-                            case "ore":
-                                OreHandler(paramList);
-                                break;
-                            case "power":
-                                PowerHandler(paramList);
-                                break;
-                            case "mytown":
-                                MyTownHandler(paramList);
-                                break;
-                            case "voting":
-                                VotingHandler(paramList);
-                                break;
-                            case "bugs":
-                                BugRepoHandler(paramList);
-                                break;
-                            case "rules":
-                                RulesHandler(paramList);
                                 break;
 
                             default:
@@ -184,35 +167,5 @@ namespace Edgebot
                 }
             }, EdgeUtils.HandleException);
         }
-        private static void OreHandler(IList<string> paramList)
-        {
-            EdgeUtils.SendChannel(_client, string.Concat("Ore Heightmap: " ,EdgeData.UrlOteOre));
-        }
-
-        private static void PowerHandler(IList<string> paramList)
-        {
-            EdgeUtils.SendChannel(_client, string.Concat("Power Conversions: ", EdgeData.UrlOtePower));
-        }
-
-        private static void VotingHandler(IList<string> paramList)
-        {
-            EdgeUtils.SendChannel(_client, string.Concat("Voting Information: ", EdgeData.UrlOteVoting));
-        }
-
-        private static void MyTownHandler(IList<string> paramList)
-        {
-            EdgeUtils.SendChannel(_client, string.Concat("My Town Info: ", EdgeData.UrlOteMyTown));
-        }
-
-        private static void BugRepoHandler(IList<string> paramList)
-        {
-            EdgeUtils.SendChannel(_client, string.Concat("Bug Report Info: ", EdgeData.UrlOteBugs));
-        }
-
-        private static void RulesHandler(IList<string> paramList)
-        {
-            EdgeUtils.SendChannel(_client, string.Concat("OTE Server Rules: ", EdgeData.UrlOteRules));
-        }
-        
     }
 }
