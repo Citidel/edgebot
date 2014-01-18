@@ -41,6 +41,24 @@ namespace Edgebot
                             case "check":
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
+                            case "ore":
+                                OreHandler(paramList);
+                                break;
+                            case "power":
+                                PowerHandler(paramList);
+                                break;
+                            case "mytown":
+                                MyTownHandler(paramList);
+                                break;
+                            case "voting":
+                                VotingHandler(paramList);
+                                break;
+                            case "bugs":
+                                BugRepoHandler(paramList);
+                                break;
+                            case "rules":
+                                RulesHandler(paramList);
+                                break;
 
                             default:
                                 EdgeUtils.SendChannel(_client, "Dev command not found.");
@@ -57,7 +75,12 @@ namespace Edgebot
             {
                 if (Debug && EdgeUtils.IsDev(args.User.Nick))
                 {
-                    EdgeUtils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick), args.User.Nick);
+                    // add Json Parsing, Unable to get it to work... 
+                   // EdgeConn.GetData(EdgeData.UrlVersion, "get", jObject =>
+                    // {
+                         //(string)jObject["result"].SelectToken("rr2"), (string)jObject["result"].SelectToken("ftb1")
+                         EdgeUtils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4" ), args.User.Nick);
+                    // }, EdgeUtils.HandleException);
                 }
             };
 
@@ -99,9 +122,8 @@ namespace Edgebot
             EdgeUtils.Log(string.Concat(EdgeData.UrlFish + paramList[2]));
             EdgeConn.GetData(string.Concat(EdgeData.UrlFish + paramList[2]), "get", jObject =>
             {
-                EdgeUtils.Log("<0>", jObject.ToString());
                 var outputString = "";
-                // parse the output string using linq   
+                // parse the output  
                 outputString = string.Concat("Username: ", (string)jObject["stats"].SelectToken("username"), " Total Bans: ", (string)jObject["stats"].SelectToken("totalbans"), " URL: ", string.Concat(EdgeData.UrlFishLink + paramList[2]));
                 if (!String.IsNullOrEmpty(outputString))
                 {
@@ -111,5 +133,35 @@ namespace Edgebot
                 }
             }, EdgeUtils.HandleException);
         }
+        private static void OreHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, string.Concat("Ore Heightmap: " ,EdgeData.UrlOteOre));
+        }
+
+        private static void PowerHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, string.Concat("Power Conversions: ", EdgeData.UrlOtePower));
+        }
+
+        private static void VotingHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, string.Concat("Voting Information: ", EdgeData.UrlOteVoting));
+        }
+
+        private static void MyTownHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, string.Concat("My Town Info: ", EdgeData.UrlOteMyTown));
+        }
+
+        private static void BugRepoHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, string.Concat("Bug Report Info: ", EdgeData.UrlOteBugs));
+        }
+
+        private static void RulesHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, string.Concat("OTE Server Rules: ", EdgeData.UrlOteRules));
+        }
+        
     }
 }

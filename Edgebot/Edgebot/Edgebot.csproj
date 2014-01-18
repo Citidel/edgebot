@@ -43,6 +43,7 @@
     <Compile Include="EdgeUtils.cs" />
     <Compile Include="JSON\JsonFish.cs" />
     <Compile Include="JSON\JsonTps.cs" />
+    <Compile Include="JSON\JsonVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
