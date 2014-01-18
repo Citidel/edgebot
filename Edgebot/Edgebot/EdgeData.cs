@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Edgebot
 {
+    /// <summary>
+    /// Class for EdgeBot containing constants
+    /// </summary>
     public class EdgeData
     {
         public const String JoinMessage = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: 2.6.7.1 || Unleashed Version: Unknown";
