@@ -14,5 +14,6 @@ namespace Edgebot
         public const String Channel = "#otegamers";
 
         public const String UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
+        public const String UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
     }
 }
