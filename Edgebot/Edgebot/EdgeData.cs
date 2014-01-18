@@ -6,11 +6,10 @@ namespace Edgebot
     /// <summary>
     /// Class for EdgeBot containing constants
     /// </summary>
-    
     public class EdgeData
     {
+        // Messages
         public const string JoinMessage = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
-        public static readonly List<string> Developers = new List<string> { "Helkarakse", "Citidel", "Citidel_","djdarkstorm"};
         public const string EndPortal = "The End Portal is Located at: {0} X, {1} Y, {2} Z";
         public static Object AnnounceMsg { get; set; }
         public static Object AnnounceTimes { get; set; }
@@ -19,16 +18,21 @@ namespace Edgebot
         public const string ftbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
         public const string pxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
 
+        // Devs
+        public static readonly List<string> Developers = new List<string> { "Helkarakse", "Citidel", "Citidel_","djdarkstorm"};
+
+        // IRC
         public const string Host = "irc.esper.net:5555";
         public const string Nickname = "EdgeSharp";
         public const string Username = "EdgeSharp";
         public const string Channel = "#OTEGamers";
+
+        // URLs
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
         public const string UrlFish = "http://api.fishbans.com/stats/";
         public const string UrlFishLink = "http://www.fishbans.com/u/";
         public const string UrlVersion = "http://dev.otegamers.com/api/v1/edge/version";
         public const string UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
-        
-
+        public const string UrlMojangStatus = "http://status.mojang.com/check";
     }
 }
