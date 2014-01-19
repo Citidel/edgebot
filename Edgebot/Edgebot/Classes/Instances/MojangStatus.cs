@@ -1,4 +1,4 @@
-﻿namespace Edgebot.Classes.Instances
+﻿namespace EdgeBot.Classes.Instances
 {
     class MojangStatus
     {

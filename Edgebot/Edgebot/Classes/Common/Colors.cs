@@ -1,4 +1,4 @@
-﻿namespace Edgebot.Classes.Common
+﻿namespace EdgeBot.Classes.Common
 {
     class Colors
     {

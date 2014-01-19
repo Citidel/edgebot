@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1BF78099-66ED-4DE8-9DEA-DA00798829DE}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Edgebot</RootNamespace>
-    <AssemblyName>Edgebot</AssemblyName>
+    <RootNamespace>EdgeBot</RootNamespace>
+    <AssemblyName>EdgeBot</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>

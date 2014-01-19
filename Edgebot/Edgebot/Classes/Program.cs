@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using ChatSharp;
-using Edgebot.Classes.Common;
-using Edgebot.Classes.JSON;
+using EdgeBot.Classes.Common;
+using EdgeBot.Classes.JSON;
 using Newtonsoft.Json;
 
-namespace Edgebot.Classes
+namespace EdgeBot.Classes
 {
     class Program
     {
