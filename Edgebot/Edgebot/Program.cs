@@ -18,8 +18,8 @@ namespace Edgebot
         {
             _announceTimer = new Timer();
 
-            _client = new IrcClient(EdgeData.Host, new IrcUser(EdgeData.Nickname, EdgeData.Username));
-            _client.ConnectionComplete += (s, e) => _client.JoinChannel(EdgeData.Channel);
+            _client = new IrcClient(Data.Host, new IrcUser(Data.Nickname, Data.Username));
+            _client.ConnectionComplete += (s, e) => _client.JoinChannel(Data.Channel);
 
             _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
 
@@ -96,7 +96,7 @@ namespace Edgebot
             {
                 if (Debug && Utils.IsDev(args.User.Nick))
                 {
-                    Utils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
+                    Utils.SendNotice(_client, String.Format(Data.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
                 }
             };
 
@@ -120,7 +120,7 @@ namespace Edgebot
         private static void TpsHandler(IList<string> paramList)
         {
             // Use api to retrieve data from the tps url
-            EdgeConn.GetData(EdgeData.UrlTps, "get", jObject =>
+            EdgeConn.GetData(Data.UrlTps, "get", jObject =>
             {
                 // if filter throws the exception then no filter
                 string filter;
@@ -156,7 +156,7 @@ namespace Edgebot
             {
             }
 
-            var url = !String.IsNullOrEmpty(filter) ? EdgeData.UrlWiki + "/" + filter : EdgeData.UrlWiki + "/all";
+            var url = !String.IsNullOrEmpty(filter) ? Data.UrlWiki + "/" + filter : Data.UrlWiki + "/all";
             EdgeConn.GetData(url, "get", jObject =>
             {
                 if ((bool)jObject["success"])
@@ -185,13 +185,13 @@ namespace Edgebot
 
         private static void FishHandler(IList<string> paramList, string nick)
         {
-            var url = EdgeData.UrlFish + paramList[2];
+            var url = Data.UrlFish + paramList[2];
             // Use api to retrieve data from the tps url
             Utils.Log(url);
             EdgeConn.GetData(url, "get", jObject =>
             {
                 // parse the output  
-                var outputString = string.Concat(Utils.FormatText("Username: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", EdgeColors.Bold), EdgeData.UrlFishLink, paramList[2]);
+                var outputString = string.Concat(Utils.FormatText("Username: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", EdgeColors.Bold), Data.UrlFishLink, paramList[2]);
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
@@ -202,7 +202,7 @@ namespace Edgebot
 
         private static void EndPortalHandler()
         {
-            Utils.SendChannel(_client, String.Format(EdgeData.EndPortal, "-855", "29", "-4"));
+            Utils.SendChannel(_client, String.Format(Data.EndPortal, "-855", "29", "-4"));
         }
 
         private static void AnnounceHandler(IList<string> paramList, string nick)
@@ -224,8 +224,8 @@ namespace Edgebot
                     msg = msg + paramList[i] + " ";
 
                 }
-                EdgeData.AnnounceMsg = msg;
-                EdgeData.AnnounceTimes = timeCount;
+                Data.AnnounceMsg = msg;
+                Data.AnnounceTimes = timeCount;
                 _announceTimer.Enabled = true;
             }
 
@@ -233,39 +233,39 @@ namespace Edgebot
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            if (Convert.ToInt32(EdgeData.AnnounceTimes) == 0)
+            if (Convert.ToInt32(Data.AnnounceTimes) == 0)
             {
                 _announceTimer.Enabled = false;
             }
             else
             {
-                var count = Convert.ToInt32(EdgeData.AnnounceTimes);
+                var count = Convert.ToInt32(Data.AnnounceTimes);
                 count--;
-                EdgeData.AnnounceTimes = count;
-                Utils.SendChannel(_client, EdgeData.AnnounceMsg.ToString());
+                Data.AnnounceTimes = count;
+                Utils.SendChannel(_client, Data.AnnounceMsg.ToString());
             }
         }
         private static void UpdateHandler(IList<string> paramList)
         {
             if (paramList.Count <= 2)
             {
-                Utils.SendChannel(_client, EdgeData.RrUpdate);
+                Utils.SendChannel(_client, Data.RrUpdate);
             }
             else
             {
                 switch (paramList[2])
                 {
                     case "rr":
-                        Utils.SendChannel(_client, EdgeData.RrUpdate);
+                        Utils.SendChannel(_client, Data.RrUpdate);
                         break;
                     case "ftb":
-                        Utils.SendChannel(_client, EdgeData.FtbUpdate);
+                        Utils.SendChannel(_client, Data.FtbUpdate);
                         break;
                     case "px":
-                        Utils.SendChannel(_client, EdgeData.PxUpdate);
+                        Utils.SendChannel(_client, Data.PxUpdate);
                         break;
                     default:
-                        Utils.SendChannel(_client, EdgeData.RrUpdate);
+                        Utils.SendChannel(_client, Data.RrUpdate);
                         break;
                 }
             }

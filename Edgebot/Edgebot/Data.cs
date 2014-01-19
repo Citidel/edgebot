@@ -6,7 +6,7 @@ namespace Edgebot
     /// <summary>
     /// Class for EdgeBot containing constants
     /// </summary>
-    public class EdgeData
+    public class Data
     {
         // Messages
         public const string JoinMessage = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";

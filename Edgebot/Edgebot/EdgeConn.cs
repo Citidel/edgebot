@@ -100,8 +100,8 @@ namespace Edgebot
             var status = new MojangStatus();
             try
             {
-                Utils.Log("EdgeConn: Getting response from {0}", EdgeData.UrlMojangStatus);
-                var webRequest = (HttpWebRequest) WebRequest.Create(EdgeData.UrlMojangStatus);
+                Utils.Log("EdgeConn: Getting response from {0}", Data.UrlMojangStatus);
+                var webRequest = (HttpWebRequest) WebRequest.Create(Data.UrlMojangStatus);
                 webRequest.Method = "GET";
                 webRequest.ContentType = "application/json";
                 webRequest.KeepAlive = true;

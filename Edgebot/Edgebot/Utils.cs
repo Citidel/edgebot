@@ -34,7 +34,7 @@ namespace Edgebot
         {
             const string illegalCharacters = "\r\n\0";
             if (illegalCharacters.Any(message.Contains)) throw new ArgumentException("Illegal characters are present in message.", "message");
-            client.SendRawMessage("PRIVMSG {0} :{1}", EdgeData.Channel, message);
+            client.SendRawMessage("PRIVMSG {0} :{1}", Data.Channel, message);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Edgebot
         /// <returns></returns>
         public static bool IsDev(string nickname)
         {
-            return EdgeData.Developers.Any(str => str.Equals(nickname));
+            return Data.Developers.Any(str => str.Equals(nickname));
         }
 
         /// <summary>
