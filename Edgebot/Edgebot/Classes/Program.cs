@@ -92,25 +92,16 @@ namespace EdgeBot.Classes
                     if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
                     {                    
                         var paramList = message.Split(' ');
-                        var urlTitle = "";
                         for (var i = 0; i < paramList.Count(); i++)
                         {
-                            if (paramList[i].Contains("http://")) 
-                            { 
-                                urlTitle = Utils.GetWebPageTitle(paramList[i]);
-                                if (!string.IsNullOrEmpty(urlTitle)) { Utils.SendNotice(_client, "URL TITLE: " + urlTitle, "Citidel"); }                                 
+                            if (paramList[i].Contains("http://") | paramList[i].Contains("https://")) 
+                            {
+                                Utils.GetWebPageTitle(paramList[i], _client);
                                 return; 
-                            }
-                            else if (paramList[i].Contains("https://")) 
-                            { 
-                                urlTitle = Utils.GetWebPageTitle(paramList[i]);
-                                if (!string.IsNullOrEmpty(urlTitle)) { Utils.SendNotice(_client, "URL TITLE: " + urlTitle, "Citidel"); }
-                                return;
-                            }
+                            }                            
                             else if (paramList[i].Contains("www.")) 
                             { 
-                                urlTitle = Utils.GetWebPageTitle("http://" + paramList[i]);
-                                if (!string.IsNullOrEmpty(urlTitle)) { Utils.SendNotice(_client, "URL TITLE: " + urlTitle, "Citidel"); }
+                                Utils.GetWebPageTitle(string.Concat("http://" ,paramList[i]), _client);
                                 return; 
                             }
                             

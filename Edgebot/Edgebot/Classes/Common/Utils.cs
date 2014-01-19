@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ChatSharp;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using ChatSharp;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EdgeBot.Classes.Common
 {
@@ -156,8 +157,28 @@ namespace EdgeBot.Classes.Common
         /// Gets webpage Title
         /// </summary>
         /// <param name="message"></param>
-        public static string GetWebPageTitle(string url)
+        public static void GetWebPageTitle(string url, IrcClient _client)
         {
+            Task.Factory.StartNew(() => TitleParse(url))
+                .ContinueWith(t =>
+                    {
+                        if (t.Result == null)
+                        {
+                            Utils.Log("Connection: Result is null");
+                        }
+                        else
+                        {
+                            var e = t.Result;
+                            if (!string.IsNullOrEmpty(e)) { Utils.SendNotice(_client, "URL TITLE: " + e, "Citidel"); } else { Utils.Log("Connection: Result is null"); }
+                        }
+                    })
+                   .ContinueWith(t => Utils.Log(t.Exception));
+            
+        }
+
+        public static string TitleParse(string url) 
+        {
+            //var title = TitleParse(url);
             // Create a request to the url
             HttpWebRequest webRequest = HttpWebRequest.Create(url) as HttpWebRequest;
             // If the request wasn't an HTTP request (like a file), ignore it
