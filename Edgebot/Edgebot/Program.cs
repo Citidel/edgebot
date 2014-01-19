@@ -204,9 +204,6 @@ namespace Edgebot
                     msg = msg + paramList[i] + " ";
                     
                 }
-                EdgeUtils.Log(msg);
-                EdgeUtils.SendNotice(_client, paramList[2] + "||" + announceTimer.Interval.ToString(), "Citidel");
-                EdgeUtils.SendNotice(_client, msg, "Citidel");
                 EdgeData.AnnounceMsg = msg;
                 EdgeData.AnnounceTimes = timeCount;
                 announceTimer.Enabled = true;
