@@ -10,13 +10,13 @@ namespace Edgebot
 {
     class Program
     {
-        private static System.Timers.Timer announceTimer;
         public const bool Debug = true;
+        private static Timer _announceTimer;
         private static IrcClient _client;
         
         static void Main()
         {
-            announceTimer = new System.Timers.Timer();
+            _announceTimer = new Timer();
             
             _client = new IrcClient(EdgeData.Host, new IrcUser(EdgeData.Nickname, EdgeData.Username));
             _client.ConnectionComplete += (s, e) => _client.JoinChannel(EdgeData.Channel);
@@ -60,7 +60,7 @@ namespace Edgebot
                                 break;
                             // !dev endportal
                             case "endportal":
-                                EndPortalhHandler(paramList);
+                                EndPortalHandler();
                                 break;
                             // !dev announce <time in seconds> <repeates> <message>
                             case "announce":
@@ -89,7 +89,7 @@ namespace Edgebot
                 }
             };
 
-            announceTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            _announceTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             _client.ConnectAsync();
             while (true)
@@ -162,11 +162,13 @@ namespace Edgebot
                 }
             }, EdgeUtils.HandleException);
         }
+
         private static void FishHandler(IList<string> paramList, string nick)
         {
+            var url = EdgeData.UrlFish + paramList[2];
             // Use api to retrieve data from the tps url
-            EdgeUtils.Log(string.Concat(EdgeData.UrlFish + paramList[2]));
-            EdgeConn.GetData(string.Concat(EdgeData.UrlFish + paramList[2]), "get", jObject =>
+            EdgeUtils.Log(url);
+            EdgeConn.GetData(url, "get", jObject =>
             {
                 var outputString = "";
                 // parse the output  
@@ -178,25 +180,26 @@ namespace Edgebot
                 }
             }, EdgeUtils.HandleException);
         }
-        private static void EndPortalhHandler(IList<string> paramList)
+
+        private static void EndPortalHandler()
         {
             EdgeUtils.SendChannel(_client, String.Format(EdgeData.EndPortal, "-855", "29", "-4"));
         }
+
         private static void AnnounceHandler(IList<string> paramList, string nick) 
         {
             if (paramList.Count <= 3)
             {
-                EdgeUtils.SendNotice(_client, "Usage: !announce <time in seconds> <repeates> <message>", nick);
+                EdgeUtils.SendNotice(_client, "Usage: !announce <time in seconds> <repeats> <message>", nick);
             }
             else 
             { 
             var msg = "";
             var timeTick = Convert.ToInt32(paramList[2]) * 1000;
             var timeCount = Convert.ToInt32(paramList[3]);
-            if (!(timeTick == 0))
-            { 
-                announceTimer.Interval = timeTick;
-                GC.KeepAlive(announceTimer);
+                if (timeTick == 0) return;
+                _announceTimer.Interval = timeTick;
+                GC.KeepAlive(_announceTimer);
                 for (var i = 4; i < paramList.Count; i++)
                 {
                     msg = msg + paramList[i] + " ";
@@ -204,16 +207,16 @@ namespace Edgebot
                 }
                 EdgeData.AnnounceMsg = msg;
                 EdgeData.AnnounceTimes = timeCount;
-                announceTimer.Enabled = true;
-            }
+                _announceTimer.Enabled = true;
             }
             
         }
+
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {                   
             if(Convert.ToInt32(EdgeData.AnnounceTimes) == 0)
             {
-                announceTimer.Enabled = false;
+                _announceTimer.Enabled = false;
             }
             else 
             {
