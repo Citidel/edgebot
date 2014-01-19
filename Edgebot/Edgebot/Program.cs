@@ -136,7 +136,7 @@ namespace Edgebot
                 var outputString = "";
                 const string delimiter = " || ";
                 // parse the output string using linq
-                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, EdgeColors.Green) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, EdgeColors.Green) + delimiter));
+                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, Colors.Green) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, Colors.Green) + delimiter));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
@@ -191,7 +191,7 @@ namespace Edgebot
             Connection.GetData(url, "get", jObject =>
             {
                 // parse the output  
-                var outputString = string.Concat(Utils.FormatText("Username: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", EdgeColors.Bold), Data.UrlFishLink, paramList[2]);
+                var outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", Colors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", Colors.Bold), Data.UrlFishLink, paramList[2]);
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel

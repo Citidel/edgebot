@@ -1,6 +1,6 @@
 ﻿namespace Edgebot
 {
-    class EdgeColors
+    class Colors
     {
         public static char Normal = (char)15;
         public static char Bold = (char)2;

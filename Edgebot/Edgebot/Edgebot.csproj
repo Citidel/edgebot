@@ -44,7 +44,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EdgeColors.cs" />
+    <Compile Include="Colors.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Utils.cs" />

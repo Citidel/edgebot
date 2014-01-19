@@ -66,7 +66,7 @@ namespace Edgebot
         /// <returns></returns>
         public static string FormatText(object inputString, char colorCode)
         {
-            return String.Format("{0}" + inputString + "{1}", colorCode, EdgeColors.Normal);
+            return String.Format("{0}" + inputString + "{1}", colorCode, Colors.Normal);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Edgebot
         /// <returns></returns>
         public static string FormatColor(object inputString, string formatCode)
         {
-            return String.Format("{0}" + inputString + "{1}", formatCode, EdgeColors.Normal);
+            return String.Format("{0}" + inputString + "{1}", formatCode, Colors.Normal);
         }
         /// <summary>
         /// Returns the string formatted with green if true and red if false
@@ -87,7 +87,7 @@ namespace Edgebot
         /// <returns></returns>
         public static string FormatStatus(object inputString, bool check)
         {
-            return String.Format("{0}" + FormatText(inputString, EdgeColors.Bold) + "{1}", check ? EdgeColors.DarkGreen : EdgeColors.Red, EdgeColors.Normal);
+            return String.Format("{0}" + FormatText(inputString, Colors.Bold) + "{1}", check ? Colors.DarkGreen : Colors.Red, Colors.Normal);
         }
 
         /// <summary>
