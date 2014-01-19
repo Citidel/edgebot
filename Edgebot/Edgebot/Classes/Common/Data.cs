@@ -28,5 +28,6 @@ namespace EdgeBot.Classes.Common
         public const string UrlVersion = "http://dev.otegamers.com/api/v1/edge/version";
         public const string UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
         public const string UrlMojangStatus = "http://status.mojang.com/check";
+        public const string UrlCrashLog = "http://dev.otegamers.com/api/v1/edge/last-crash-log/{0}/{1}";
     }
 }

@@ -40,6 +40,7 @@ namespace EdgeBot.Classes
                         var paramList = message.Split(' ');
                         switch (paramList[1])
                         {
+                            // !dev tps
                             case "tps":
                                 if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
                                 {
@@ -82,6 +83,18 @@ namespace EdgeBot.Classes
                                 MineCheckHandler();
                                 break;
 
+                            // !dev log <pack> <server>
+                            case "log":
+                                if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
+                                {
+                                    LogHandler(paramList);
+                                }
+                                else
+                                {
+                                    Utils.SendChannel(_client, "This command is restricted to ops only.");
+                                }
+                                break;
+
                             default:
                                 Utils.SendChannel(_client, "Dev command not found.");
                                 break;
@@ -106,6 +119,30 @@ namespace EdgeBot.Classes
             _client.ConnectAsync();
             while (true)
             {
+            }
+        }
+
+        private static void LogHandler(IList<string> paramList)
+        {
+            int i;
+            // check if params number more than 4, if the pack length is less than 5 and the server is a number
+            if (paramList.Count == 4 && paramList[2].Length < 5 && int.TryParse(paramList[3], out i))
+            {
+                Connection.GetData(string.Format(Data.UrlCrashLog, paramList[2], paramList[3]), "get", jObject =>
+                {
+                    if ((bool) jObject["success"])
+                    {
+                        Utils.SendChannel(_client, (string)jObject["result"]["response"]);
+                    }
+                    else
+                    {
+                        Utils.SendChannel(_client, "Failed to push crash log to pastebin. Please try again later.");
+                    }
+                }, Utils.HandleException);
+            }
+            else
+            {
+                Utils.SendChannel(_client, "Invalid command parameters.");
             }
         }
 
