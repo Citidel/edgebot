@@ -30,7 +30,7 @@ namespace EdgeBot.Classes
             _client.PrivateMessageRecieved += (sender, args) =>
             {
                 // Only listen to !commands
-                if (!args.PrivateMessage.Message.StartsWith("!")) return;
+                //if (!args.PrivateMessage.Message.StartsWith("!")) return;
                 if (Debug && Utils.IsDev(args.PrivateMessage.User.Nick))
                 {
                     var message = args.PrivateMessage.Message;
@@ -87,7 +87,43 @@ namespace EdgeBot.Classes
                                 break;
                         }
                     }
+
+                    //listen for www or http(s)
+                    if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
+                    {                    
+                        var paramList = message.Split(' ');
+                        var urlTitle = "";
+                        for (var i = 0; i < paramList.Count(); i++)
+                        {
+                            if (paramList[i].Contains("http://")) 
+                            { 
+                                urlTitle = Utils.GetWebPageTitle(paramList[i]);
+                                if (!string.IsNullOrEmpty(urlTitle)) { Utils.SendNotice(_client, "URL TITLE: " + urlTitle, "Citidel"); }                                 
+                                return; 
+                            }
+                            else if (paramList[i].Contains("https://")) 
+                            { 
+                                urlTitle = Utils.GetWebPageTitle(paramList[i]);
+                                if (!string.IsNullOrEmpty(urlTitle)) { Utils.SendNotice(_client, "URL TITLE: " + urlTitle, "Citidel"); }
+                                return;
+                            }
+                            else if (paramList[i].Contains("www.")) 
+                            { 
+                                urlTitle = Utils.GetWebPageTitle("http://" + paramList[i]);
+                                if (!string.IsNullOrEmpty(urlTitle)) { Utils.SendNotice(_client, "URL TITLE: " + urlTitle, "Citidel"); }
+                                return; 
+                            }
+                            
+                        }
+                        
+                        
+                       }
                 }
+
+                
+               
+                
+
 
                 Utils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
