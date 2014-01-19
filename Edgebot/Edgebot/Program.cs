@@ -54,16 +54,20 @@ namespace Edgebot
                             case "wiki":
                                 WikiHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
-
+                            // !dev check <username>
                             case "check":
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
-
+                            // !dev endportal
                             case "endportal":
                                 EndPortalhHandler(paramList);
                                 break;
+                            // !dev announce <time in seconds> <repeates> <message>
                             case "announce":
                                 AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                                break;
+                            case "update":
+                                UpdateHandler(paramList);
                                 break;
 
                             default:
@@ -81,12 +85,7 @@ namespace Edgebot
             {
                 if (Debug && EdgeUtils.IsDev(args.User.Nick))
                 {
-                    // add Json Parsing, Unable to get it to work... 
-                   // EdgeConn.GetData(EdgeData.UrlVersion, "get", jObject =>
-                    // {
-                         //(string)jObject["result"].SelectToken("rr2"), (string)jObject["result"].SelectToken("ftb1")
-                         EdgeUtils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4" ), args.User.Nick);
-                    // }, EdgeUtils.HandleException);
+                   EdgeUtils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4" ), args.User.Nick);
                 }
             };
 
@@ -175,7 +174,6 @@ namespace Edgebot
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
-                   // _client.SendRawMessage("NOTICE {0} :{1}", nick, outputString.ToString());
                    EdgeUtils.SendNotice(_client, outputString, nick);
                 }
             }, EdgeUtils.HandleException);
@@ -224,6 +222,30 @@ namespace Edgebot
                 EdgeData.AnnounceTimes = count;
                 EdgeUtils.SendChannel(_client, EdgeData.AnnounceMsg.ToString());
             }
+        }
+        private static void UpdateHandler(IList<string> paramList)
+        {
+            if(paramList.Count <= 2)
+            {
+                EdgeUtils.SendChannel(_client, EdgeData.rrUpdate);
+            } else { 
+                switch (paramList[2])
+                {
+                    case "rr":
+                        EdgeUtils.SendChannel(_client, EdgeData.rrUpdate);
+                        break;
+                    case "ftb":
+                        EdgeUtils.SendChannel(_client, EdgeData.ftbUpdate);
+                        break;
+                    case "px":
+                        EdgeUtils.SendChannel(_client, EdgeData.pxUpdate);
+                        break;
+                    default:
+                        EdgeUtils.SendChannel(_client, EdgeData.rrUpdate);
+                        break;
+                }
+            }
+
         }
 
     }
