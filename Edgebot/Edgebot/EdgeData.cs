@@ -14,9 +14,9 @@ namespace Edgebot
         public static Object AnnounceMsg { get; set; }
         public static Object AnnounceTimes { get; set; }
 
-        public const string rrUpdate = "Please go to: www.otegamers.com/topic/6945- for Resonant Rise update info";
-        public const string ftbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
-        public const string pxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
+        public const string RrUpdate = "Please go to: www.otegamers.com/topic/6945- for Resonant Rise update info";
+        public const string FtbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
+        public const string PxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
 
         // Devs
         public static readonly List<string> Developers = new List<string> { "Helkarakse", "Citidel", "Citidel_","djdarkstorm"};
