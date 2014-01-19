@@ -4,16 +4,20 @@ using ChatSharp;
 using System;
 using Edgebot.JSON;
 using Newtonsoft.Json;
+using System.Timers;
 
 namespace Edgebot
 {
     class Program
     {
+        private static System.Timers.Timer announceTimer;
         public const bool Debug = true;
         private static IrcClient _client;
-
+        
         static void Main()
         {
+            announceTimer = new System.Timers.Timer();
+            
             _client = new IrcClient(EdgeData.Host, new IrcUser(EdgeData.Nickname, EdgeData.Username));
             _client.ConnectionComplete += (s, e) => _client.JoinChannel(EdgeData.Channel);
 
@@ -58,6 +62,9 @@ namespace Edgebot
                             case "endportal":
                                 EndPortalhHandler(paramList);
                                 break;
+                            case "announce":
+                                AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                                break;
 
                             default:
                                 EdgeUtils.SendChannel(_client, "Dev command not found.");
@@ -82,6 +89,8 @@ namespace Edgebot
                     // }, EdgeUtils.HandleException);
                 }
             };
+
+            announceTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             _client.ConnectAsync();
             while (true)
@@ -175,5 +184,53 @@ namespace Edgebot
         {
             EdgeUtils.SendChannel(_client, String.Format(EdgeData.EndPortal, "-855", "29", "-4"));
         }
+        private static void AnnounceHandler(IList<string> paramList, string nick) 
+        {
+            if (paramList.Count <= 3)
+            {
+                EdgeUtils.SendNotice(_client, "Usage: !announce <time in seconds> <repeates> <message>", nick);
+            }
+            else 
+            { 
+            var msg = "";
+            var timeTick = Convert.ToInt32(paramList[2]) * 1000;
+            var timeCount = Convert.ToInt32(paramList[3]);
+            if (!(timeTick == 0))
+            { 
+                announceTimer.Interval = timeTick;
+                GC.KeepAlive(announceTimer);
+                for (var i = 4; i < paramList.Count; i++)
+                {
+                    msg = msg + paramList[i] + " ";
+                    
+                }
+                EdgeUtils.Log(msg);
+                EdgeUtils.SendNotice(_client, paramList[2] + "||" + announceTimer.Interval.ToString(), "Citidel");
+                EdgeUtils.SendNotice(_client, msg, "Citidel");
+                EdgeData.AnnounceMsg = msg;
+                EdgeData.AnnounceTimes = timeCount;
+                announceTimer.Enabled = true;
+            }
+            }
+            
+        }
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {                   
+            if(Convert.ToInt32(EdgeData.AnnounceTimes) == 0)
+            {
+                announceTimer.Enabled = false;
+            }
+            else 
+            {
+                var count = Convert.ToInt32(EdgeData.AnnounceTimes);
+                count--;
+                EdgeData.AnnounceTimes = count;
+                EdgeUtils.SendChannel(_client, EdgeData.AnnounceMsg.ToString());
+            }
+            
+
+            
+        }
+
     }
 }
