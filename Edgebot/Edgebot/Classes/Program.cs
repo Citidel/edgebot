@@ -40,6 +40,7 @@ namespace EdgeBot.Classes
                         var paramList = message.Split(' ');
                         switch (paramList[1])
                         {
+                            // !dev tps
                             case "tps":
                                 if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
                                 {
@@ -80,6 +81,22 @@ namespace EdgeBot.Classes
                             case "minecheck":
                             case "minestatus":
                                 MineCheckHandler();
+                                break;
+
+                            // !dev log <pack> <server>
+                            case "log":
+                                if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
+                                {
+                                    LogHandler(paramList);
+                                }
+                                else
+                                {
+                                    Utils.SendChannel(_client, "This command is restricted to ops only.");
+                                }
+                                break;
+
+                            case "8":
+                                EightBallHandler(paramList);
                                 break;
 
                             default:
@@ -136,6 +153,43 @@ namespace EdgeBot.Classes
             }
         }
 
+        private static void EightBallHandler(ICollection<string> paramList)
+        {
+            if (paramList.Count > 2)
+            {
+                var response = Data.EightBallResponses[new Random().Next(0, Data.EightBallResponses.Count)];
+                Utils.SendNotice(_client, "The magic 8 ball responds with: " + response, "Helkarakse");
+            }
+            else
+            {
+                Utils.SendNotice(_client, "No question was asked of the magic 8 ball!", "Helkarakse");
+            }
+        }
+
+        private static void LogHandler(IList<string> paramList)
+        {
+            int i;
+            // check if params number more than 4, if the pack length is less than 5 and the server is a number
+            if (paramList.Count == 4 && paramList[2].Length < 5 && int.TryParse(paramList[3], out i))
+            {
+                Connection.GetData(string.Format(Data.UrlCrashLog, paramList[2], paramList[3]), "get", jObject =>
+                {
+                    if ((bool)jObject["success"])
+                    {
+                        Utils.SendChannel(_client, (string)jObject["result"]["response"]);
+                    }
+                    else
+                    {
+                        Utils.SendChannel(_client, "Failed to push crash log to pastebin. Please try again later.");
+                    }
+                }, Utils.HandleException);
+            }
+            else
+            {
+                Utils.SendChannel(_client, "Usage: !log <pack> <server_id>");
+            }
+        }
+
         private static void MineCheckHandler()
         {
             Connection.GetServerStatus(status =>
@@ -176,12 +230,17 @@ namespace EdgeBot.Classes
         private static void WikiHandler(IList<string> paramList)
         {
             var filter = "";
-            try
+            switch (paramList.Count())
             {
-                filter = paramList[2];
-            }
-            catch (ArgumentOutOfRangeException)
-            {
+                case 2:
+                    break;
+                case 3:
+                    filter = paramList[2];
+                    break;
+
+                default:
+                    Utils.SendChannel(_client, "Usage: !wiki");
+                    return;
             }
 
             var url = !String.IsNullOrEmpty(filter) ? Data.UrlWiki + "/" + filter : Data.UrlWiki + "/all";
