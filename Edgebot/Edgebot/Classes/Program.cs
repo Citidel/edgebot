@@ -203,12 +203,17 @@ namespace EdgeBot.Classes
         private static void WikiHandler(IList<string> paramList)
         {
             var filter = "";
-            try
+            switch (paramList.Count())
             {
-                filter = paramList[2];
-            }
-            catch (ArgumentOutOfRangeException)
-            {
+                case 2:
+                    break;
+                case 3:
+                    filter = paramList[2];
+                    break;
+
+                default:
+                    Utils.SendChannel(_client, "Usage: !wiki");
+                    return;
             }
 
             var url = !String.IsNullOrEmpty(filter) ? Data.UrlWiki + "/" + filter : Data.UrlWiki + "/all";
