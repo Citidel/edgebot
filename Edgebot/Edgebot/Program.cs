@@ -171,7 +171,7 @@ namespace Edgebot
             {
                 var outputString = "";
                 // parse the output  
-                outputString = string.Concat("Username: ", (string)jObject["stats"].SelectToken("username"), " Total Bans: ", (string)jObject["stats"].SelectToken("totalbans"), " URL: ", string.Concat(EdgeData.UrlFishLink + paramList[2]));
+                outputString = string.Concat(EdgeUtils.FormatText("Username: ",EdgeColors.Bold) , (string)jObject["stats"].SelectToken("username"), EdgeUtils.FormatText(" Total Bans: ",EdgeColors.Bold) , (string)jObject["stats"].SelectToken("totalbans"), EdgeUtils.FormatText(" URL: ",EdgeColors.Bold) , string.Concat(EdgeData.UrlFishLink + paramList[2]));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
@@ -224,9 +224,6 @@ namespace Edgebot
                 EdgeData.AnnounceTimes = count;
                 EdgeUtils.SendChannel(_client, EdgeData.AnnounceMsg.ToString());
             }
-            
-
-            
         }
 
     }
