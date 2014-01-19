@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edgebot
 {
-    internal class EdgeConn
+    internal class Connection
     {
         public static void GetData(string url, string method, Action<JObject> taskSuccess,
             Action<AggregateException> taskError)
@@ -16,7 +16,7 @@ namespace Edgebot
                 {
                     if (t.Result == null)
                     {
-                        Utils.Log("EdgeConn: Result is null");
+                        Utils.Log("Connection: Result is null");
                     }
                     else
                     {
@@ -33,7 +33,7 @@ namespace Edgebot
                 {
                     if (t.Result == null)
                     {
-                        Utils.Log("EdgeConn: Result is null");
+                        Utils.Log("Connection: Result is null");
                     }
                     else
                     {
@@ -60,7 +60,7 @@ namespace Edgebot
 
         private static JObject GetHttpResponse(string url, string method)
         {
-            Utils.Log("EdgeConn: Getting response from {0}", url);
+            Utils.Log("Connection: Getting response from {0}", url);
             var webRequest = (HttpWebRequest) WebRequest.Create(url);
             webRequest.Method = method.ToUpper();
             webRequest.ContentType = "application/json";
@@ -79,7 +79,7 @@ namespace Edgebot
                         }
                         catch (Exception)
                         {
-                            Utils.Log("EdgeConn: Unable to parse stream response: {0}", reader.ReadToEnd());
+                            Utils.Log("Connection: Unable to parse stream response: {0}", reader.ReadToEnd());
                             return null;
                         }
                     }
@@ -87,7 +87,7 @@ namespace Edgebot
                 else
                 {
                     if (webResponse != null)
-                        Utils.Log("EdgeConn: Error fetching data. Server returned status code : {0}",
+                        Utils.Log("Connection: Error fetching data. Server returned status code : {0}",
                             webResponse.StatusCode);
                 }
 
@@ -100,7 +100,7 @@ namespace Edgebot
             var status = new MojangStatus();
             try
             {
-                Utils.Log("EdgeConn: Getting response from {0}", Data.UrlMojangStatus);
+                Utils.Log("Connection: Getting response from {0}", Data.UrlMojangStatus);
                 var webRequest = (HttpWebRequest) WebRequest.Create(Data.UrlMojangStatus);
                 webRequest.Method = "GET";
                 webRequest.ContentType = "application/json";
@@ -127,7 +127,7 @@ namespace Edgebot
                             }
                             catch (Exception)
                             {
-                                Utils.Log("EdgeConn: Unable to parse stream response: {0}", reader.ReadToEnd());
+                                Utils.Log("Connection: Unable to parse stream response: {0}", reader.ReadToEnd());
                                 return null;
                             }
                         }
@@ -135,7 +135,7 @@ namespace Edgebot
                     else
                     {
                         if (webResponse != null)
-                            Utils.Log("EdgeConn: Error fetching data. Server returned status code : {0}",
+                            Utils.Log("Connection: Error fetching data. Server returned status code : {0}",
                                 webResponse.StatusCode);
                     }
                 }

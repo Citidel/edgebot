@@ -110,7 +110,7 @@ namespace Edgebot
 
         private static void MineCheckHandler()
         {
-            EdgeConn.GetServerStatus(status =>
+            Connection.GetServerStatus(status =>
             {
                 var message = string.Concat("MCStatus: ", Utils.FormatStatus("Accounts", status.Account), ", ", Utils.FormatStatus("Session", status.Session), ", ", Utils.FormatStatus("Auth", status.Authentication), ", ", Utils.FormatStatus("Site", status.Website), ", ", Utils.FormatStatus("Login", status.Login));
                 Utils.SendChannel(_client, message);
@@ -120,7 +120,7 @@ namespace Edgebot
         private static void TpsHandler(IList<string> paramList)
         {
             // Use api to retrieve data from the tps url
-            EdgeConn.GetData(Data.UrlTps, "get", jObject =>
+            Connection.GetData(Data.UrlTps, "get", jObject =>
             {
                 // if filter throws the exception then no filter
                 string filter;
@@ -157,7 +157,7 @@ namespace Edgebot
             }
 
             var url = !String.IsNullOrEmpty(filter) ? Data.UrlWiki + "/" + filter : Data.UrlWiki + "/all";
-            EdgeConn.GetData(url, "get", jObject =>
+            Connection.GetData(url, "get", jObject =>
             {
                 if ((bool)jObject["success"])
                 {
@@ -188,7 +188,7 @@ namespace Edgebot
             var url = Data.UrlFish + paramList[2];
             // Use api to retrieve data from the tps url
             Utils.Log(url);
-            EdgeConn.GetData(url, "get", jObject =>
+            Connection.GetData(url, "get", jObject =>
             {
                 // parse the output  
                 var outputString = string.Concat(Utils.FormatText("Username: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", EdgeColors.Bold), Data.UrlFishLink, paramList[2]);

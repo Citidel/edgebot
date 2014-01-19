@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EdgeColors.cs" />
-    <Compile Include="EdgeConn.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="JSON\JsonWiki.cs" />
