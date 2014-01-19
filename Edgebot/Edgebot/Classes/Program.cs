@@ -96,8 +96,14 @@ namespace EdgeBot.Classes
                                 }
                                 break;
 
+                            // !dev 8 <question>
                             case "8":
                                 EightBallHandler(paramList);
+                                break;
+                            
+                            // !dev dice <number> <sides>
+                            case "dice":
+                                DiceHandler(paramList);
                                 break;
 
                             default:
@@ -147,6 +153,21 @@ namespace EdgeBot.Classes
             _client.ConnectAsync();
             while (true)
             {
+            }
+        }
+
+        private static void DiceHandler(IList<string> paramList)
+        {
+            int i;
+            // check if the params number 4 and that the number/sides are integers
+            if (paramList.Count() == 4 && int.TryParse(paramList[2], out i) && int.TryParse(paramList[3], out i))
+            {
+                var dice = paramList[2];
+                var sides = paramList[3];
+            }
+            else
+            {
+                Utils.SendChannel(_client, "Usage: !dice <number> <sides>");
             }
         }
 
