@@ -79,6 +79,16 @@ namespace Edgebot
         {
             return String.Format("{0}" + inputString + "{1}", formatCode, EdgeColors.Normal);
         }
+        /// <summary>
+        /// Returns the string formatted with green if true and red if false
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <param name="check"></param>
+        /// <returns></returns>
+        public static string FormatStatus(object inputString, bool check)
+        {
+            return String.Format("{0}" + FormatText(inputString, EdgeColors.Bold) + "{1}", check ? EdgeColors.DarkGreen : EdgeColors.Red, EdgeColors.Normal);
+        }
 
         /// <summary>
         /// Exception handler for the connection class
