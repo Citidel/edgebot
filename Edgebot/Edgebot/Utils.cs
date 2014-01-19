@@ -7,7 +7,7 @@ namespace Edgebot
     /// <summary>
     /// Utility methods for EdgeBot
     /// </summary>
-    public class EdgeUtils
+    public class Utils
     {
         /// <summary>
         /// Sends a notice to a set of destinations

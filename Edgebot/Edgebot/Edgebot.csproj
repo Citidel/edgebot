@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,7 +47,7 @@
     <Compile Include="EdgeColors.cs" />
     <Compile Include="EdgeConn.cs" />
     <Compile Include="EdgeData.cs" />
-    <Compile Include="EdgeUtils.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="JSON\JsonWiki.cs" />
     <Compile Include="JSON\JsonTps.cs" />
     <Compile Include="JSON\JsonVersion.cs" />
@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

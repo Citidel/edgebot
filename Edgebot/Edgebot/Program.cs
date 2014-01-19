@@ -21,16 +21,16 @@ namespace Edgebot
             _client = new IrcClient(EdgeData.Host, new IrcUser(EdgeData.Nickname, EdgeData.Username));
             _client.ConnectionComplete += (s, e) => _client.JoinChannel(EdgeData.Channel);
 
-            _client.NetworkError += (s, e) => EdgeUtils.Log("Error: " + e.SocketError);
+            _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
 
-            _client.RawMessageRecieved += (s, e) => EdgeUtils.Log("RAWRCV {0}", e.Message);
-            _client.RawMessageSent += (s, e) => EdgeUtils.Log("RAWSNT {0}", e.Message);
+            _client.RawMessageRecieved += (s, e) => Utils.Log("RAWRCV {0}", e.Message);
+            _client.RawMessageSent += (s, e) => Utils.Log("RAWSNT {0}", e.Message);
 
             _client.PrivateMessageRecieved += (sender, args) =>
             {
                 // Only listen to !commands
                 if (!args.PrivateMessage.Message.StartsWith("!")) return;
-                if (Debug && EdgeUtils.IsDev(args.PrivateMessage.User.Nick))
+                if (Debug && Utils.IsDev(args.PrivateMessage.User.Nick))
                 {
                     var message = args.PrivateMessage.Message;
                     // handle everything with !dev first to avoid conflict with edgebot
@@ -40,13 +40,13 @@ namespace Edgebot
                         switch (paramList[1])
                         {
                             case "tps":
-                                if (EdgeUtils.IsOp(_client, args.PrivateMessage.User.Nick))
+                                if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
                                 {
                                     TpsHandler(paramList);
                                 }
                                 else
                                 {
-                                    EdgeUtils.SendChannel(_client, "This command is restricted to ops only.");
+                                    Utils.SendChannel(_client, "This command is restricted to ops only.");
                                 }
                                 break;
 
@@ -82,21 +82,21 @@ namespace Edgebot
                                 break;
 
                             default:
-                                EdgeUtils.SendChannel(_client, "Dev command not found.");
+                                Utils.SendChannel(_client, "Dev command not found.");
                                 break;
                         }
                     }
                 }
 
-                EdgeUtils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+                Utils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
 
-            _client.ChannelMessageRecieved += (sender, args) => EdgeUtils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+            _client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             _client.UserJoinedChannel += (sender, args) =>
             {
-                if (Debug && EdgeUtils.IsDev(args.User.Nick))
+                if (Debug && Utils.IsDev(args.User.Nick))
                 {
-                    EdgeUtils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
+                    Utils.SendNotice(_client, String.Format(EdgeData.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
                 }
             };
 
@@ -112,9 +112,9 @@ namespace Edgebot
         {
             EdgeConn.GetServerStatus(status =>
             {
-                var message = string.Concat("MCStatus: ", EdgeUtils.FormatStatus("Accounts", status.Account), ", ", EdgeUtils.FormatStatus("Session", status.Session), ", ", EdgeUtils.FormatStatus("Auth", status.Authentication), ", ", EdgeUtils.FormatStatus("Site", status.Website), ", ", EdgeUtils.FormatStatus("Login", status.Login));
-                EdgeUtils.SendChannel(_client, message);
-            }, EdgeUtils.HandleException);
+                var message = string.Concat("MCStatus: ", Utils.FormatStatus("Accounts", status.Account), ", ", Utils.FormatStatus("Session", status.Session), ", ", Utils.FormatStatus("Auth", status.Authentication), ", ", Utils.FormatStatus("Site", status.Website), ", ", Utils.FormatStatus("Login", status.Login));
+                Utils.SendChannel(_client, message);
+            }, Utils.HandleException);
         }
 
         private static void TpsHandler(IList<string> paramList)
@@ -136,13 +136,13 @@ namespace Edgebot
                 var outputString = "";
                 const string delimiter = " || ";
                 // parse the output string using linq
-                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + EdgeUtils.FormatColor(tps.Count, EdgeColors.Green) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + EdgeUtils.FormatColor(tps.Count, EdgeColors.Green) + delimiter));
+                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, EdgeColors.Green) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, EdgeColors.Green) + delimiter));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
-                    EdgeUtils.SendChannel(_client, outputString.Substring(0, outputString.Length - delimiter.Length));
+                    Utils.SendChannel(_client, outputString.Substring(0, outputString.Length - delimiter.Length));
                 }
-            }, EdgeUtils.HandleException);
+            }, Utils.HandleException);
         }
 
         private static void WikiHandler(IList<string> paramList, string nickname)
@@ -174,42 +174,42 @@ namespace Edgebot
                         outputString = outputString.Substring(0, outputString.Length - delimiter.Length);
                     }
 
-                    EdgeUtils.SendNotice(_client, outputString, nickname);
+                    Utils.SendNotice(_client, outputString, nickname);
                 }
                 else
                 {
-                    EdgeUtils.SendNotice(_client, (string)jObject["message"], nickname);
+                    Utils.SendNotice(_client, (string)jObject["message"], nickname);
                 }
-            }, EdgeUtils.HandleException);
+            }, Utils.HandleException);
         }
 
         private static void FishHandler(IList<string> paramList, string nick)
         {
             var url = EdgeData.UrlFish + paramList[2];
             // Use api to retrieve data from the tps url
-            EdgeUtils.Log(url);
+            Utils.Log(url);
             EdgeConn.GetData(url, "get", jObject =>
             {
                 // parse the output  
-                var outputString = string.Concat(EdgeUtils.FormatText("Username: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("username"), EdgeUtils.FormatText(" Total Bans: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("totalbans"), EdgeUtils.FormatText(" URL: ", EdgeColors.Bold), EdgeData.UrlFishLink, paramList[2]);
+                var outputString = string.Concat(Utils.FormatText("Username: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", EdgeColors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", EdgeColors.Bold), EdgeData.UrlFishLink, paramList[2]);
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
-                    EdgeUtils.SendNotice(_client, outputString, nick);
+                    Utils.SendNotice(_client, outputString, nick);
                 }
-            }, EdgeUtils.HandleException);
+            }, Utils.HandleException);
         }
 
         private static void EndPortalHandler()
         {
-            EdgeUtils.SendChannel(_client, String.Format(EdgeData.EndPortal, "-855", "29", "-4"));
+            Utils.SendChannel(_client, String.Format(EdgeData.EndPortal, "-855", "29", "-4"));
         }
 
         private static void AnnounceHandler(IList<string> paramList, string nick)
         {
             if (paramList.Count <= 3)
             {
-                EdgeUtils.SendNotice(_client, "Usage: !announce <time in seconds> <repeats> <message>", nick);
+                Utils.SendNotice(_client, "Usage: !announce <time in seconds> <repeats> <message>", nick);
             }
             else
             {
@@ -242,30 +242,30 @@ namespace Edgebot
                 var count = Convert.ToInt32(EdgeData.AnnounceTimes);
                 count--;
                 EdgeData.AnnounceTimes = count;
-                EdgeUtils.SendChannel(_client, EdgeData.AnnounceMsg.ToString());
+                Utils.SendChannel(_client, EdgeData.AnnounceMsg.ToString());
             }
         }
         private static void UpdateHandler(IList<string> paramList)
         {
             if (paramList.Count <= 2)
             {
-                EdgeUtils.SendChannel(_client, EdgeData.RrUpdate);
+                Utils.SendChannel(_client, EdgeData.RrUpdate);
             }
             else
             {
                 switch (paramList[2])
                 {
                     case "rr":
-                        EdgeUtils.SendChannel(_client, EdgeData.RrUpdate);
+                        Utils.SendChannel(_client, EdgeData.RrUpdate);
                         break;
                     case "ftb":
-                        EdgeUtils.SendChannel(_client, EdgeData.FtbUpdate);
+                        Utils.SendChannel(_client, EdgeData.FtbUpdate);
                         break;
                     case "px":
-                        EdgeUtils.SendChannel(_client, EdgeData.PxUpdate);
+                        Utils.SendChannel(_client, EdgeData.PxUpdate);
                         break;
                     default:
-                        EdgeUtils.SendChannel(_client, EdgeData.RrUpdate);
+                        Utils.SendChannel(_client, EdgeData.RrUpdate);
                         break;
                 }
             }
