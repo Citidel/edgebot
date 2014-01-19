@@ -95,6 +95,10 @@ namespace EdgeBot.Classes
                                 }
                                 break;
 
+                            case "8":
+                                EightBallHandler(paramList);
+                                break;
+
                             default:
                                 Utils.SendChannel(_client, "Dev command not found.");
                                 break;
@@ -122,6 +126,19 @@ namespace EdgeBot.Classes
             }
         }
 
+        private static void EightBallHandler(ICollection<string> paramList)
+        {
+            if (paramList.Count > 2)
+            {
+                var response = Data.EightBallResponses[new Random().Next(0, Data.EightBallResponses.Count)];
+                Utils.SendNotice(_client, "The magic 8 ball responds with: " + response, "Helkarakse");
+            }
+            else
+            {
+                Utils.SendNotice(_client, "No question was asked of the magic 8 ball!", "Helkarakse");
+            }
+        }
+
         private static void LogHandler(IList<string> paramList)
         {
             int i;
@@ -130,7 +147,7 @@ namespace EdgeBot.Classes
             {
                 Connection.GetData(string.Format(Data.UrlCrashLog, paramList[2], paramList[3]), "get", jObject =>
                 {
-                    if ((bool) jObject["success"])
+                    if ((bool)jObject["success"])
                     {
                         Utils.SendChannel(_client, (string)jObject["result"]["response"]);
                     }
@@ -142,7 +159,7 @@ namespace EdgeBot.Classes
             }
             else
             {
-                Utils.SendChannel(_client, "Invalid command parameters.");
+                Utils.SendChannel(_client, "Usage: !log <pack> <server_id>");
             }
         }
 
