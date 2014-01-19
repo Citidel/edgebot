@@ -53,7 +53,7 @@ namespace EdgeBot.Classes
 
                             // !dev wiki <keyword>
                             case "wiki":
-                                WikiHandler(paramList, args.PrivateMessage.User.Nick);
+                                WikiHandler(paramList);
                                 break;
 
                             // !dev check <username>
@@ -171,9 +171,9 @@ namespace EdgeBot.Classes
                 }
 
                 var outputString = "";
-                const string delimiter = " || ";
+                const string delimiter = ", ";
                 // parse the output string using linq
-                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, Colors.Green) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (tps.Server.ToUpper() + ":" + tps.Tps + "-" + Utils.FormatColor(tps.Count, Colors.Green) + delimiter));
+                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (Utils.FormatText(tps.Server.ToUpper(), Colors.Bold) + ":" + Utils.FormatTps(tps.Tps) + "-" + Utils.FormatColor(tps.Count, Colors.DarkGreen) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (Utils.FormatText(tps.Server.ToUpper(), Colors.Bold) + ":" + Utils.FormatTps(tps.Tps) + "-" + Utils.FormatColor(tps.Count, Colors.DarkGreen) + delimiter));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
@@ -182,7 +182,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        private static void WikiHandler(IList<string> paramList, string nickname)
+        private static void WikiHandler(IList<string> paramList)
         {
             var filter = "";
             try
@@ -211,11 +211,11 @@ namespace EdgeBot.Classes
                         outputString = outputString.Substring(0, outputString.Length - delimiter.Length);
                     }
 
-                    Utils.SendNotice(_client, outputString, nickname);
+                    Utils.SendChannel(_client, outputString);
                 }
                 else
                 {
-                    Utils.SendNotice(_client, (string)jObject["message"], nickname);
+                    Utils.SendChannel(_client, (string)jObject["message"]);
                 }
             }, Utils.HandleException);
         }

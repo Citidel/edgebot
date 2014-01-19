@@ -94,6 +94,28 @@ namespace EdgeBot.Classes.Common
         }
 
         /// <summary>
+        /// Returns the tps float formatted with the appropriate colors
+        /// </summary>
+        /// <param name="inputFloat"></param>
+        /// <returns></returns>
+        public static string FormatTps(float inputFloat)
+        {
+            if (inputFloat > 15)
+            {
+                return String.Format("{0}" + inputFloat + "{1}", Colors.DarkGreen, Colors.Normal);
+            }
+            if (inputFloat >= 10 && inputFloat < 15)
+            {
+                return String.Format("{0}" + inputFloat + "{1}", Colors.Yellow, Colors.Normal);
+            }
+            if (inputFloat >= 0 && inputFloat < 10)
+            {
+                return String.Format("{0}" + inputFloat + "{1}", Colors.Red, Colors.Normal);
+            }
+            return inputFloat + "";
+        }
+
+        /// <summary>
         /// Exception handler for the connection class
         /// </summary>
         /// <param name="exception"></param>
