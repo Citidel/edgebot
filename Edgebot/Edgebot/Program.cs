@@ -105,13 +105,10 @@ namespace Edgebot
 
         private static void MineCheckHandler()
         {
-            EdgeConn.GetData(EdgeData.UrlMojangStatus, "get", jObject =>
+            EdgeConn.GetServerStatus(status =>
             {
-                var jArray = jObject.ToObject<Dictionary<string, string>>();
-                foreach (var row in jArray)
-                {
-                    EdgeUtils.Log("{0}:{1}", row.Key, row.Value);
-                }
+                var message = string.Concat("MCStatus: ", EdgeUtils.FormatStatus("Accounts", status.Account), ", ", EdgeUtils.FormatStatus("Session", status.Session), ", ", EdgeUtils.FormatStatus("Auth", status.Authentication), ", ", EdgeUtils.FormatStatus("Site", status.Website), ", ", EdgeUtils.FormatStatus("Login", status.Login));
+                EdgeUtils.SendChannel(_client, message);
             }, EdgeUtils.HandleException);
         }
 
