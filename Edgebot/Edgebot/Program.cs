@@ -55,6 +55,10 @@ namespace Edgebot
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
 
+                            case "endportal":
+                                EndPortalhHandler(paramList);
+                                break;
+
                             default:
                                 EdgeUtils.SendChannel(_client, "Dev command not found.");
                                 break;
@@ -166,6 +170,10 @@ namespace Edgebot
                    EdgeUtils.SendNotice(_client, outputString, nick);
                 }
             }, EdgeUtils.HandleException);
+        }
+        private static void EndPortalhHandler(IList<string> paramList)
+        {
+            EdgeUtils.SendChannel(_client, String.Format(EdgeData.EndPortal, "-855", "29", "-4"));
         }
     }
 }

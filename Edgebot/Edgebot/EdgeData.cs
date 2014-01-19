@@ -10,6 +10,7 @@ namespace Edgebot
     {
         public const string JoinMessage = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
         public static readonly List<string> Developers = new List<string> { "Helkarakse", "Citidel", "Citidel_","djdarkstorm"};
+        public const string EndPortal = "The End Portal is Located at: {0} X, {1} Y, {2} Z";
 
         public const string Host = "irc.esper.net:5555";
         public const string Nickname = "EdgeSharp";
@@ -20,5 +21,6 @@ namespace Edgebot
         public const string UrlFishLink = "http://www.fishbans.com/u/";
         public const string UrlVersion = "http://dev.otegamers.com/api/v1/edge/version";
         public const string UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
+
     }
 }

@@ -47,7 +47,6 @@
     <Compile Include="EdgeConn.cs" />
     <Compile Include="EdgeData.cs" />
     <Compile Include="EdgeUtils.cs" />
-    <Compile Include="JSON\JsonFish.cs" />
     <Compile Include="JSON\JsonWiki.cs" />
     <Compile Include="JSON\JsonTps.cs" />
     <Compile Include="JSON\JsonVersion.cs" />
