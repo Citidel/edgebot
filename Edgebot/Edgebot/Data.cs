@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Edgebot
 {
     /// <summary>
-    /// Class for EdgeBot containing constants
+    /// EdgeBot data
     /// </summary>
     public class Data
     {
@@ -20,12 +20,6 @@ namespace Edgebot
 
         // Devs
         public static readonly List<string> Developers = new List<string> { "Helkarakse", "Citidel", "Citidel_","djdarkstorm"};
-
-        // IRC
-        public const string Host = "irc.esper.net:5555";
-        public const string Nickname = "EdgeSharp";
-        public const string Username = "EdgeSharp";
-        public const string Channel = "#OTEGamers";
 
         // URLs
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";

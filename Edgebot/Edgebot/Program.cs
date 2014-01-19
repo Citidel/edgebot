@@ -18,8 +18,8 @@ namespace Edgebot
         {
             _announceTimer = new Timer();
 
-            _client = new IrcClient(Data.Host, new IrcUser(Data.Nickname, Data.Username));
-            _client.ConnectionComplete += (s, e) => _client.JoinChannel(Data.Channel);
+            _client = new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username));
+            _client.ConnectionComplete += (s, e) => _client.JoinChannel(Config.Channel);
 
             _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
 
