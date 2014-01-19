@@ -2,7 +2,7 @@
 using System.Linq;
 using ChatSharp;
 
-namespace Edgebot
+namespace Edgebot.Classes.Common
 {
     /// <summary>
     /// Utility methods for EdgeBot

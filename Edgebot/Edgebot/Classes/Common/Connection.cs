@@ -2,9 +2,10 @@
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Edgebot.Classes.Instances;
 using Newtonsoft.Json.Linq;
 
-namespace Edgebot
+namespace Edgebot.Classes.Common
 {
     internal class Connection
     {

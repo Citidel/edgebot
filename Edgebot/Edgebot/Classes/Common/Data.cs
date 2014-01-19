@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Edgebot
+namespace Edgebot.Classes.Common
 {
     /// <summary>
     /// EdgeBot data

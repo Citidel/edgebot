@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ChatSharp;
-using System;
-using Edgebot.JSON;
-using Newtonsoft.Json;
 using System.Timers;
+using ChatSharp;
+using Edgebot.Classes.Common;
+using Edgebot.Classes.JSON;
+using Newtonsoft.Json;
 
-namespace Edgebot
+namespace Edgebot.Classes
 {
     class Program
     {

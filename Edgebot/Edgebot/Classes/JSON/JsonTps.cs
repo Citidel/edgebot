@@ -1,4 +1,4 @@
-﻿namespace Edgebot.JSON
+﻿namespace Edgebot.Classes.JSON
 {
     public class JsonTps
     {

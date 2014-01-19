@@ -1,4 +1,4 @@
-namespace Edgebot
+namespace Edgebot.Classes.Common
 {
     /// <summary>
     /// IRC related configuration data
