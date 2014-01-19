@@ -99,6 +99,11 @@ namespace EdgeBot.Classes
                                 EightBallHandler(paramList);
                                 break;
 
+                            // !dev help, !dev help <keyword>
+                            case "help":
+                                HelpHandler(paramList);
+                                break;
+
                             default:
                                 Utils.SendChannel(_client, "Dev command not found.");
                                 break;
@@ -123,6 +128,30 @@ namespace EdgeBot.Classes
             _client.ConnectAsync();
             while (true)
             {
+            }
+        }
+
+        private static void HelpHandler(IEnumerable<string> paramList)
+        {
+            switch (paramList.Count())
+            {
+                case 2:
+                    Connection.GetData(Data.UrlHelp + "/all", "get", jObject =>
+                    {
+                        if ((bool)jObject["success"])
+                        {
+                            
+                        }
+                    }, Utils.HandleException);
+                    break;
+
+                case 3:
+
+                    break;
+
+                default:
+                    Utils.SendChannel(_client, "Usage: !help");
+                    break;
             }
         }
 
