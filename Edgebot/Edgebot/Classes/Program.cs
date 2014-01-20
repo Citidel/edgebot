@@ -15,7 +15,7 @@ namespace EdgeBot.Classes
         public const bool Debug = true;
         private static Timer _announceTimer;
         private static IrcClient _client;
-        private static List<Server> _serverList = new List<Server>();
+        private static readonly List<Server> ServerList = new List<Server>();
 
         static void Main()
         {
@@ -38,10 +38,10 @@ namespace EdgeBot.Classes
                             Address = (string)row["address"]
                         }))
                         {
-                            _serverList.Add(server);
+                            ServerList.Add(server);
                         }
 
-                        if (_serverList.Count > 0)
+                        if (ServerList.Count > 0)
                         {
                             Utils.Log("Server addresses retrieved from API");
                         }
