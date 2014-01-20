@@ -365,47 +365,51 @@ namespace EdgeBot.Classes
 
         private static void FishHandler(IList<string> paramList, string nick)
         {
-            var url = Data.UrlFish + paramList[1];
-            Connection.GetData(url, "get", jObject =>
+            if (!(paramList.Count() <= 1))
             {
-                string outputString;
-                if ((bool)jObject["success"])
+                var url = Data.UrlFish + paramList[1];
+                Connection.GetData(url, "get", jObject =>
                 {
-                    var fishBans = new FishBans
+                    string outputString;
+                    if ((bool)jObject["success"])
                     {
-                        TotalBans = (int)jObject["stats"].SelectToken("totalbans"),
-                        Url = Data.UrlFishLink + paramList[1],
-                        Username = (string)jObject["stats"].SelectToken("username")
-                    };
+                        var fishBans = new FishBans
+                        {
+                            TotalBans = (int)jObject["stats"].SelectToken("totalbans"),
+                            Url = Data.UrlFishLink + paramList[1],
+                            Username = (string)jObject["stats"].SelectToken("username")
+                        };
 
-                    var colorCode = "";
-                    if (fishBans.TotalBans == 0)
-                    {
-                        colorCode = Colors.DarkGreen;
+                        var colorCode = "";
+                        if (fishBans.TotalBans == 0)
+                        {
+                            colorCode = Colors.DarkGreen;
+                        }
+                        else if (fishBans.TotalBans >= 1 && fishBans.TotalBans < 5)
+                        {
+                            colorCode = Colors.Yellow;
+                        }
+                        else if (fishBans.TotalBans > 5)
+                        {
+                            colorCode = Colors.Red;
+                        }
+
+                        outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
+                            Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, colorCode),
+                            Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
                     }
-                    else if (fishBans.TotalBans >= 1 && fishBans.TotalBans < 5)
+                    else
                     {
-                        colorCode = Colors.Yellow;
-                    }
-                    else if (fishBans.TotalBans > 5)
-                    {
-                        colorCode = Colors.Red;
+                        outputString = Utils.FormatText("Error: ", Colors.Bold) + (string)jObject["error"];
                     }
 
-                    outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
-                        Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, colorCode),
-                        Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
-                }
-                else
-                {
-                    outputString = Utils.FormatText("Error: ", Colors.Bold) + (string)jObject["error"];
-                }
-
-                if (!String.IsNullOrEmpty(outputString))
-                {
-                    Utils.SendNotice(_client, outputString, nick);
-                }
-            }, Utils.HandleException);
+                    if (!String.IsNullOrEmpty(outputString))
+                    {
+                        Utils.SendNotice(_client, outputString, nick);
+                    }
+                }, Utils.HandleException);
+            }
+            else { Utils.SendNotice(_client, "Usage: !check <username>", nick); }
         }
 
         private static void AnnounceHandler(IList<string> paramList, string nick)
