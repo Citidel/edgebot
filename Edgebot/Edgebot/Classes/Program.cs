@@ -31,92 +31,86 @@ namespace EdgeBot.Classes
             _client.PrivateMessageRecieved += (sender, args) =>
             {
                 // Only listen to !commands
-                //if (!args.PrivateMessage.Message.StartsWith("!")) return;
-                if (Debug && Utils.IsDev(args.PrivateMessage.User.Nick))
+                if (Utils.IsDev(args.PrivateMessage.User.Nick) && args.PrivateMessage.Message.StartsWith("!"))
                 {
                     var message = args.PrivateMessage.Message;
-                    // handle everything with !dev first to avoid conflict with edgebot
-                    if (message.StartsWith("!dev"))
+                    var paramList = message.Split(' ');
+                    switch (paramList[0].Substring(1))
                     {
-                        var paramList = message.Split(' ');
-                        switch (paramList[1])
-                        {
-                            // !dev tps
-                            case "tps":
-                                if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
-                                {
-                                    TpsHandler(paramList);
-                                }
-                                else
-                                {
-                                    Utils.SendChannel(_client, "This command is restricted to ops only.");
-                                }
-                                break;
+                        // !tps
+                        case "tps":
+                            if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
+                            {
+                                TpsHandler(paramList);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(_client, "This command is restricted to ops only.");
+                            }
+                            break;
 
-                            // !dev wiki <keyword>
-                            case "wiki":
-                                WikiHandler(paramList);
-                                break;
+                        // !wiki <keyword>
+                        case "wiki":
+                            WikiHandler(paramList);
+                            break;
 
-                            // !dev check <username>
-                            case "check":
-                                FishHandler(paramList, args.PrivateMessage.User.Nick);
-                                break;
+                        // !check <username>
+                        case "check":
+                            FishHandler(paramList, args.PrivateMessage.User.Nick);
+                            break;
 
-                            // !dev announce <time in seconds> <repeates> <message>
-                            case "announce":
-                                AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
-                                break;
+                        // !announce <time in seconds> <repeates> <message>
+                        case "announce":
+                            AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                            break;
 
-                            // !dev update
-                            case "update":
-                                UpdateHandler(paramList);
-                                break;
+                        // !update
+                        case "update":
+                            UpdateHandler(paramList);
+                            break;
 
-                            // !dev minecheck | !dev minestatus
-                            case "minecheck":
-                            case "minestatus":
-                                MineCheckHandler();
-                                break;
+                        // !minecheck | !dev minestatus
+                        case "minecheck":
+                        case "minestatus":
+                            MineCheckHandler();
+                            break;
 
-                            // !dev log <pack> <server>
-                            case "log":
-                                if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
-                                {
-                                    LogHandler(paramList);
-                                }
-                                else
-                                {
-                                    Utils.SendChannel(_client, "This command is restricted to ops only.");
-                                }
-                                break;
+                        // !log <pack> <server>
+                        case "log":
+                            if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
+                            {
+                                LogHandler(paramList);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(_client, "This command is restricted to ops only.");
+                            }
+                            break;
 
-                            // !dev 8 <question>
-                            case "8":
-                                EightBallHandler(paramList);
-                                break;
-                            
-                            // !dev dice <number> <sides>
-                            case "dice":
-                                DiceHandler(paramList);
-                                break;
+                        // !8 <question>
+                        case "8":
+                            EightBallHandler(paramList);
+                            break;
 
-                            // !dev help, !dev help <keyword>
-                            case "help":
-                                HelpHandler(paramList);
-                                break;
+                        // !dice <number> <sides>
+                        case "dice":
+                            DiceHandler(paramList);
+                            break;
 
-                            default:
-                                Utils.SendChannel(_client, "Dev command not found.");
-                                break;
-                        }
+                        // !dev help, !dev help <keyword>
+                        case "help":
+                            HelpHandler(paramList);
+                            break;
+
+                        default:
+                            Utils.SendChannel(_client, "Dev command not found.");
+                            break;
                     }
 
                     //listen for www or http(s)
                     if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
                     {
                         var url = "";
-                        var paramList = message.Split(' ');
                         for (var i = 0; i < paramList.Count(); i++)
                         {
                             if (paramList[i].Contains("http://") | paramList[i].Contains("https://"))
@@ -161,10 +155,10 @@ namespace EdgeBot.Classes
             var filter = "";
             switch (paramList.Count())
             {
-                case 2:
+                case 1:
                     break;
-                case 3:
-                    filter = paramList[2];
+                case 2:
+                    filter = paramList[1];
                     break;
 
                 default:
@@ -203,10 +197,10 @@ namespace EdgeBot.Classes
         {
             int i;
             // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
-            if (paramList.Count() == 4 && int.TryParse(paramList[2], out i) && int.TryParse(paramList[3], out i) && (int.Parse(paramList[2]) > 0) && (int.Parse(paramList[3]) > 0))
+            if (paramList.Count() == 3 && int.TryParse(paramList[1], out i) && int.TryParse(paramList[2], out i) && (int.Parse(paramList[1]) > 0) && (int.Parse(paramList[2]) > 0))
             {
-                var dice = int.Parse(paramList[2]);
-                var sides = int.Parse(paramList[3]);
+                var dice = int.Parse(paramList[1]);
+                var sides = int.Parse(paramList[2]);
                 var random = new Random();
 
                 var diceList = new List<int>();
@@ -226,7 +220,7 @@ namespace EdgeBot.Classes
 
         private static void EightBallHandler(ICollection<string> paramList)
         {
-            if (paramList.Count > 2)
+            if (paramList.Count > 1)
             {
                 var response = Data.EightBallResponses[new Random().Next(0, Data.EightBallResponses.Count)];
                 Utils.SendChannel(_client, "The magic 8 ball responds with: " + response);
@@ -241,9 +235,9 @@ namespace EdgeBot.Classes
         {
             int i;
             // check if params number more than 4, if the pack length is less than 5 and the server is a number
-            if (paramList.Count == 4 && paramList[2].Length < 5 && int.TryParse(paramList[3], out i))
+            if (paramList.Count == 3 && paramList[1].Length < 5 && int.TryParse(paramList[2], out i))
             {
-                Connection.GetData(string.Format(Data.UrlCrashLog, paramList[2], paramList[3]), "get", jObject =>
+                Connection.GetData(string.Format(Data.UrlCrashLog, paramList[1], paramList[2]), "get", jObject =>
                 {
                     if ((bool)jObject["success"])
                     {
@@ -279,7 +273,7 @@ namespace EdgeBot.Classes
                 string filter;
                 try
                 {
-                    filter = paramList[2];
+                    filter = paramList[1];
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -289,7 +283,7 @@ namespace EdgeBot.Classes
                 var outputString = "";
                 const string delimiter = ", ";
                 // parse the output string using linq
-                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (Utils.FormatText(tps.Server.ToUpper(), Colors.Bold) + ":" + Utils.FormatTps(tps.Tps) + "-" + Utils.FormatColor(tps.Count, Colors.DarkGreen) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[2])).Aggregate(outputString, (current, tps) => current + (Utils.FormatText(tps.Server.ToUpper(), Colors.Bold) + ":" + Utils.FormatTps(tps.Tps) + "-" + Utils.FormatColor(tps.Count, Colors.DarkGreen) + delimiter));
+                outputString = String.IsNullOrEmpty(filter) ? jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Aggregate(outputString, (current, tps) => current + (Utils.FormatText(tps.Server.ToUpper(), Colors.Bold) + ":" + Utils.FormatTps(tps.Tps) + "-" + Utils.FormatColor(tps.Count, Colors.DarkGreen) + delimiter)) : jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonTps>(row.ToString())).Where(tps => tps.Server.Contains(paramList[1])).Aggregate(outputString, (current, tps) => current + (Utils.FormatText(tps.Server.ToUpper(), Colors.Bold) + ":" + Utils.FormatTps(tps.Tps) + "-" + Utils.FormatColor(tps.Count, Colors.DarkGreen) + delimiter));
                 if (!String.IsNullOrEmpty(outputString))
                 {
                     // output to channel
@@ -303,10 +297,10 @@ namespace EdgeBot.Classes
             var filter = "";
             switch (paramList.Count())
             {
-                case 2:
+                case 1:
                     break;
-                case 3:
-                    filter = paramList[2];
+                case 2:
+                    filter = paramList[1];
                     break;
 
                 default:
@@ -343,17 +337,17 @@ namespace EdgeBot.Classes
 
         private static void FishHandler(IList<string> paramList, string nick)
         {
-            var url = Data.UrlFish + paramList[2];
+            var url = Data.UrlFish + paramList[1];
             Connection.GetData(url, "get", jObject =>
             {
                 string outputString;
-                if ((bool) jObject["success"])
+                if ((bool)jObject["success"])
                 {
                     var fishBans = new FishBans
                     {
-                        TotalBans = (int) jObject["stats"].SelectToken("totalbans"),
-                        Url = Data.UrlFishLink + paramList[2],
-                        Username = (string) jObject["stats"].SelectToken("username")
+                        TotalBans = (int)jObject["stats"].SelectToken("totalbans"),
+                        Url = Data.UrlFishLink + paramList[1],
+                        Username = (string)jObject["stats"].SelectToken("username")
                     };
 
                     var colorCode = "";
@@ -388,22 +382,21 @@ namespace EdgeBot.Classes
 
         private static void AnnounceHandler(IList<string> paramList, string nick)
         {
-            if (paramList.Count <= 3)
+            if (paramList.Count < 3)
             {
                 Utils.SendNotice(_client, "Usage: !announce <time in seconds> <repeats> <message>", nick);
             }
             else
             {
                 var msg = "";
-                var timeTick = Convert.ToInt32(paramList[2]) * 1000;
-                var timeCount = Convert.ToInt32(paramList[3]);
+                var timeTick = Convert.ToInt32(paramList[1]) * 1000;
+                var timeCount = Convert.ToInt32(paramList[2]);
                 if (timeTick == 0) return;
                 _announceTimer.Interval = timeTick;
                 GC.KeepAlive(_announceTimer);
-                for (var i = 4; i < paramList.Count; i++)
+                for (var i = 3; i < paramList.Count; i++)
                 {
                     msg = msg + paramList[i] + " ";
-
                 }
                 Data.AnnounceMsg = msg;
                 Data.AnnounceTimes = timeCount;
@@ -428,13 +421,13 @@ namespace EdgeBot.Classes
         }
         private static void UpdateHandler(IList<string> paramList)
         {
-            if (paramList.Count <= 2)
+            if (paramList.Count < 2)
             {
                 Utils.SendChannel(_client, Data.RrUpdate);
             }
             else
             {
-                switch (paramList[2])
+                switch (paramList[1])
                 {
                     case "rr":
                         Utils.SendChannel(_client, Data.RrUpdate);
