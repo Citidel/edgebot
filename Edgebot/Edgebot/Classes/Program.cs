@@ -4,6 +4,7 @@ using System.Linq;
 using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
+using EdgeBot.Classes.Instances;
 using EdgeBot.Classes.JSON;
 using Newtonsoft.Json;
 
@@ -129,11 +130,6 @@ namespace EdgeBot.Classes
                     }
                 }
 
-
-
-
-
-
                 Utils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
 
@@ -159,11 +155,11 @@ namespace EdgeBot.Classes
             if (paramList.Count > 2)
             {
                 var response = Data.EightBallResponses[new Random().Next(0, Data.EightBallResponses.Count)];
-                Utils.SendNotice(_client, "The magic 8 ball responds with: " + response, "Helkarakse");
+                Utils.SendChannel(_client, "The magic 8 ball responds with: " + response);
             }
             else
             {
-                Utils.SendNotice(_client, "No question was asked of the magic 8 ball!", "Helkarakse");
+                Utils.SendChannel(_client, "No question was asked of the magic 8 ball!");
             }
         }
 
@@ -274,15 +270,43 @@ namespace EdgeBot.Classes
         private static void FishHandler(IList<string> paramList, string nick)
         {
             var url = Data.UrlFish + paramList[2];
-            // Use api to retrieve data from the tps url
-            Utils.Log(url);
             Connection.GetData(url, "get", jObject =>
             {
-                // parse the output  
-                var outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", Colors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", Colors.Bold), Data.UrlFishLink, paramList[2]);
+                string outputString;
+                if ((bool) jObject["success"])
+                {
+                    var fishBans = new FishBans
+                    {
+                        TotalBans = (int) jObject["stats"].SelectToken("totalbans"),
+                        Url = Data.UrlFishLink + paramList[2],
+                        Username = (string) jObject["stats"].SelectToken("username")
+                    };
+
+                    var colorCode = "";
+                    if (fishBans.TotalBans == 0)
+                    {
+                        colorCode = Colors.DarkGreen;
+                    }
+                    else if (fishBans.TotalBans >= 1 && fishBans.TotalBans < 5)
+                    {
+                        colorCode = Colors.Yellow;
+                    }
+                    else if (fishBans.TotalBans > 5)
+                    {
+                        colorCode = Colors.Red;
+                    }
+
+                    outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
+                        Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, colorCode),
+                        Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
+                }
+                else
+                {
+                    outputString = Utils.FormatText("Error: ", Colors.Bold) + (string)jObject["error"];
+                }
+
                 if (!String.IsNullOrEmpty(outputString))
                 {
-                    // output to channel
                     Utils.SendNotice(_client, outputString, nick);
                 }
             }, Utils.HandleException);
