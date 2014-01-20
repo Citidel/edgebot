@@ -211,31 +211,6 @@ namespace EdgeBot.Classes.Common
             }
 
             return returnString;
-
-            ////var title = GetWebTitle(url);
-            //// Create a request to the url
-            //var webRequest = WebRequest.Create(url) as HttpWebRequest;
-            //// If the request wasn't an HTTP request (like a file), ignore it
-            //if (webRequest == null) return null;
-            //// Use the user's credentials
-            //webRequest.UseDefaultCredentials = true;
-            //// Obtain a response from the server, if there was an error, return nothing
-            //HttpWebResponse response;
-            //try { response = webRequest.GetResponse() as HttpWebResponse; }
-            //catch (WebException) { return null; }
-            //// Regular expression for an HTML title
-            //const string regex = @"(?<=<title.*>)([\s\S]*)(?=</title>)";
-
-            //// If the correct HTML header exists for HTML text, continue
-            //if (response == null || !new List<string>(response.Headers.AllKeys).Contains("Content-Type")) return null;
-            //if (!response.Headers["Content-Type"].StartsWith("text/html")) return null;
-            //// Download the page
-            //var web = new WebClient { UseDefaultCredentials = true };
-            //var page = web.DownloadString(url);
-            //// Extract the title
-            //var ex = new Regex(regex, RegexOptions.IgnoreCase);
-            //return ex.Match(page).Value.Trim();
-            //// Not a valid HTML page
         }
     }
 }
