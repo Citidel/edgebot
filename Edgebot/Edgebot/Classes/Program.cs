@@ -4,6 +4,7 @@ using System.Linq;
 using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
+using EdgeBot.Classes.Instances;
 using EdgeBot.Classes.JSON;
 using Newtonsoft.Json;
 
@@ -30,7 +31,7 @@ namespace EdgeBot.Classes
             _client.PrivateMessageRecieved += (sender, args) =>
             {
                 // Only listen to !commands
-                if (!args.PrivateMessage.Message.StartsWith("!")) return;
+                //if (!args.PrivateMessage.Message.StartsWith("!")) return;
                 if (Debug && Utils.IsDev(args.PrivateMessage.User.Nick))
                 {
                     var message = args.PrivateMessage.Message;
@@ -95,8 +96,14 @@ namespace EdgeBot.Classes
                                 }
                                 break;
 
+                            // !dev 8 <question>
                             case "8":
                                 EightBallHandler(paramList);
+                                break;
+                            
+                            // !dev dice <number> <sides>
+                            case "dice":
+                                DiceHandler(paramList);
                                 break;
 
                             // !dev help, !dev help <keyword>
@@ -107,6 +114,29 @@ namespace EdgeBot.Classes
                             default:
                                 Utils.SendChannel(_client, "Dev command not found.");
                                 break;
+                        }
+                    }
+
+                    //listen for www or http(s)
+                    if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
+                    {
+                        var url = "";
+                        var paramList = message.Split(' ');
+                        for (var i = 0; i < paramList.Count(); i++)
+                        {
+                            if (paramList[i].Contains("http://") | paramList[i].Contains("https://"))
+                            {
+                                url = paramList[i];
+                            }
+                            else if (paramList[i].Contains("www."))
+                            {
+                                url = string.Concat("http://", paramList[i]);
+                            }
+
+                            Connection.GetLinkTitle(url, title =>
+                            {
+                                if (!string.IsNullOrEmpty(title)) { Utils.SendChannel(_client, "URL TITLE: " + title); } else { Utils.Log("Connection: Result is null"); }
+                            }, Utils.HandleException);
                         }
                     }
                 }
@@ -138,9 +168,9 @@ namespace EdgeBot.Classes
                 case 2:
                     Connection.GetData(Data.UrlHelp + "/all", "get", jObject =>
                     {
-                        if ((bool)jObject["success"])
+                        if ((bool) jObject["success"])
                         {
-                            
+
                         }
                     }, Utils.HandleException);
                     break;
@@ -155,16 +185,41 @@ namespace EdgeBot.Classes
             }
         }
 
+        private static void DiceHandler(IList<string> paramList)
+        {
+            int i;
+            // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
+            if (paramList.Count() == 4 && int.TryParse(paramList[2], out i) && int.TryParse(paramList[3], out i) && (int.Parse(paramList[2]) > 0) && (int.Parse(paramList[3]) > 0))
+            {
+                var dice = int.Parse(paramList[2]);
+                var sides = int.Parse(paramList[3]);
+                var random = new Random();
+
+                var diceList = new List<int>();
+                for (var j = 0; j < dice; j++)
+                {
+                    diceList.Add(random.Next(1, sides));
+                }
+
+                var outputString = string.Format("Rolling a {0} sided die, {1} time{2}: {3}", sides, dice, (dice > 1) ? "s" : "", diceList.Aggregate("", (current, roll) => current + roll + " ").Trim());
+                Utils.SendChannel(_client, outputString);
+            }
+            else
+            {
+                Utils.SendChannel(_client, "Usage: !dice <number> <sides>");
+            }
+        }
+
         private static void EightBallHandler(ICollection<string> paramList)
         {
             if (paramList.Count > 2)
             {
                 var response = Data.EightBallResponses[new Random().Next(0, Data.EightBallResponses.Count)];
-                Utils.SendNotice(_client, "The magic 8 ball responds with: " + response, "Helkarakse");
+                Utils.SendChannel(_client, "The magic 8 ball responds with: " + response);
             }
             else
             {
-                Utils.SendNotice(_client, "No question was asked of the magic 8 ball!", "Helkarakse");
+                Utils.SendChannel(_client, "No question was asked of the magic 8 ball!");
             }
         }
 
@@ -232,12 +287,17 @@ namespace EdgeBot.Classes
         private static void WikiHandler(IList<string> paramList)
         {
             var filter = "";
-            try
+            switch (paramList.Count())
             {
-                filter = paramList[2];
-            }
-            catch (ArgumentOutOfRangeException)
-            {
+                case 2:
+                    break;
+                case 3:
+                    filter = paramList[2];
+                    break;
+
+                default:
+                    Utils.SendChannel(_client, "Usage: !wiki");
+                    return;
             }
 
             var url = !String.IsNullOrEmpty(filter) ? Data.UrlWiki + "/" + filter : Data.UrlWiki + "/all";
@@ -270,15 +330,43 @@ namespace EdgeBot.Classes
         private static void FishHandler(IList<string> paramList, string nick)
         {
             var url = Data.UrlFish + paramList[2];
-            // Use api to retrieve data from the tps url
-            Utils.Log(url);
             Connection.GetData(url, "get", jObject =>
             {
-                // parse the output  
-                var outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), (string)jObject["stats"].SelectToken("username"), Utils.FormatText(" Total Bans: ", Colors.Bold), (string)jObject["stats"].SelectToken("totalbans"), Utils.FormatText(" URL: ", Colors.Bold), Data.UrlFishLink, paramList[2]);
+                string outputString;
+                if ((bool) jObject["success"])
+                {
+                    var fishBans = new FishBans
+                    {
+                        TotalBans = (int) jObject["stats"].SelectToken("totalbans"),
+                        Url = Data.UrlFishLink + paramList[2],
+                        Username = (string) jObject["stats"].SelectToken("username")
+                    };
+
+                    var colorCode = "";
+                    if (fishBans.TotalBans == 0)
+                    {
+                        colorCode = Colors.DarkGreen;
+                    }
+                    else if (fishBans.TotalBans >= 1 && fishBans.TotalBans < 5)
+                    {
+                        colorCode = Colors.Yellow;
+                    }
+                    else if (fishBans.TotalBans > 5)
+                    {
+                        colorCode = Colors.Red;
+                    }
+
+                    outputString = string.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
+                        Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, colorCode),
+                        Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
+                }
+                else
+                {
+                    outputString = Utils.FormatText("Error: ", Colors.Bold) + (string)jObject["error"];
+                }
+
                 if (!String.IsNullOrEmpty(outputString))
                 {
-                    // output to channel
                     Utils.SendNotice(_client, outputString, nick);
                 }
             }, Utils.HandleException);
