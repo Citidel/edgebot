@@ -22,9 +22,7 @@ namespace EdgeBot.Classes
 
             _client = new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username));
             _client.ConnectionComplete += (s, e) => _client.JoinChannel(Config.Channel);
-
             _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
-
             _client.RawMessageRecieved += (s, e) => Utils.Log("RAWRCV {0}", e.Message);
             _client.RawMessageSent += (s, e) => Utils.Log("RAWSNT {0}", e.Message);
 
@@ -59,7 +57,7 @@ namespace EdgeBot.Classes
                             FishHandler(paramList, args.PrivateMessage.User.Nick);
                             break;
 
-                        // !announce <time in seconds> <repeates> <message>
+                        // !announce <time in seconds> <repeats> <message>
                         case "announce":
                             AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
                             break;
@@ -69,7 +67,7 @@ namespace EdgeBot.Classes
                             UpdateHandler(paramList);
                             break;
 
-                        // !minecheck | !dev minestatus
+                        // !minecheck | !minestatus
                         case "minecheck":
                         case "minestatus":
                             MineCheckHandler();
@@ -136,7 +134,7 @@ namespace EdgeBot.Classes
             _client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             _client.UserJoinedChannel += (sender, args) =>
             {
-                if (Debug && Utils.IsDev(args.User.Nick))
+                if (Utils.IsDev(args.User.Nick))
                 {
                     Utils.SendNotice(_client, String.Format(Data.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
                 }
