@@ -63,11 +63,6 @@ namespace EdgeBot.Classes
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
 
-                            // !dev endportal
-                            case "endportal":
-                                EndPortalHandler();
-                                break;
-
                             // !dev announce <time in seconds> <repeates> <message>
                             case "announce":
                                 AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
@@ -370,11 +365,6 @@ namespace EdgeBot.Classes
                     Utils.SendNotice(_client, outputString, nick);
                 }
             }, Utils.HandleException);
-        }
-
-        private static void EndPortalHandler()
-        {
-            Utils.SendChannel(_client, String.Format(Data.EndPortal, "-855", "29", "-4"));
         }
 
         private static void AnnounceHandler(IList<string> paramList, string nick)
