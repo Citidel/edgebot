@@ -63,11 +63,6 @@ namespace EdgeBot.Classes
                                 FishHandler(paramList, args.PrivateMessage.User.Nick);
                                 break;
 
-                            // !dev endportal
-                            case "endportal":
-                                EndPortalHandler();
-                                break;
-
                             // !dev announce <time in seconds> <repeates> <message>
                             case "announce":
                                 AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
@@ -104,6 +99,11 @@ namespace EdgeBot.Classes
                             // !dev dice <number> <sides>
                             case "dice":
                                 DiceHandler(paramList);
+                                break;
+
+                            // !dev help, !dev help <keyword>
+                            case "help":
+                                HelpHandler(paramList);
                                 break;
 
                             default:
@@ -154,6 +154,49 @@ namespace EdgeBot.Classes
             while (true)
             {
             }
+        }
+
+        private static void HelpHandler(IList<string> paramList)
+        {
+            var filter = "";
+            switch (paramList.Count())
+            {
+                case 2:
+                    break;
+                case 3:
+                    filter = paramList[2];
+                    break;
+
+                default:
+                    Utils.SendChannel(_client, "Usage: !help");
+                    return;
+            }
+
+            var url = !String.IsNullOrEmpty(filter) ? Data.UrlHelp + "/" + filter : Data.UrlHelp + "/all";
+            Connection.GetData(url, "get", jObject =>
+            {
+                if ((bool)jObject["success"])
+                {
+                    string outputString;
+                    const string delimiter = ", ";
+                    if (!String.IsNullOrEmpty(filter))
+                    {
+                        var help = JsonConvert.DeserializeObject<JsonHelp>(jObject["result"].ToString());
+                        outputString = help.Value;
+                    }
+                    else
+                    {
+                        outputString = jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonHelp>(row.ToString())).Aggregate("The following keywords are valid: ", (current, help) => current + (help.Keyword + delimiter));
+                        outputString = outputString.Substring(0, outputString.Length - delimiter.Length);
+                    }
+
+                    Utils.SendChannel(_client, outputString);
+                }
+                else
+                {
+                    Utils.SendChannel(_client, (string)jObject["message"]);
+                }
+            }, Utils.HandleException);
         }
 
         private static void DiceHandler(IList<string> paramList)
@@ -341,11 +384,6 @@ namespace EdgeBot.Classes
                     Utils.SendNotice(_client, outputString, nick);
                 }
             }, Utils.HandleException);
-        }
-
-        private static void EndPortalHandler()
-        {
-            Utils.SendChannel(_client, String.Format(Data.EndPortal, "-855", "29", "-4"));
         }
 
         private static void AnnounceHandler(IList<string> paramList, string nick)
