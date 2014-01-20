@@ -31,6 +31,7 @@ namespace EdgeBot.Classes.Common
 
         // URLs
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
+        public const string UrlAddress = "http://dev.otegamers.com/api/v1/edge/address";
         public const string UrlFish = "http://api.fishbans.com/stats/";
         public const string UrlFishLink = "http://www.fishbans.com/u/";
         public const string UrlVersion = "http://dev.otegamers.com/api/v1/edge/version";

@@ -137,7 +137,7 @@ namespace EdgeBot.Classes.Common
                                     string.Concat("{", reader.ReadToEnd().Replace("{", "").Replace("}", ""), "}")
                                         .Replace("[", "")
                                         .Replace("]", "");
-                                JObject jsonResult = JObject.Parse(jsonString);
+                                var jsonResult = JObject.Parse(jsonString);
                                 status.Account = jsonResult["account.mojang.com"].Value<string>() == "green";
                                 status.Authentication = jsonResult["auth.mojang.com"].Value<string>() == "green";
                                 status.Login = jsonResult["login.minecraft.net"].Value<string>() == "green";

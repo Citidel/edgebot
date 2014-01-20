@@ -15,13 +15,43 @@ namespace EdgeBot.Classes
         public const bool Debug = true;
         private static Timer _announceTimer;
         private static IrcClient _client;
+        private static List<Server> _serverList = new List<Server>();
 
         static void Main()
         {
             _announceTimer = new Timer();
 
             _client = new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username));
-            _client.ConnectionComplete += (s, e) => _client.JoinChannel(Config.Channel);
+            _client.ConnectionComplete += (s, e) =>
+            {
+                _client.JoinChannel(Config.Channel);
+
+                // pull addresses from api
+                Connection.GetData(Data.UrlAddress, "get", jObject =>
+                {
+                    if ((bool)jObject["success"])
+                    {
+                        foreach (var server in jObject["result"].Select(row => new Server
+                        {
+                            ShortCode = (string)row["short_code"],
+                            Id = (string)row["server"],
+                            Address = (string)row["address"]
+                        }))
+                        {
+                            _serverList.Add(server);
+                        }
+
+                        if (_serverList.Count > 0)
+                        {
+                            Utils.Log("Server addresses retrieved from API");
+                        }
+                    }
+                    else
+                    {
+                        Utils.Log("Failed to query for servers.");
+                    }
+                }, Utils.HandleException);
+            };
             _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
             _client.RawMessageRecieved += (s, e) => Utils.Log("RAWRCV {0}", e.Message);
             _client.RawMessageSent += (s, e) => Utils.Log("RAWSNT {0}", e.Message);
@@ -95,7 +125,7 @@ namespace EdgeBot.Classes
                             DiceHandler(paramList);
                             break;
 
-                        // !dev help, !dev help <keyword>
+                        // !help, !help <keyword>
                         case "help":
                             HelpHandler(paramList);
                             break;
