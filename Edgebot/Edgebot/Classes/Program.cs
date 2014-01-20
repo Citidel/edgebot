@@ -159,11 +159,21 @@ namespace EdgeBot.Classes
         private static void DiceHandler(IList<string> paramList)
         {
             int i;
-            // check if the params number 4 and that the number/sides are integers
-            if (paramList.Count() == 4 && int.TryParse(paramList[2], out i) && int.TryParse(paramList[3], out i))
+            // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
+            if (paramList.Count() == 4 && int.TryParse(paramList[2], out i) && int.TryParse(paramList[3], out i) && (int.Parse(paramList[2]) > 0) && (int.Parse(paramList[3]) > 0))
             {
-                var dice = paramList[2];
-                var sides = paramList[3];
+                var dice = int.Parse(paramList[2]);
+                var sides = int.Parse(paramList[3]);
+                var random = new Random();
+
+                var diceList = new List<int>();
+                for (var j = 0; j < dice; j++)
+                {
+                    diceList.Add(random.Next(1, sides));
+                }
+
+                var outputString = string.Format("Rolling a {0} sided die, {1} time{2}: {3}", sides, dice, (dice > 1) ? "s" : "", diceList.Aggregate("", (current, roll) => current + roll + " ").Trim());
+                Utils.SendChannel(_client, outputString);
             }
             else
             {
