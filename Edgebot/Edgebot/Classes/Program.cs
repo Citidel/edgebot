@@ -107,30 +107,31 @@ namespace EdgeBot.Classes
 
                     //listen for www or http(s)
                     if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
-                    {                    
+                    {
+                        var url = "";
                         var paramList = message.Split(' ');
                         for (var i = 0; i < paramList.Count(); i++)
                         {
-                            if (paramList[i].Contains("http://") | paramList[i].Contains("https://")) 
+                            if (paramList[i].Contains("http://") | paramList[i].Contains("https://"))
                             {
-                                Utils.GetWebPageTitle(paramList[i], _client);
-                                return; 
-                            }                            
-                            else if (paramList[i].Contains("www.")) 
-                            { 
-                                Utils.GetWebPageTitle(string.Concat("http://" ,paramList[i]), _client);
-                                return; 
+                                url = paramList[i];
                             }
-                            
+                            else if (paramList[i].Contains("www."))
+                            {
+                                url = string.Concat("http://", paramList[i]);
+                            }
+
+                            Connection.GetLinkTitle(url, title =>
+                            {
+                                if (!string.IsNullOrEmpty(title)) { Utils.SendChannel(_client, "URL TITLE: " + title); } else { Utils.Log("Connection: Result is null"); }
+                            }, Utils.HandleException);
                         }
-                        
-                        
-                       }
+                    }
                 }
 
-                
-               
-                
+
+
+
 
 
                 Utils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
