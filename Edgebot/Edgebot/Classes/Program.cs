@@ -171,13 +171,7 @@ namespace EdgeBot.Classes
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
-            Client.UserJoinedChannel += (sender, args) =>
-            {
-                if (Utils.IsDev(args.User.Nick))
-                {
-                    Utils.SendNotice(String.Format(Data.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
-                }
-            };
+            Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.JoinMessage, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
 
             AnnounceTimer.Elapsed += OnTimedEvent;
 
