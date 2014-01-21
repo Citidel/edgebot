@@ -31,6 +31,14 @@ namespace EdgeBot.Classes.Common
             "djdarkstorm"
         };
 
+        // Server Admin
+        public static readonly List<string> Admin = new List<string>
+        {
+            "Cozza38",
+            "Cozza38_",
+            "Ryahn"
+        }; 
+
         // URLs
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
         public const string UrlAddress = "http://dev.otegamers.com/api/v1/edge/address";
