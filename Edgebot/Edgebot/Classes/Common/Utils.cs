@@ -38,6 +38,21 @@ namespace EdgeBot.Classes.Common
         }
 
         /// <summary>
+        /// Sends a private message to a set of destinations
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="message"></param>
+        /// <param name="destinations"></param>
+        public static void SendPm(IrcClient client, string message, params string[] destinations)
+        {
+            const string illegalCharacters = "\r\n\0";
+            if (!destinations.Any()) throw new InvalidOperationException("Message must have at least one target.");
+            if (illegalCharacters.Any(message.Contains)) throw new ArgumentException("Illegal characters are present in message.", "message");
+            var to = string.Join(",", destinations);
+            client.SendRawMessage("PRIVMSG {0} :{1}", to, message);
+        }
+
+        /// <summary>
         /// Returns true if the nickname is a developer
         /// </summary>
         /// <param name="nickname"></param>
@@ -131,7 +146,6 @@ namespace EdgeBot.Classes.Common
         /// <param name="args"></param>
         public static void Log(string message, params object[] args)
         {
-            if (!Program.Debug) return;
             if (message == null) return;
             Console.WriteLine(message, args);
             System.Diagnostics.Debug.Write(String.Format(message, args) + "\n");
@@ -143,7 +157,6 @@ namespace EdgeBot.Classes.Common
         /// <param name="message"></param>
         public static void Log(object message)
         {
-            if (!Program.Debug) return;
             if (message == null) return;
             Console.WriteLine(message);
             System.Diagnostics.Debug.Write(message + "\n");
