@@ -12,7 +12,7 @@ namespace EdgeBot.Classes.Common
         public const string JoinMessage =
             "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
 
-        public const string IdentifiedMessage = "You are now identified for EdgeBot.";
+        public const string IdentifiedMessage = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
 
         public const string EndPortal = "The End Portal is Located at: {0} X, {1} Y, {2} Z";
         public static Object AnnounceMsg { get; set; }

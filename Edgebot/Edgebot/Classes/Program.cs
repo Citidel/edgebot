@@ -36,12 +36,13 @@ namespace EdgeBot.Classes
                     Client.JoinChannel(Config.Channel);
                 }
 
-                Client.PrivateMessageRecieved += (sender, args) =>
+                Client.RawMessageRecieved += (sender, args) =>
                 {
-                    if (args.PrivateMessage.Message != Data.IdentifiedMessage)
+                    if (args.Message != Data.IdentifiedMessage)
                         return;
                     Utils.Log("NickServ authentication was successful.");
                     Client.JoinChannel(Config.Channel);
+                    Utils.Log("Joining channel: {0}", Config.Channel);
                 };
 
                 // pull addresses from api
@@ -99,7 +100,14 @@ namespace EdgeBot.Classes
 
                     // !check <username>
                     case "check":
-                        Handler.FishHandler(paramList, args.PrivateMessage.User.Nick);
+                        if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                        {
+                            Handler.FishHandler(paramList, args.PrivateMessage.User.Nick);
+                        }
+                        else
+                        {
+                            Utils.SendChannel("This command is restricted to ops only.");
+                        }
                         break;
 
                     // !announce <time in seconds> <repeats> <message>
