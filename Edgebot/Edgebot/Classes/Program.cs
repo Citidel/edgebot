@@ -75,7 +75,8 @@ namespace EdgeBot.Classes
             Client.ChannelMessageRecieved += (sender, args) =>
             {
                 // Only listen to !commands
-                if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
+                //if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
+                if (!args.PrivateMessage.Message.StartsWith("!")) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
                 switch (paramList[0].Substring(1))
