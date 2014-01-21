@@ -36,10 +36,9 @@ namespace EdgeBot.Classes
                     Client.JoinChannel(Config.Channel);
                 }
 
-                Client.RawMessageRecieved += (sender, args) =>
+                Client.PrivateMessageRecieved += (sender, args) =>
                 {
-                    if (args.Message !=
-                        ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.")
+                    if (args.PrivateMessage.Message != Data.IdentifiedMessage)
                         return;
                     Utils.Log("NickServ authentication was successful.");
                     Client.JoinChannel(Config.Channel);
