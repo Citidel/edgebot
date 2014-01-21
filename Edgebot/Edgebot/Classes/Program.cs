@@ -154,8 +154,16 @@ namespace EdgeBot.Classes
                         Handler.HelpHandler(paramList);
                         break;
 
+                    // !dev
                     case "dev":
-                        Handler.DevHandler(paramList);
+                        if (Utils.IsDev(args.PrivateMessage.User.Nick) || Utils.IsAdmin(args.PrivateMessage.User.Nick))
+                        {
+                            Handler.DevHandler(paramList);
+                        }
+                        else
+                        {
+                            Utils.SendChannel("This command is restricted to developers or server admins only.");
+                        }
                         break;
                 }
 
