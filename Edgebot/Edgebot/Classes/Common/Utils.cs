@@ -133,6 +133,22 @@ namespace EdgeBot.Classes.Common
         }
 
         /// <summary>
+        /// Returns the server version for the given short code and id
+        /// </summary>
+        /// <param name="shortCode"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string GetVersion(string shortCode, string id)
+        {
+            foreach (var server in Program.ServerList.Where(server => server.ShortCode == shortCode && server.Id == id))
+            {
+                return server.Version;
+            }
+
+            return "Unknown";
+        }
+
+        /// <summary>
         /// Exception handler for the connection class
         /// </summary>
         /// <param name="exception"></param>
