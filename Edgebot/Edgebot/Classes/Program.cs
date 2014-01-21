@@ -219,15 +219,9 @@ namespace EdgeBot.Classes
             {
                 if ((bool)jObject["success"])
                 {
-                    foreach (var server in jObject["result"].Select(row => new Server
+                    foreach (var row in jObject["result"])
                     {
-                        ShortCode = (string)row["short_code"],
-                        Id = (string)row["server"],
-                        Address = (string)row["address"],
-                        Version = (string)row["version"]
-                    }))
-                    {
-                        ServerList.Add(server);
+                        ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
                     }
 
                     if (HasJoined)
