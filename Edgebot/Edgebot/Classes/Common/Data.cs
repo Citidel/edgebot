@@ -15,7 +15,7 @@ namespace EdgeBot.Classes.Common
         public static Object AnnounceMsg { get; set; }
         public static Object AnnounceTimes { get; set; }
 
-        public const string RrUpdate = "Please go to: www.otegamers.com/topic/6945- for Resonant Rise update info";
+        public const string RrUpdate = "Please go to: http://www.otegamers.com/topic/6945- for Resonant Rise update info";
         public const string FtbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
         public const string PxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
 
