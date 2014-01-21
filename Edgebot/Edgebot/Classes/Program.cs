@@ -52,103 +52,106 @@ namespace EdgeBot.Classes
             {
                 // Only listen to !commands
                 //if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
-                if (!args.PrivateMessage.Message.StartsWith("!")) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
-                switch (paramList[0].Substring(1))
+                if (args.PrivateMessage.Message.StartsWith("!"))
                 {
-                    // !tps
-                    case "tps":
-                        if (Utils.IsOp(args.PrivateMessage.User.Nick))
-                        {
-                            Handler.TpsHandler(paramList);
-                        }
-                        else
-                        {
-                            Utils.SendChannel(Data.RestrictedMessage);
-                        }
-                        break;
+                    switch (paramList[0].Substring(1))
+                    {
+                        // !tps
+                        case "tps":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.TpsHandler(paramList);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.RestrictedMessage);
+                            }
+                            break;
 
-                    // !wiki <keyword>
-                    case "wiki":
-                        Handler.WikiHandler(paramList);
-                        break;
+                        // !wiki <keyword>
+                        case "wiki":
+                            Handler.WikiHandler(paramList);
+                            break;
 
-                    // !check <username>
-                    case "check":
-                        if (Utils.IsOp(args.PrivateMessage.User.Nick))
-                        {
-                            Handler.FishHandler(paramList, args.PrivateMessage.User.Nick);
-                        }
-                        else
-                        {
-                            Utils.SendChannel(Data.RestrictedMessage);
-                        }
-                        break;
+                        // !check <username>
+                        case "check":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.FishHandler(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.RestrictedMessage);
+                            }
+                            break;
 
-                    // !announce <time in seconds> <repeats> <message>
-                    case "announce":
-                        Handler.AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
-                        break;
+                        // !announce <time in seconds> <repeats> <message>
+                        case "announce":
+                            Handler.AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                            break;
 
-                    // !update
-                    case "update":
-                        Handler.UpdateHandler(paramList, args.PrivateMessage.User.Nick);
-                        break;
+                        // !update
+                        case "update":
+                            Handler.UpdateHandler(paramList, args.PrivateMessage.User.Nick);
+                            break;
 
-                    // !minecheck | !minestatus
-                    case "minecheck":
-                    case "minestatus":
-                        Handler.MineCheckHandler();
-                        break;
+                        // !minecheck | !minestatus
+                        case "minecheck":
+                        case "minestatus":
+                            Handler.MineCheckHandler();
+                            break;
 
-                    // !log <pack> <server>
-                    case "log":
-                        if (Utils.IsOp(args.PrivateMessage.User.Nick))
-                        {
-                            Handler.LogHandler(paramList);
-                        }
-                        else
-                        {
-                            Utils.SendChannel(Data.RestrictedMessage);
-                        }
-                        break;
+                        // !log <pack> <server>
+                        case "log":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.LogHandler(paramList);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.RestrictedMessage);
+                            }
+                            break;
 
-                    // !8 <question>
-                    case "8":
-                        Handler.EightBallHandler(paramList);
-                        break;
+                        // !8 <question>
+                        case "8":
+                            Handler.EightBallHandler(paramList);
+                            break;
 
-                    // !dice <number> <sides>
-                    case "dice":
-                        Handler.DiceHandler(paramList);
-                        break;
+                        // !dice <number> <sides>
+                        case "dice":
+                            Handler.DiceHandler(paramList);
+                            break;
 
-                    // !help, !help <keyword>
-                    case "help":
-                        Handler.HelpHandler(paramList);
-                        break;
+                        // !help, !help <keyword>
+                        case "help":
+                            Handler.HelpHandler(paramList);
+                            break;
 
-                    // !dev
-                    case "dev":
-                        if (Utils.IsDev(args.PrivateMessage.User.Nick) || Utils.IsAdmin(args.PrivateMessage.User.Nick))
-                        {
-                            Handler.DevHandler(paramList);
-                        }
-                        else
-                        {
-                            Utils.SendChannel("This command is restricted to developers or server admins only.");
-                        }
-                        break;
+                        // !dev
+                        case "dev":
+                            if (Utils.IsDev(args.PrivateMessage.User.Nick) ||
+                                Utils.IsAdmin(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.DevHandler(paramList);
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is restricted to developers or server admins only.");
+                            }
+                            break;
+                    }
                 }
 
                 //listen for www or http(s)
-                if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
+                if (args.PrivateMessage.Message.Contains("http://") || args.PrivateMessage.Message.Contains("https://") || args.PrivateMessage.Message.Contains("www."))
                 {
-                    var url = "";
                     for (var i = 0; i < paramList.Count(); i++)
                     {
-                        if (paramList[i].Contains("http://") | paramList[i].Contains("https://"))
+                        var url = "";
+                        if (paramList[i].Contains("http://") || paramList[i].Contains("https://"))
                         {
                             url = paramList[i];
                         }
@@ -159,7 +162,14 @@ namespace EdgeBot.Classes
 
                         Connection.GetLinkTitle(url, title =>
                         {
-                            if (!string.IsNullOrEmpty(title)) { Utils.SendChannel("URL TITLE: " + title); } else { Utils.Log("Connection: Result is null"); }
+                            if (!string.IsNullOrEmpty(title))
+                            {
+                                Utils.SendChannel("URL TITLE: " + title);
+                            }
+                            else
+                            {
+                                Utils.Log("Connection: Result is null");
+                            }
                         }, Utils.HandleException);
                     }
                 }
