@@ -6,8 +6,11 @@ namespace EdgeBot.Classes.Common
     public class Config
     {
         public const string Host = "irc.esper.net:5555";
-        public const string Nickname = "EdgeSharp";
-        public const string Username = "EdgeSharp";
+        public const string Nickname = "EdgeBot";
+        public const string Username = "EdgeBot";
         public const string Channel = "#OTEGamers";
+
+        public const string NickTest = "EdgeSharp";
+        public const string UserTest = "EdgeSharp";
     }
 }
