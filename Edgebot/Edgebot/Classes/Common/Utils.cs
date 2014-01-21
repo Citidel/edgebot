@@ -1,5 +1,4 @@
-﻿using ChatSharp;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace EdgeBot.Classes.Common
@@ -12,44 +11,41 @@ namespace EdgeBot.Classes.Common
         /// <summary>
         /// Sends a notice to a set of destinations
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="message"></param>
         /// <param name="destinations"></param>
-        public static void SendNotice(IrcClient client, string message, params string[] destinations)
+        public static void SendNotice(string message, params string[] destinations)
         {
             const string illegalCharacters = "\r\n\0";
             if (!destinations.Any()) throw new InvalidOperationException("Message must have at least one target.");
             if (illegalCharacters.Any(message.Contains)) throw new ArgumentException("Illegal characters are present in message.", "message");
             var to = string.Join(",", destinations);
-            client.SendRawMessage("NOTICE {0} :{1}", to, message);
+            Program.Client.SendRawMessage("NOTICE {0} :{1}", to, message);
         }
 
         /// <summary>
         /// Sends a message to the channel
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="message"></param>
         /// <exception cref="ArgumentException"></exception>
-        public static void SendChannel(IrcClient client, string message)
+        public static void SendChannel(string message)
         {
             const string illegalCharacters = "\r\n\0";
             if (illegalCharacters.Any(message.Contains)) throw new ArgumentException("Illegal characters are present in message.", "message");
-            client.SendRawMessage("PRIVMSG {0} :{1}", Config.Channel, message);
+            Program.Client.SendRawMessage("PRIVMSG {0} :{1}", Config.Channel, message);
         }
 
         /// <summary>
         /// Sends a private message to a set of destinations
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="message"></param>
         /// <param name="destinations"></param>
-        public static void SendPm(IrcClient client, string message, params string[] destinations)
+        public static void SendPm(string message, params string[] destinations)
         {
             const string illegalCharacters = "\r\n\0";
             if (!destinations.Any()) throw new InvalidOperationException("Message must have at least one target.");
             if (illegalCharacters.Any(message.Contains)) throw new ArgumentException("Illegal characters are present in message.", "message");
             var to = string.Join(",", destinations);
-            client.SendRawMessage("PRIVMSG {0} :{1}", to, message);
+            Program.Client.SendRawMessage("PRIVMSG {0} :{1}", to, message);
         }
 
         /// <summary>
@@ -65,12 +61,11 @@ namespace EdgeBot.Classes.Common
         /// <summary>
         /// Returns true if the nickname is an operator
         /// </summary>
-        /// <param name="client"></param>
         /// <param name="nickname"></param>
         /// <returns></returns>
-        public static bool IsOp(IrcClient client, string nickname)
+        public static bool IsOp(string nickname)
         {
-            return client.Channels.Select(channel => channel.UsersByMode['o']).Any(users => users.Contains(nickname));
+            return Program.Client.Channels.Select(channel => channel.UsersByMode['o']).Any(users => users.Contains(nickname));
         }
 
         /// <summary>
