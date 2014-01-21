@@ -266,10 +266,9 @@ namespace EdgeBot.Classes
                 Data.AnnounceTimes = timeCount;
                 Program.AnnounceTimer.Enabled = true;
             }
-
         }
 
-        public static void UpdateHandler(IList<string> paramList)
+        public static void UpdateHandler(IList<string> paramList, string nick)
         {
             if (paramList.Count < 2)
             {
@@ -288,12 +287,26 @@ namespace EdgeBot.Classes
                     case "px":
                         Utils.SendChannel(Data.PxUpdate);
                         break;
+                    case "reload":
+                        if (Utils.IsOp(nick))
+                        {
+                            Program.PopulateServers();
+                        }
+                        else
+                        {
+                            Utils.SendChannel(Data.RestrictedMessage);
+                        }
+                        break;
                     default:
                         Utils.SendChannel(Data.RrUpdate);
                         break;
                 }
             }
+        }
 
+        public static void DevHandler(IList<string> paramList)
+        {
+            // Placeholder method for any future dev related commands
         }
     }
 }

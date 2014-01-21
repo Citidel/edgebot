@@ -59,6 +59,16 @@ namespace EdgeBot.Classes.Common
         }
 
         /// <summary>
+        /// Returns true if the nickname is a server admin
+        /// </summary>
+        /// <param name="nickname"></param>
+        /// <returns></returns>
+        public static bool IsAdmin(string nickname)
+        {
+            return Data.Admin.Any(str => str.Equals(nickname));
+        }
+
+        /// <summary>
         /// Returns true if the nickname is an operator
         /// </summary>
         /// <param name="nickname"></param>
@@ -120,6 +130,22 @@ namespace EdgeBot.Classes.Common
                 return String.Format("{0}" + inputFloat + "{1}", Colors.Red, Colors.Normal);
             }
             return inputFloat + "";
+        }
+
+        /// <summary>
+        /// Returns the server version for the given short code and id
+        /// </summary>
+        /// <param name="shortCode"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string GetVersion(string shortCode, string id)
+        {
+            foreach (var server in Program.ServerList.Where(server => server.ShortCode == shortCode && server.Id == id))
+            {
+                return server.Version;
+            }
+
+            return "Unknown";
         }
 
         /// <summary>

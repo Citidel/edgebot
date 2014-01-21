@@ -9,12 +9,9 @@ namespace EdgeBot.Classes.Common
     public class Data
     {
         // Messages
-        public const string JoinMessage =
-            "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
-
+        public const string JoinMessage = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
         public const string IdentifiedMessage = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
-
-        public const string EndPortal = "The End Portal is Located at: {0} X, {1} Y, {2} Z";
+        public const string RestrictedMessage = "This command is restricted to ops only.";
         public static Object AnnounceMsg { get; set; }
         public static Object AnnounceTimes { get; set; }
 
@@ -30,6 +27,14 @@ namespace EdgeBot.Classes.Common
             "Citidel_",
             "djdarkstorm"
         };
+
+        // Server Admin
+        public static readonly List<string> Admin = new List<string>
+        {
+            "Cozza38",
+            "Cozza38_",
+            "Ryahn"
+        }; 
 
         // URLs
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";

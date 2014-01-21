@@ -14,6 +14,7 @@ namespace EdgeBot.Classes
         public static IrcClient Client;
         public static readonly List<Server> ServerList = new List<Server>();
         public static string NickServAuth = "";
+        public static bool HasJoined = false;
 
         static void Main(string[] argArray)
         {
@@ -33,7 +34,7 @@ namespace EdgeBot.Classes
                 else
                 {
                     Utils.Log("No NickServ authentication detected.");
-                    Client.JoinChannel(Config.Channel);
+                    JoinChannel();
                 }
 
                 Client.RawMessageRecieved += (sender, args) =>
@@ -41,35 +42,10 @@ namespace EdgeBot.Classes
                     if (args.Message != Data.IdentifiedMessage)
                         return;
                     Utils.Log("NickServ authentication was successful.");
-                    Client.JoinChannel(Config.Channel);
-                    Utils.Log("Joining channel: {0}", Config.Channel);
+                    JoinChannel();
                 };
 
-                // pull addresses from api
-                Connection.GetData(Data.UrlAddress, "get", jObject =>
-                {
-                    if ((bool)jObject["success"])
-                    {
-                        foreach (var server in jObject["result"].Select(row => new Server
-                        {
-                            ShortCode = (string)row["short_code"],
-                            Id = (string)row["server"],
-                            Address = (string)row["address"]
-                        }))
-                        {
-                            ServerList.Add(server);
-                        }
-
-                        if (ServerList.Count > 0)
-                        {
-                            Utils.Log("Server addresses retrieved from API");
-                        }
-                    }
-                    else
-                    {
-                        Utils.Log("Failed to query for servers.");
-                    }
-                }, Utils.HandleException);
+                PopulateServers();
             };
 
             Client.ChannelMessageRecieved += (sender, args) =>
@@ -89,7 +65,7 @@ namespace EdgeBot.Classes
                         }
                         else
                         {
-                            Utils.SendChannel("This command is restricted to ops only.");
+                            Utils.SendChannel(Data.RestrictedMessage);
                         }
                         break;
 
@@ -106,7 +82,7 @@ namespace EdgeBot.Classes
                         }
                         else
                         {
-                            Utils.SendChannel("This command is restricted to ops only.");
+                            Utils.SendChannel(Data.RestrictedMessage);
                         }
                         break;
 
@@ -117,7 +93,7 @@ namespace EdgeBot.Classes
 
                     // !update
                     case "update":
-                        Handler.UpdateHandler(paramList);
+                        Handler.UpdateHandler(paramList, args.PrivateMessage.User.Nick);
                         break;
 
                     // !minecheck | !minestatus
@@ -134,7 +110,7 @@ namespace EdgeBot.Classes
                         }
                         else
                         {
-                            Utils.SendChannel("This command is restricted to ops only.");
+                            Utils.SendChannel(Data.RestrictedMessage);
                         }
                         break;
 
@@ -151,6 +127,18 @@ namespace EdgeBot.Classes
                     // !help, !help <keyword>
                     case "help":
                         Handler.HelpHandler(paramList);
+                        break;
+
+                    // !dev
+                    case "dev":
+                        if (Utils.IsDev(args.PrivateMessage.User.Nick) || Utils.IsAdmin(args.PrivateMessage.User.Nick))
+                        {
+                            Handler.DevHandler(paramList);
+                        }
+                        else
+                        {
+                            Utils.SendChannel("This command is restricted to developers or server admins only.");
+                        }
                         break;
                 }
 
@@ -183,13 +171,7 @@ namespace EdgeBot.Classes
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
-            Client.UserJoinedChannel += (sender, args) =>
-            {
-                if (Utils.IsDev(args.User.Nick))
-                {
-                    Utils.SendNotice(String.Format(Data.JoinMessage, args.User.Nick, "2.7.6.1", "1.1.4"), args.User.Nick);
-                }
-            };
+            Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.JoinMessage, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
 
             AnnounceTimer.Elapsed += OnTimedEvent;
 
@@ -218,6 +200,48 @@ namespace EdgeBot.Classes
                 Data.AnnounceTimes = count;
                 Utils.SendChannel(Data.AnnounceMsg.ToString());
             }
+        }
+
+        public static void PopulateServers()
+        {
+            // pull addresses from api
+            Connection.GetData(Data.UrlAddress, "get", jObject =>
+            {
+                if ((bool)jObject["success"])
+                {
+                    foreach (var server in jObject["result"].Select(row => new Server
+                    {
+                        ShortCode = (string)row["short_code"],
+                        Id = (string)row["server"],
+                        Address = (string)row["address"],
+                        Version = (string)row["version"]
+                    }))
+                    {
+                        ServerList.Add(server);
+                    }
+
+                    if (HasJoined)
+                    {
+                        Utils.SendChannel("Server list reloaded.");
+                        Utils.Log("Server addresses retrieved from API");
+                    }
+                    else
+                    {
+                        Utils.Log("Server addresses retrieved from API");
+                    }
+                }
+                else
+                {
+                    Utils.Log("Failed to query for servers.");
+                }
+            }, Utils.HandleException);
+        }
+
+        private static void JoinChannel()
+        {
+            Client.JoinChannel(Config.Channel);
+            HasJoined = true;
+            Utils.Log("Joining channel: {0}", Config.Channel);
         }
     }
 }
