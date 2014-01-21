@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Edgebot\Program.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Edgebot\EdgeData.cs">
     <Files>
-      <File FileName="Edgebot\Program.cs" Line="45" Column="3" />
+      <File FileName="Edgebot\Program.cs" Line="78" Column="52" />
+      <File FileName="Edgebot\EdgeData.cs" Line="1" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
