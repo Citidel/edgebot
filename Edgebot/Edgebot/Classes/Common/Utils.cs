@@ -59,6 +59,16 @@ namespace EdgeBot.Classes.Common
         }
 
         /// <summary>
+        /// Returns true if the nickname is a server admin
+        /// </summary>
+        /// <param name="nickname"></param>
+        /// <returns></returns>
+        public static bool IsAdmin(string nickname)
+        {
+            return Data.Admin.Any(str => str.Equals(nickname));
+        }
+
+        /// <summary>
         /// Returns true if the nickname is an operator
         /// </summary>
         /// <param name="nickname"></param>
