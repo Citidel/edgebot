@@ -54,7 +54,8 @@ namespace EdgeBot.Classes
                         {
                             ShortCode = (string)row["short_code"],
                             Id = (string)row["server"],
-                            Address = (string)row["address"]
+                            Address = (string)row["address"],
+                            Version = (string)row["version"]
                         }))
                         {
                             ServerList.Add(server);
@@ -151,6 +152,10 @@ namespace EdgeBot.Classes
                     // !help, !help <keyword>
                     case "help":
                         Handler.HelpHandler(paramList);
+                        break;
+
+                    case "dev":
+                        Handler.DevHandler(paramList);
                         break;
                 }
 
