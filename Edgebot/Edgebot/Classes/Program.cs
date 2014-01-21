@@ -12,19 +12,40 @@ namespace EdgeBot.Classes
 {
     class Program
     {
-        public const bool Debug = true;
         private static Timer _announceTimer;
         private static IrcClient _client;
         private static readonly List<Server> ServerList = new List<Server>();
+        private static string _nickServAuth = "";
 
-        static void Main()
+        static void Main(string[] argArray)
         {
+            if (argArray.Any()) _nickServAuth = argArray[0];
             _announceTimer = new Timer();
 
-            _client = new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username));
+            _client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
+            _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
             _client.ConnectionComplete += (s, e) =>
             {
-                _client.JoinChannel(Config.Channel);
+                Utils.Log("Connection complete.");
+                if (!string.IsNullOrEmpty(_nickServAuth))
+                {
+                    Utils.Log("Sending ident message to NickServ");
+                    Utils.SendPm(_client, string.Format("IDENTIFY EdgeBot {0}", _nickServAuth), "NickServ");
+                }
+                else
+                {
+                    Utils.Log("No NickServ authentication detected.");
+                    _client.JoinChannel(Config.Channel);
+                }
+
+                _client.RawMessageRecieved += (sender, args) =>
+                {
+                    if (args.Message !=
+                        ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.")
+                        return;
+                    Utils.Log("NickServ authentication was successful.");
+                    _client.JoinChannel(Config.Channel);
+                };
 
                 // pull addresses from api
                 Connection.GetData(Data.UrlAddress, "get", jObject =>
@@ -52,116 +73,110 @@ namespace EdgeBot.Classes
                     }
                 }, Utils.HandleException);
             };
-            _client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
-            _client.RawMessageRecieved += (s, e) => Utils.Log("RAWRCV {0}", e.Message);
-            _client.RawMessageSent += (s, e) => Utils.Log("RAWSNT {0}", e.Message);
 
-            _client.PrivateMessageRecieved += (sender, args) =>
+            _client.ChannelMessageRecieved += (sender, args) =>
             {
                 // Only listen to !commands
-                if (Utils.IsDev(args.PrivateMessage.User.Nick) && args.PrivateMessage.Message.StartsWith("!"))
+                if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
+                var message = args.PrivateMessage.Message;
+                var paramList = message.Split(' ');
+                switch (paramList[0].Substring(1))
                 {
-                    var message = args.PrivateMessage.Message;
-                    var paramList = message.Split(' ');
-                    switch (paramList[0].Substring(1))
-                    {
-                        // !tps
-                        case "tps":
-                            if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
-                            {
-                                TpsHandler(paramList);
-                            }
-                            else
-                            {
-                                Utils.SendChannel(_client, "This command is restricted to ops only.");
-                            }
-                            break;
-
-                        // !wiki <keyword>
-                        case "wiki":
-                            WikiHandler(paramList);
-                            break;
-
-                        // !check <username>
-                        case "check":
-                            FishHandler(paramList, args.PrivateMessage.User.Nick);
-                            break;
-
-                        // !announce <time in seconds> <repeats> <message>
-                        case "announce":
-                            AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
-                            break;
-
-                        // !update
-                        case "update":
-                            UpdateHandler(paramList);
-                            break;
-
-                        // !minecheck | !minestatus
-                        case "minecheck":
-                        case "minestatus":
-                            MineCheckHandler();
-                            break;
-
-                        // !log <pack> <server>
-                        case "log":
-                            if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
-                            {
-                                LogHandler(paramList);
-                            }
-                            else
-                            {
-                                Utils.SendChannel(_client, "This command is restricted to ops only.");
-                            }
-                            break;
-
-                        // !8 <question>
-                        case "8":
-                            EightBallHandler(paramList);
-                            break;
-
-                        // !dice <number> <sides>
-                        case "dice":
-                            DiceHandler(paramList);
-                            break;
-
-                        // !help, !help <keyword>
-                        case "help":
-                            HelpHandler(paramList);
-                            break;
-
-                        default:
-                            Utils.SendChannel(_client, "Dev command not found.");
-                            break;
-                    }
-
-                    //listen for www or http(s)
-                    if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
-                    {
-                        var url = "";
-                        for (var i = 0; i < paramList.Count(); i++)
+                    // !tps
+                    case "tps":
+                        if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
                         {
-                            if (paramList[i].Contains("http://") | paramList[i].Contains("https://"))
-                            {
-                                url = paramList[i];
-                            }
-                            else if (paramList[i].Contains("www."))
-                            {
-                                url = string.Concat("http://", paramList[i]);
-                            }
-
-                            Connection.GetLinkTitle(url, title =>
-                            {
-                                if (!string.IsNullOrEmpty(title)) { Utils.SendChannel(_client, "URL TITLE: " + title); } else { Utils.Log("Connection: Result is null"); }
-                            }, Utils.HandleException);
+                            TpsHandler(paramList);
                         }
+                        else
+                        {
+                            Utils.SendChannel(_client, "This command is restricted to ops only.");
+                        }
+                        break;
+
+                    // !wiki <keyword>
+                    case "wiki":
+                        WikiHandler(paramList);
+                        break;
+
+                    // !check <username>
+                    case "check":
+                        FishHandler(paramList, args.PrivateMessage.User.Nick);
+                        break;
+
+                    // !announce <time in seconds> <repeats> <message>
+                    case "announce":
+                        AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                        break;
+
+                    // !update
+                    case "update":
+                        UpdateHandler(paramList);
+                        break;
+
+                    // !minecheck | !minestatus
+                    case "minecheck":
+                    case "minestatus":
+                        MineCheckHandler();
+                        break;
+
+                    // !log <pack> <server>
+                    case "log":
+                        if (Utils.IsOp(_client, args.PrivateMessage.User.Nick))
+                        {
+                            LogHandler(paramList);
+                        }
+                        else
+                        {
+                            Utils.SendChannel(_client, "This command is restricted to ops only.");
+                        }
+                        break;
+
+                    // !8 <question>
+                    case "8":
+                        EightBallHandler(paramList);
+                        break;
+
+                    // !dice <number> <sides>
+                    case "dice":
+                        DiceHandler(paramList);
+                        break;
+
+                    // !help, !help <keyword>
+                    case "help":
+                        HelpHandler(paramList);
+                        break;
+                }
+
+                //listen for www or http(s)
+                if (args.PrivateMessage.Message.Contains("http://") | args.PrivateMessage.Message.Contains("https://") | args.PrivateMessage.Message.Contains("www."))
+                {
+                    var url = "";
+                    for (var i = 0; i < paramList.Count(); i++)
+                    {
+                        if (paramList[i].Contains("http://") | paramList[i].Contains("https://"))
+                        {
+                            url = paramList[i];
+                        }
+                        else if (paramList[i].Contains("www."))
+                        {
+                            url = string.Concat("http://", paramList[i]);
+                        }
+
+                        Connection.GetLinkTitle(url, title =>
+                        {
+                            if (!string.IsNullOrEmpty(title)) { Utils.SendChannel(_client, "URL TITLE: " + title); } else { Utils.Log("Connection: Result is null"); }
+                        }, Utils.HandleException);
                     }
                 }
 
-                Utils.Log("RCVPRIV <{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+                if (args.PrivateMessage.Message.StartsWith("!"))
+                {
+                    Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+                }
             };
 
-            _client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+            //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             _client.UserJoinedChannel += (sender, args) =>
             {
                 if (Utils.IsDev(args.User.Nick))
@@ -172,6 +187,12 @@ namespace EdgeBot.Classes
 
             _announceTimer.Elapsed += OnTimedEvent;
 
+            if (string.IsNullOrEmpty(_nickServAuth))
+            {
+                Utils.Log("Warning, nick serv authentication password is empty.");
+            }
+
+            Utils.Log("Connecting to IRC...");
             _client.ConnectAsync();
             while (true)
             {
