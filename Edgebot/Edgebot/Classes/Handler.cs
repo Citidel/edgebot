@@ -317,5 +317,11 @@ namespace EdgeBot.Classes
         {
             // Placeholder method for any future dev related commands
         }
+
+        public static void SmugHandler()
+        {
+            var random = new Random().Next(1, 2) - 1;
+            Utils.SendChannel(Data.SmugResponses[random]);
+        }
     }
 }

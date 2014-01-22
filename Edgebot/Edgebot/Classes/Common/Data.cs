@@ -70,5 +70,11 @@ namespace EdgeBot.Classes.Common
             "Outlook good.",
             "Don't count on it."
         };
+
+        public static readonly List<string> SmugResponses = new List<string>
+        {
+            "U WOT!?!",
+            "HUEHUEHUEHUEHUEHUEHUEHUEHUE!!"
+        }; 
     }
 }

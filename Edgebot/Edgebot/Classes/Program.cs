@@ -142,6 +142,18 @@ namespace EdgeBot.Classes
                                 Utils.SendChannel("This command is restricted to developers or server admins only.");
                             }
                             break;
+
+                        // !smug
+                        case "smug":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick) || args.PrivateMessage.User.Nick == "DrSmugleaf" || args.PrivateMessage.User.Nick == "DrSmugleaf_")
+                            {
+                                Handler.SmugHandler();
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is useless.");
+                            }
+                            break;
                     }
                 }
 
