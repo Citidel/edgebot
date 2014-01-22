@@ -246,11 +246,13 @@ namespace EdgeBot.Classes
             {
                 if ((bool)jObject["success"])
                 {
+                    Utils.Log("HasJoined: {0}", Program.HasJoined);
                     foreach (var row in jObject["result"])
                     {
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
+                        Utils.Log("ServerList {0}", ServerList.Count());
                     }
-                    Utils.Log("HasJoined: {0}", Program.HasJoined);
+                   
                     if (Program.HasJoined)
                     {
                         Utils.SendChannel("Server list reloaded.");
