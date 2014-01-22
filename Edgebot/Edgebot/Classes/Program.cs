@@ -250,7 +250,7 @@ namespace EdgeBot.Classes
                     {
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
                     }
-
+                    Utils.Log("HasJoined: {0}", Program.HasJoined);
                     if (Program.HasJoined)
                     {
                         Utils.SendChannel("Server list reloaded.");
@@ -273,6 +273,7 @@ namespace EdgeBot.Classes
             Client.JoinChannel(Config.Channel);
             Utils.Log("Joining channel: {0}", Config.Channel);
             Program.HasJoined = true;
+            Utils.Log("HasJoined: {0}", Program.HasJoined);
         }
     }
 }
