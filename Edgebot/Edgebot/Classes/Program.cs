@@ -89,7 +89,14 @@ namespace EdgeBot.Classes
 
                         // !announce <time in seconds> <repeats> <message>
                         case "announce":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
                             Handler.AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.MessageRestricted);
+                            }
                             break;
 
                         // !update
