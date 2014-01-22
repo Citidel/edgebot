@@ -160,17 +160,20 @@ namespace EdgeBot.Classes
                             url = string.Concat("http://", paramList[i]);
                         }
 
-                        Connection.GetLinkTitle(url, title =>
+                        if (!string.IsNullOrEmpty(url))
                         {
-                            if (!string.IsNullOrEmpty(title))
+                            Connection.GetLinkTitle(url, title =>
                             {
-                                Utils.SendChannel("URL TITLE: " + title);
-                            }
-                            else
-                            {
-                                Utils.Log("Connection: Result is null");
-                            }
-                        }, Utils.HandleException);
+                                if (!string.IsNullOrEmpty(title))
+                                {
+                                    Utils.SendChannel("URL TITLE: " + title);
+                                }
+                                else
+                                {
+                                    Utils.Log("Connection: Result is null");
+                                }
+                            }, Utils.HandleException);
+                        }
                     }
                 }
 
