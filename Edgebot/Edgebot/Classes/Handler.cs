@@ -301,7 +301,7 @@ namespace EdgeBot.Classes
                         }
                         else
                         {
-                            Utils.SendChannel(Data.RestrictedMessage);
+                            Utils.SendChannel(Data.MessageRestricted);
                         }
                         break;
 

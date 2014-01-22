@@ -9,9 +9,10 @@ namespace EdgeBot.Classes.Common
     public class Data
     {
         // Messages
-        public const string JoinMessage = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
-        public const string IdentifiedMessage = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
-        public const string RestrictedMessage = "This command is restricted to ops only.";
+        public const string MessageJoinChannel = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
+        public const string MessageIdentified = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
+        public const string MessageRestricted = "This command is restricted to ops only.";
+        public const string MessageSlap = "{0} {1} {2}'s {3} with {4}";
         public static Object AnnounceMsg { get; set; }
         public static Object AnnounceTimes { get; set; }
 
@@ -75,6 +76,38 @@ namespace EdgeBot.Classes.Common
         {
             "U WOT!?!",
             "HUEHUEHUEHUEHUEHUEHUEHUEHUE!!"
-        }; 
+        };
+
+        public static readonly List<string> SlapActions = new List<string>
+        {
+            "slaps",
+            "pokes",
+            "wallops",
+            "stings",
+            "burninates",
+            "deforms"
+        };
+
+        public static readonly List<string> SlapLocations = new List<string>
+        {
+            "head",
+            "ribs",
+            "face",
+            "arms",
+            "legs",
+            "feet"
+        };
+
+        public static readonly List<string> SlapItems = new List<string>
+        {
+            "a live trout",
+            "a dead trout",
+            "a baseball",
+            "a cicada",
+            "a rubber chicken",
+            "a magic missile",
+            "a smuggled wonton",
+            "a storm of hubris"
+        };
     }
 }

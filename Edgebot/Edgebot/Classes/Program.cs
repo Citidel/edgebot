@@ -39,7 +39,7 @@ namespace EdgeBot.Classes
 
                 Client.RawMessageRecieved += (sender, args) =>
                 {
-                    if (args.Message != Data.IdentifiedMessage)
+                    if (args.Message != Data.MessageIdentified)
                         return;
                     Utils.Log("NickServ authentication was successful.");
                     JoinChannel();
@@ -66,7 +66,7 @@ namespace EdgeBot.Classes
                             }
                             else
                             {
-                                Utils.SendChannel(Data.RestrictedMessage);
+                                Utils.SendChannel(Data.MessageRestricted);
                             }
                             break;
 
@@ -83,7 +83,7 @@ namespace EdgeBot.Classes
                             }
                             else
                             {
-                                Utils.SendChannel(Data.RestrictedMessage);
+                                Utils.SendChannel(Data.MessageRestricted);
                             }
                             break;
 
@@ -111,7 +111,7 @@ namespace EdgeBot.Classes
                             }
                             else
                             {
-                                Utils.SendChannel(Data.RestrictedMessage);
+                                Utils.SendChannel(Data.MessageRestricted);
                             }
                             break;
 
@@ -153,6 +153,10 @@ namespace EdgeBot.Classes
                             {
                                 Utils.SendChannel("This command is useless.");
                             }
+                            break;
+
+                        // !slap
+                        case "slap":
                             break;
                     }
                 }
@@ -196,7 +200,7 @@ namespace EdgeBot.Classes
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
-            Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.JoinMessage, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
+            Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.MessageJoinChannel, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
 
             AnnounceTimer.Elapsed += OnTimedEvent;
 
