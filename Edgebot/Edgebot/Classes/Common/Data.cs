@@ -85,7 +85,9 @@ namespace EdgeBot.Classes.Common
             "wallops",
             "stings",
             "burninates",
-            "deforms"
+            "deforms",
+            "macerates",
+            "nerfs"
         };
 
         public static readonly List<string> SlapLocations = new List<string>
@@ -107,7 +109,10 @@ namespace EdgeBot.Classes.Common
             "a rubber chicken",
             "a magic missile",
             "a smuggled wonton",
-            "a storm of hubris"
+            "a storm of hubris",
+            "a +2 Vajra",
+            "a macerator",
+            "a hastily crafted dart of force"
         };
     }
 }

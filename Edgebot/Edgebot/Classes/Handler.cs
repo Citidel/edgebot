@@ -334,7 +334,7 @@ namespace EdgeBot.Classes
             {
                 var target = "_" + paramList[1] + "_";
                 var random = new Random();
-                Utils.SendChannel(string.Format(Data.MessageSlap, "_" + nick + "_", Data.SlapActions[random.Next(0, Data.SlapLocations.Count - 1)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count - 1)], Data.SlapItems[random.Next(0, Data.SlapItems.Count - 1)]));
+                Utils.SendChannel(string.Format(Data.MessageSlap, "_" + nick + "_", Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
             }
         }
     }
