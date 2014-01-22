@@ -168,6 +168,11 @@ namespace EdgeBot.Classes
                         case "slap":
                             Handler.SlapHandler(paramList, args.PrivateMessage.User.Nick);
                             break;
+
+                        // !quote add <quote> | !quote
+                        case "quote":
+                            Handler.QuoteHandler(paramList, args.PrivateMessage.User);
+                            break;
                     }
                 }
 
@@ -248,22 +253,12 @@ namespace EdgeBot.Classes
             {
                 if ((bool)jObject["success"])
                 {
-                    Utils.Log("HasJoined: {0}", Program.HasJoined);
                     foreach (var row in jObject["result"])
                     {
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
-                        Utils.Log("ServerList {0}", ServerList.Count());
                     }
-                   
-                    if (Program.HasJoined)
-                    {
-                        Utils.SendChannel("Server list reloaded.");
-                        Utils.Log("Server addresses retrieved from API");
-                    }
-                    else
-                    {
-                        Utils.Log("Server addresses retrieved from API");
-                    }
+                    
+                    Utils.Log("Server addresses retrieved from API");
                 }
                 else
                 {

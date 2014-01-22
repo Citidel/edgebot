@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
+using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
 using EdgeBot.Classes.JSON;
@@ -316,6 +318,43 @@ namespace EdgeBot.Classes
         public static void DevHandler(IList<string> paramList)
         {
             // Placeholder method for any future dev related commands
+        }
+
+        public static void QuoteHandler(IList<string> paramList, IrcUser user)
+        {
+            if (paramList.Count() == 1)
+            {
+                // display random quote
+                Connection.GetData(Data.UrlQuote, "get", jObject =>
+                {
+                    if ((bool) jObject["success"])
+                    {
+                        var quote = (string) jObject["result"].SelectToken("quote");
+                        Utils.SendChannel(string.Concat("Random Quote: ", quote));
+                    }
+                    else
+                    {
+                        Utils.SendChannel("No quotes found.");
+                    }
+                }, Utils.HandleException);
+            }
+            else
+            {
+                if (paramList[1] == "add")
+                {
+                    var quote = "";
+                    for (var l = 2; l < paramList.Count(); l ++)
+                    {
+                        quote = quote + paramList[l] + " ";
+                    }
+
+                    Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()), "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
+                }
+                else
+                {
+                    Utils.SendChannel("Usage: !quote add <message>");
+                }
+            }
         }
 
         public static void SmugHandler()

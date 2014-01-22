@@ -47,6 +47,8 @@ namespace EdgeBot.Classes.Common
         public const string UrlHelp = "http://dev.otegamers.com/api/v1/edge/help";
         public const string UrlMojangStatus = "http://status.mojang.com/check";
         public const string UrlCrashLog = "http://dev.otegamers.com/api/v1/edge/last-crash-log/{0}/{1}";
+        public const string UrlQuote = "http://dev.otegamers.com/api/v1/edge/quote";
+        public const string UrlQuoteAdd = "http://dev.otegamers.com/api/v1/edge/add-quote/{0}/{1}/{2}";
 
         public static readonly List<string> EightBallResponses = new List<string>
         {
