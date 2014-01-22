@@ -5,6 +5,8 @@ using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
+using EdgeBot.Classes.JSON;
+using Newtonsoft.Json;
 
 namespace EdgeBot.Classes
 {
