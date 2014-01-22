@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>EdgeBot</RootNamespace>
     <AssemblyName>EdgeBot</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
