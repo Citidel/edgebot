@@ -5,6 +5,8 @@ using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
+using EdgeBot.Classes.JSON;
+using Newtonsoft.Json;
 
 namespace EdgeBot.Classes
 {
@@ -39,7 +41,7 @@ namespace EdgeBot.Classes
 
                 Client.RawMessageRecieved += (sender, args) =>
                 {
-                    if (args.Message != Data.IdentifiedMessage)
+                    if (args.Message != Data.MessageIdentified)
                         return;
                     Utils.Log("NickServ authentication was successful.");
                     JoinChannel();
@@ -66,7 +68,7 @@ namespace EdgeBot.Classes
                             }
                             else
                             {
-                                Utils.SendChannel(Data.RestrictedMessage);
+                                Utils.SendChannel(Data.MessageRestricted);
                             }
                             break;
 
@@ -83,13 +85,20 @@ namespace EdgeBot.Classes
                             }
                             else
                             {
-                                Utils.SendChannel(Data.RestrictedMessage);
+                                Utils.SendChannel(Data.MessageRestricted);
                             }
                             break;
 
                         // !announce <time in seconds> <repeats> <message>
                         case "announce":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
                             Handler.AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.MessageRestricted);
+                            }
                             break;
 
                         // !update
@@ -111,7 +120,7 @@ namespace EdgeBot.Classes
                             }
                             else
                             {
-                                Utils.SendChannel(Data.RestrictedMessage);
+                                Utils.SendChannel(Data.MessageRestricted);
                             }
                             break;
 
@@ -142,6 +151,23 @@ namespace EdgeBot.Classes
                                 Utils.SendChannel("This command is restricted to developers or server admins only.");
                             }
                             break;
+
+                        // !smug
+                        case "smug":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick) || args.PrivateMessage.User.Nick == "DrSmugleaf" || args.PrivateMessage.User.Nick == "DrSmugleaf_")
+                            {
+                                Handler.SmugHandler();
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is useless.");
+                            }
+                            break;
+
+                        // !slap
+                        case "slap":
+                            Handler.SlapHandler(paramList, args.PrivateMessage.User.Nick);
+                            break;
                     }
                 }
 
@@ -160,17 +186,20 @@ namespace EdgeBot.Classes
                             url = string.Concat("http://", paramList[i]);
                         }
 
-                        Connection.GetLinkTitle(url, title =>
+                        if (!string.IsNullOrEmpty(url))
                         {
-                            if (!string.IsNullOrEmpty(title))
+                            Connection.GetLinkTitle(url, title =>
                             {
-                                Utils.SendChannel("URL TITLE: " + title);
-                            }
-                            else
-                            {
-                                Utils.Log("Connection: Result is null");
-                            }
-                        }, Utils.HandleException);
+                                if (!string.IsNullOrEmpty(title))
+                                {
+                                    Utils.SendChannel("URL TITLE: " + title);
+                                }
+                                else
+                                {
+                                    Utils.Log("Connection: Result is null");
+                                }
+                            }, Utils.HandleException);
+                        }
                     }
                 }
 
@@ -181,7 +210,7 @@ namespace EdgeBot.Classes
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
-            Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.JoinMessage, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
+            Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.MessageJoinChannel, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
 
             AnnounceTimer.Elapsed += OnTimedEvent;
 
@@ -219,12 +248,14 @@ namespace EdgeBot.Classes
             {
                 if ((bool)jObject["success"])
                 {
+                    Utils.Log("HasJoined: {0}", Program.HasJoined);
                     foreach (var row in jObject["result"])
                     {
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
+                        Utils.Log("ServerList {0}", ServerList.Count());
                     }
-
-                    if (HasJoined)
+                   
+                    if (Program.HasJoined)
                     {
                         Utils.SendChannel("Server list reloaded.");
                         Utils.Log("Server addresses retrieved from API");
@@ -244,8 +275,9 @@ namespace EdgeBot.Classes
         private static void JoinChannel()
         {
             Client.JoinChannel(Config.Channel);
-            HasJoined = true;
             Utils.Log("Joining channel: {0}", Config.Channel);
+            Program.HasJoined = true;
+            Utils.Log("HasJoined: {0}", Program.HasJoined);
         }
     }
 }

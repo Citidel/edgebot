@@ -301,7 +301,7 @@ namespace EdgeBot.Classes
                         }
                         else
                         {
-                            Utils.SendChannel(Data.RestrictedMessage);
+                            Utils.SendChannel(Data.MessageRestricted);
                         }
                         break;
 
@@ -316,6 +316,26 @@ namespace EdgeBot.Classes
         public static void DevHandler(IList<string> paramList)
         {
             // Placeholder method for any future dev related commands
+        }
+
+        public static void SmugHandler()
+        {
+            var random = new Random().Next(1, 2) - 1;
+            Utils.SendChannel(Data.SmugResponses[random]);
+        }
+
+        public static void SlapHandler(IList<string> paramList, string nick)
+        {
+            if (paramList.Count() == 1)
+            {
+                Utils.SendChannel("Usage: !slap <target>");
+            }
+            else
+            {
+                var target = "_" + paramList[1] + "_";
+                var random = new Random();
+                Utils.SendChannel(string.Format(Data.MessageSlap, "_" + nick + "_", Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
+            }
         }
     }
 }
