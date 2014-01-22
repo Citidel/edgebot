@@ -323,5 +323,19 @@ namespace EdgeBot.Classes
             var random = new Random().Next(1, 2) - 1;
             Utils.SendChannel(Data.SmugResponses[random]);
         }
+
+        public static void SlapHandler(IList<string> paramList, string nick)
+        {
+            if (paramList.Count() == 1)
+            {
+                Utils.SendChannel("Usage: !slap <target>");
+            }
+            else
+            {
+                var target = "_" + paramList[1] + "_";
+                var random = new Random();
+                Utils.SendChannel(string.Format(Data.MessageSlap, "_" + nick + "_", Data.SlapActions[random.Next(0, Data.SlapLocations.Count - 1)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count - 1)], Data.SlapItems[random.Next(0, Data.SlapItems.Count - 1)]));
+            }
+        }
     }
 }

@@ -157,6 +157,7 @@ namespace EdgeBot.Classes
 
                         // !slap
                         case "slap":
+                            Handler.SlapHandler(paramList, args.PrivateMessage.User.Nick);
                             break;
                     }
                 }
