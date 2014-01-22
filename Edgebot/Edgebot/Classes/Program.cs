@@ -251,7 +251,7 @@ namespace EdgeBot.Classes
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
                     }
 
-                    if (HasJoined)
+                    if (Program.HasJoined)
                     {
                         Utils.SendChannel("Server list reloaded.");
                         Utils.Log("Server addresses retrieved from API");
@@ -271,8 +271,8 @@ namespace EdgeBot.Classes
         private static void JoinChannel()
         {
             Client.JoinChannel(Config.Channel);
-            HasJoined = true;
             Utils.Log("Joining channel: {0}", Config.Channel);
+            Program.HasJoined = true;
         }
     }
 }
