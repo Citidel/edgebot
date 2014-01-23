@@ -11,7 +11,7 @@ namespace EdgeBot.Classes
 {
     public static class Handler
     {
-        public static void HelpHandler(IList<string> paramList)
+        public static void CommandHelp(IList<string> paramList)
         {
             var filter = "";
             switch (paramList.Count())
@@ -54,7 +54,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void DiceHandler(IList<string> paramList)
+        public static void CommandDice(IList<string> paramList)
         {
             int i;
             // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
@@ -79,7 +79,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void EightBallHandler(ICollection<string> paramList)
+        public static void CommandEight(ICollection<string> paramList)
         {
             if (paramList.Count > 1)
             {
@@ -92,7 +92,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void LogHandler(IList<string> paramList)
+        public static void CommandLog(IList<string> paramList)
         {
             int i;
             // check if params number more than 4, if the pack length is less than 5 and the server is a number
@@ -116,7 +116,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void MineCheckHandler()
+        public static void CommandMineCheck()
         {
             Connection.GetServerStatus(status =>
             {
@@ -125,7 +125,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void TpsHandler(IList<string> paramList)
+        public static void CommandTps(IList<string> paramList)
         {
             // Use api to retrieve data from the tps url
             Connection.GetData(Data.UrlTps, "get", jObject =>
@@ -153,7 +153,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void WikiHandler(IList<string> paramList)
+        public static void CommandWiki(IList<string> paramList)
         {
             var filter = "";
             switch (paramList.Count())
@@ -196,7 +196,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void CheckHandler(IList<string> paramList, string nick)
+        public static void CommandCheck(IList<string> paramList, string nick)
         {
             if (!(paramList.Count() <= 1))
             {
@@ -247,7 +247,7 @@ namespace EdgeBot.Classes
             else { Utils.SendNotice("Usage: !check <username>", nick); }
         }
 
-        public static void AnnounceHandler(IList<string> paramList, string nick)
+        public static void CommandAnnounce(IList<string> paramList, string nick)
         {
             if (paramList.Count < 3)
             {
@@ -271,7 +271,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void UpdateHandler(IList<string> paramList, string nick)
+        public static void CommandUpdate(IList<string> paramList, string nick)
         {
             if (paramList.Count < 2)
             {
@@ -316,12 +316,12 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void DevHandler()
+        public static void CommandDev()
         {
             // Placeholder method for any future dev related commands
         }
 
-        public static void QuoteHandler(IList<string> paramList, IrcUser user)
+        public static void CommandQuote(IList<string> paramList, IrcUser user)
         {
             if (paramList.Count() == 1)
             {
@@ -358,13 +358,13 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void SmugHandler()
+        public static void CommandSmug()
         {
             var random = new Random().Next(1, 2) - 1;
             Utils.SendChannel(Data.SmugResponses[random]);
         }
 
-        public static void SlapHandler(IList<string> paramList, string nick)
+        public static void CommandSlap(IList<string> paramList, string nick)
         {
             if (paramList.Count() == 1)
             {

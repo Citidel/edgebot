@@ -64,7 +64,7 @@ namespace EdgeBot.Classes
                         case "tps":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.TpsHandler(paramList);
+                                Handler.CommandTps(paramList);
                             }
                             else
                             {
@@ -74,14 +74,14 @@ namespace EdgeBot.Classes
 
                         // !wiki <keyword>
                         case "wiki":
-                            Handler.WikiHandler(paramList);
+                            Handler.CommandWiki(paramList);
                             break;
 
                         // !check <username>
                         case "check":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.CheckHandler(paramList, args.PrivateMessage.User.Nick);
+                                Handler.CommandCheck(paramList, args.PrivateMessage.User.Nick);
                             }
                             else
                             {
@@ -93,7 +93,7 @@ namespace EdgeBot.Classes
                         case "announce":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                            Handler.AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                            Handler.CommandAnnounce(paramList, args.PrivateMessage.User.Nick);
                             }
                             else
                             {
@@ -103,20 +103,20 @@ namespace EdgeBot.Classes
 
                         // !update
                         case "update":
-                            Handler.UpdateHandler(paramList, args.PrivateMessage.User.Nick);
+                            Handler.CommandUpdate(paramList, args.PrivateMessage.User.Nick);
                             break;
 
                         // !minecheck | !minestatus
                         case "minecheck":
                         case "minestatus":
-                            Handler.MineCheckHandler();
+                            Handler.CommandMineCheck();
                             break;
 
                         // !log <pack> <server>
                         case "log":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.LogHandler(paramList);
+                                Handler.CommandLog(paramList);
                             }
                             else
                             {
@@ -126,17 +126,17 @@ namespace EdgeBot.Classes
 
                         // !8 <question>
                         case "8":
-                            Handler.EightBallHandler(paramList);
+                            Handler.CommandEight(paramList);
                             break;
 
                         // !dice <number> <sides>
                         case "dice":
-                            Handler.DiceHandler(paramList);
+                            Handler.CommandDice(paramList);
                             break;
 
                         // !help, !help <keyword>
                         case "help":
-                            Handler.HelpHandler(paramList);
+                            Handler.CommandHelp(paramList);
                             break;
 
                         // !dev
@@ -144,7 +144,7 @@ namespace EdgeBot.Classes
                             if (Utils.IsDev(args.PrivateMessage.User.Nick) ||
                                 Utils.IsAdmin(args.PrivateMessage.User.Nick))
                             {
-                                Handler.DevHandler();
+                                Handler.CommandDev();
                             }
                             else
                             {
@@ -156,7 +156,7 @@ namespace EdgeBot.Classes
                         case "smug":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick) || args.PrivateMessage.User.Nick == "DrSmugleaf" || args.PrivateMessage.User.Nick == "DrSmugleaf_")
                             {
-                                Handler.SmugHandler();
+                                Handler.CommandSmug();
                             }
                             else
                             {
@@ -166,12 +166,12 @@ namespace EdgeBot.Classes
 
                         // !slap
                         case "slap":
-                            Handler.SlapHandler(paramList, args.PrivateMessage.User.Nick);
+                            Handler.CommandSlap(paramList, args.PrivateMessage.User.Nick);
                             break;
 
                         // !quote add <quote> | !quote
                         case "quote":
-                            Handler.QuoteHandler(paramList, args.PrivateMessage.User);
+                            Handler.CommandQuote(paramList, args.PrivateMessage.User);
                             break;
                     }
                 }
