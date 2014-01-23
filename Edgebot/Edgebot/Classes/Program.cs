@@ -19,7 +19,7 @@ namespace EdgeBot.Classes
 
         static void Main(string[] argArray)
         {
-            if (argArray.Any()) _nickServAuth = argArray[0];
+            if (argArray.Count() > 0) _nickServAuth = argArray[0];
             AnnounceTimer = new Timer();
 
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
