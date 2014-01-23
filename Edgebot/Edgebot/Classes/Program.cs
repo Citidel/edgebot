@@ -89,6 +89,18 @@ namespace EdgeBot.Classes
                             }
                             break;
 
+                        // !mcb lookup
+                        case "mcb":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.CommandMcb(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.MessageRestricted);
+                            }
+                            break;
+
                         // !announce <time in seconds> <repeats> <message>
                         case "announce":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))

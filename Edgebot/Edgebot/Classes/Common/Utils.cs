@@ -178,6 +178,12 @@ namespace EdgeBot.Classes.Common
             return reputation == 0 ? Colors.Red : "";
         }
 
+        public static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
+        }
+
         /// <summary>
         /// Exception handler for the connection class
         /// </summary>
