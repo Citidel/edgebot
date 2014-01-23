@@ -97,7 +97,14 @@ namespace EdgeBot.Classes.Common
             "burninates",
             "deforms",
             "macerates",
-            "nerfs"
+            "nerfs",
+            "chops",
+            "confounds",
+            "prods",
+            "decorates",
+            "draws on",
+            "clones",
+            "pinches"
         };
 
         public static readonly List<string> SlapLocations = new List<string>
@@ -107,7 +114,12 @@ namespace EdgeBot.Classes.Common
             "face",
             "arms",
             "legs",
-            "feet"
+            "feet",
+            "nose",
+            "ear",
+            "forehead",
+            "chin",
+            "cheek"
         };
 
         public static readonly List<string> SlapItems = new List<string>
@@ -122,7 +134,12 @@ namespace EdgeBot.Classes.Common
             "a storm of hubris",
             "a +2 Vajra",
             "a macerator",
-            "a hastily crafted dart of force"
+            "a hastily crafted dart of force",
+            "a blue screen of death",
+            "a bag of smug-looking leaves",
+            "a ball of fried dough",
+            "a can of moon cheese",
+            "a TARDIS"
         };
     }
 }

@@ -241,7 +241,7 @@ namespace EdgeBot.Classes.Common
             return status;
         }
 
-        public static string GetWebTitle(string url)
+        private static string GetWebTitle(string url)
         {
             var returnString = "";
             try
