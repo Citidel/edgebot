@@ -1,6 +1,6 @@
 ﻿namespace EdgeBot.Classes.JSON
 {
-    public abstract class JsonTps
+    public class JsonTps
     {
         public string Server { get; set; }
         public float Tps { get; set; }
