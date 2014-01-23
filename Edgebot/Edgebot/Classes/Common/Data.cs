@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EdgeBot.Classes.Common
 {
@@ -13,8 +12,6 @@ namespace EdgeBot.Classes.Common
         public const string MessageIdentified = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
         public const string MessageRestricted = "This command is restricted to ops only.";
         public const string MessageSlap = "{0} {1} {2}'s {3} with {4}";
-        public static Object AnnounceMsg { get; set; }
-        public static Object AnnounceTimes { get; set; }
 
         public const string RrUpdate = "Please go to: http://www.otegamers.com/topic/6945- for Resonant Rise update info";
         public const string FtbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
@@ -51,6 +48,15 @@ namespace EdgeBot.Classes.Common
         public const string UrlFishLink = "http://www.fishbans.com/u/";
         public const string UrlMojangStatus = "http://status.mojang.com/check";
 
+        public static readonly List<string> McBansApiServerList = new List<string>
+        {
+            "api01.cluster.mcbans.com",
+            "api02.cluster.mcbans.com",
+            "api03.cluster.mcbans.com",
+            "api.mcbans.com"
+        }; 
+
+        // Responses
         public static readonly List<string> EightBallResponses = new List<string>
         {
             "Signs point to yes.",
@@ -81,6 +87,7 @@ namespace EdgeBot.Classes.Common
             "HUEHUEHUEHUEHUEHUEHUEHUEHUE!!"
         };
 
+        // Slap related
         public static readonly List<string> SlapActions = new List<string>
         {
             "slaps",
