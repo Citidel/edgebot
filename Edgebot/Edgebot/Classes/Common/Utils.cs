@@ -148,6 +148,36 @@ namespace EdgeBot.Classes.Common
             return "Unknown";
         }
 
+        public static string GetColorCode(int bans)
+        {
+            if (bans == 0)
+            {
+                return Colors.DarkGreen;
+            }
+
+            if (bans >= 1 && bans < 5)
+            {
+                return Colors.Yellow;
+            }
+
+            return bans > 5 ? Colors.Red : "";
+        }
+
+        public static string GetColorCode(double reputation)
+        {
+            if (reputation == 10)
+            {
+                return Colors.DarkGreen;
+            }
+
+            if (reputation >= 1 && reputation < 10)
+            {
+                return Colors.Yellow;
+            }
+
+            return reputation == 0 ? Colors.Red : "";
+        }
+
         /// <summary>
         /// Exception handler for the connection class
         /// </summary>
