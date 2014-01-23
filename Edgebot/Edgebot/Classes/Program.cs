@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
@@ -13,6 +14,7 @@ namespace EdgeBot.Classes
         public static Timer AnnounceTimer;
         public static IrcClient Client;
         public static readonly List<Server> ServerList = new List<Server>();
+        public static string McBansApiUrl = "";
         private static string _nickServAuth = "";
 
         static void Main(string[] argArray)
@@ -45,6 +47,7 @@ namespace EdgeBot.Classes
                 };
 
                 PopulateServers();
+                McBansApiUrl = GetApiServer();
             };
 
             Client.ChannelMessageRecieved += (sender, args) =>
@@ -78,7 +81,7 @@ namespace EdgeBot.Classes
                         case "check":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.FishHandler(paramList, args.PrivateMessage.User.Nick);
+                                Handler.CheckHandler(paramList, args.PrivateMessage.User.Nick);
                             }
                             else
                             {
@@ -141,7 +144,7 @@ namespace EdgeBot.Classes
                             if (Utils.IsDev(args.PrivateMessage.User.Nick) ||
                                 Utils.IsAdmin(args.PrivateMessage.User.Nick))
                             {
-                                Handler.DevHandler(paramList);
+                                Handler.DevHandler();
                             }
                             else
                             {
@@ -210,7 +213,7 @@ namespace EdgeBot.Classes
                     Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
                 }
 
-                Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
+                //Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
@@ -223,7 +226,7 @@ namespace EdgeBot.Classes
                 Utils.Log("Warning, nick serv authentication password is empty.");
             }
 
-            Utils.Log("Connecting to IRC...");
+            //Utils.Log("Connecting to IRC...");
             Client.ConnectAsync();
             while (true)
             {
@@ -232,16 +235,16 @@ namespace EdgeBot.Classes
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            if (Convert.ToInt32(Data.AnnounceTimes) == 0)
+            if (Convert.ToInt32(Announcement.AnnounceTimes) == 0)
             {
                 AnnounceTimer.Enabled = false;
             }
             else
             {
-                var count = Convert.ToInt32(Data.AnnounceTimes);
+                var count = Convert.ToInt32(Announcement.AnnounceTimes);
                 count--;
-                Data.AnnounceTimes = count;
-                Utils.SendChannel(Data.AnnounceMsg.ToString());
+                Announcement.AnnounceTimes = count;
+                Utils.SendChannel(Announcement.AnnounceMsg.ToString());
             }
         }
 
@@ -264,6 +267,19 @@ namespace EdgeBot.Classes
                     Utils.Log("Failed to query for servers.");
                 }
             }, Utils.HandleException);
+        }
+
+        private static string GetApiServer()
+        {
+            var ping = new Ping();
+            var pingList = new Dictionary<string, long>();
+            foreach (var server in Data.McBansApiServerList)
+            {
+                var pingReturn = ping.Send(server);
+                if (pingReturn != null) pingList.Add(server, pingReturn.RoundtripTime);
+            }
+
+            return pingList.Where(pair => pair.Value == pingList.Values.Min()).Select(pair => pair.Key).First();
         }
 
         private static void JoinChannel()
