@@ -360,7 +360,7 @@ namespace EdgeBot.Classes
 
         public static void CommandSmug()
         {
-            var random = new Random().Next(1, 2) - 1;
+            var random = new Random().Next(0, 2);
             Utils.SendChannel(Data.SmugResponses[random]);
         }
 
