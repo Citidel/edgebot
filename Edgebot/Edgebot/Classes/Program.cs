@@ -5,33 +5,30 @@ using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
-using EdgeBot.Classes.JSON;
-using Newtonsoft.Json;
 
 namespace EdgeBot.Classes
 {
-    class Program
+    static class Program
     {
         public static Timer AnnounceTimer;
         public static IrcClient Client;
         public static readonly List<Server> ServerList = new List<Server>();
-        public static string NickServAuth = "";
-        public static bool HasJoined = false;
+        private static string _nickServAuth = "";
 
         static void Main(string[] argArray)
         {
-            if (argArray.Any()) NickServAuth = argArray[0];
+            if (argArray.Any()) _nickServAuth = argArray[0];
             AnnounceTimer = new Timer();
 
-            Client = (!string.IsNullOrEmpty(NickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
+            Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
             Client.ConnectionComplete += (s, e) =>
             {
                 Utils.Log("Connection complete.");
-                if (!string.IsNullOrEmpty(NickServAuth))
+                if (!string.IsNullOrEmpty(_nickServAuth))
                 {
                     Utils.Log("Sending ident message to NickServ");
-                    Utils.SendPm(string.Format("IDENTIFY EdgeBot {0}", NickServAuth), "NickServ");
+                    Utils.SendPm(string.Format("IDENTIFY EdgeBot {0}", _nickServAuth), "NickServ");
                 }
                 else
                 {
@@ -212,6 +209,8 @@ namespace EdgeBot.Classes
                 {
                     Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
                 }
+
+                Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
@@ -219,7 +218,7 @@ namespace EdgeBot.Classes
 
             AnnounceTimer.Elapsed += OnTimedEvent;
 
-            if (string.IsNullOrEmpty(NickServAuth))
+            if (string.IsNullOrEmpty(_nickServAuth))
             {
                 Utils.Log("Warning, nick serv authentication password is empty.");
             }
@@ -271,8 +270,6 @@ namespace EdgeBot.Classes
         {
             Client.JoinChannel(Config.Channel);
             Utils.Log("Joining channel: {0}", Config.Channel);
-            Program.HasJoined = true;
-            Utils.Log("HasJoined: {0}", Program.HasJoined);
         }
     }
 }

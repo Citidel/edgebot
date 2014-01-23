@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes
 {
-    class Handler
+    public static class Handler
     {
         public static void HelpHandler(IList<string> paramList)
         {
@@ -315,7 +314,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void DevHandler(IList<string> paramList)
+        public static void DevHandler()
         {
             // Placeholder method for any future dev related commands
         }

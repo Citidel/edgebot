@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace EdgeBot.Classes.Common
 {
-    internal class Connection
+    internal static class Connection
     {
         public static void GetData(string url, string method, Action<JObject> taskSuccess,
             Action<AggregateException> taskError)

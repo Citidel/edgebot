@@ -6,7 +6,7 @@ namespace EdgeBot.Classes.Common
     /// <summary>
     /// EdgeBot data
     /// </summary>
-    public class Data
+    public static class Data
     {
         // Messages
         public const string MessageJoinChannel = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
@@ -37,18 +37,19 @@ namespace EdgeBot.Classes.Common
             "Ryahn"
         }; 
 
-        // URLs
+        // OTE API
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
         public const string UrlAddress = "http://dev.otegamers.com/api/v1/edge/address";
-        public const string UrlFish = "http://api.fishbans.com/stats/";
-        public const string UrlFishLink = "http://www.fishbans.com/u/";
-        public const string UrlVersion = "http://dev.otegamers.com/api/v1/edge/version";
         public const string UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
         public const string UrlHelp = "http://dev.otegamers.com/api/v1/edge/help";
-        public const string UrlMojangStatus = "http://status.mojang.com/check";
         public const string UrlCrashLog = "http://dev.otegamers.com/api/v1/edge/last-crash-log/{0}/{1}";
         public const string UrlQuote = "http://dev.otegamers.com/api/v1/edge/quote";
         public const string UrlQuoteAdd = "http://dev.otegamers.com/api/v1/edge/add-quote/{0}/{1}/{2}";
+
+        // URLs
+        public const string UrlFish = "http://api.fishbans.com/stats/";
+        public const string UrlFishLink = "http://www.fishbans.com/u/";
+        public const string UrlMojangStatus = "http://status.mojang.com/check";
 
         public static readonly List<string> EightBallResponses = new List<string>
         {
