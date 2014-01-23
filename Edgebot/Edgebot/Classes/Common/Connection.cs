@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EdgeBot.Classes.Instances;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EdgeBot.Classes.Common
@@ -14,6 +16,24 @@ namespace EdgeBot.Classes.Common
             Action<AggregateException> taskError)
         {
             Task.Factory.StartNew(() => GetResponse(url, method))
+                .ContinueWith(t =>
+                {
+                    if (t.Result == null)
+                    {
+                        Utils.Log("Connection: Result is null");
+                    }
+                    else
+                    {
+                        taskSuccess(t.Result);
+                    }
+                })
+                .ContinueWith(t => taskError(t.Exception));
+        }
+
+        public static void GetPlayerLookup(string playerName, Action<McBans> taskSuccess,
+            Action<AggregateException> taskError)
+        {
+            Task.Factory.StartNew(() => GetMcBansLookup(playerName))
                 .ContinueWith(t =>
                 {
                     if (t.Result == null)
@@ -80,7 +100,7 @@ namespace EdgeBot.Classes.Common
         private static JObject GetHttpResponse(string url, string method)
         {
             Utils.Log("Connection: Getting response from {0}", url);
-            var webRequest = (HttpWebRequest) WebRequest.Create(url);
+            var webRequest = (HttpWebRequest)WebRequest.Create(url);
             webRequest.Method = method.ToUpper();
             webRequest.ContentType = "application/json";
             webRequest.KeepAlive = true;
@@ -114,13 +134,67 @@ namespace EdgeBot.Classes.Common
             }
         }
 
+        private static McBans GetMcBansLookup(string playerName)
+        {
+            McBans mcBans = null;
+            if (Program.McBansApiUrl != null)
+            {
+                var url = string.Format("http://{0}/v2/{1}", Program.McBansApiUrl, "83855ea895268ec47f2e7ea0e8a25323f11e189c");
+                var postData = "exec=playerLookup&player=" + playerName;
+                var byteArray = Encoding.UTF8.GetBytes(postData);
+
+                var webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.Method = "POST";
+                webRequest.Accept = "*/*";
+                webRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                webRequest.ContentType = "application/x-www-form-urlencoded";
+                webRequest.ContentLength = byteArray.Length;
+                webRequest.UserAgent = "runscope/0.1";
+
+                var dataStream = webRequest.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                using (var webResponse = webRequest.GetResponse() as HttpWebResponse)
+                {
+                    if (webResponse != null && webResponse.StatusCode == HttpStatusCode.OK)
+                    {
+                        using (var reader = new StreamReader(webResponse.GetResponseStream()))
+                        {
+                            try
+                            {
+                                var data = reader.ReadToEnd();
+                                mcBans = JsonConvert.DeserializeObject<McBans>(data);
+                            }
+                            catch (Exception)
+                            {
+                                Utils.Log("Connection: Unable to parse stream response: {0}", reader.ReadToEnd());
+                                return null;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (webResponse != null)
+                            Utils.Log("Connection: Error fetching data. Server returned status code : {0}",
+                                webResponse.StatusCode);
+                    }
+
+                    return mcBans;
+                }
+            }
+
+            Utils.Log("Failed to lookup player, MC Bans API Url is null.");
+            return null;
+        }
+
         private static MojangStatus GetMojangStatus()
         {
             var status = new MojangStatus();
             try
             {
                 Utils.Log("Connection: Getting response from {0}", Data.UrlMojangStatus);
-                var webRequest = (HttpWebRequest) WebRequest.Create(Data.UrlMojangStatus);
+                var webRequest = (HttpWebRequest)WebRequest.Create(Data.UrlMojangStatus);
                 webRequest.Method = "GET";
                 webRequest.ContentType = "application/json";
                 webRequest.KeepAlive = true;
