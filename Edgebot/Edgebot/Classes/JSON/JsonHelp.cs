@@ -1,6 +1,6 @@
 ﻿namespace EdgeBot.Classes.JSON
 {
-    public class JsonHelp
+    public abstract class JsonHelp
     {
         public string Keyword { get; set; }
         public string Value { get; set; }
