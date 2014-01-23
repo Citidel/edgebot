@@ -70,11 +70,12 @@
     <Compile Include="Classes\Common\Data.cs" />
     <Compile Include="Classes\Common\Utils.cs" />
     <Compile Include="Classes\Handler.cs" />
+    <Compile Include="Classes\Instances\Announcement.cs" />
+    <Compile Include="Classes\Instances\McBans.cs" />
     <Compile Include="Classes\Instances\Server.cs" />
     <Compile Include="Classes\Instances\FishBans.cs" />
     <Compile Include="Classes\Instances\MojangStatus.cs" />
     <Compile Include="Classes\JSON\JsonTps.cs" />
-    <Compile Include="Classes\JSON\JsonVersion.cs" />
     <Compile Include="Classes\JSON\JsonHelp.cs" />
     <Compile Include="Classes\JSON\JsonWiki.cs" />
     <Compile Include="Classes\Program.cs">

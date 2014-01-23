@@ -196,7 +196,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void FishHandler(IList<string> paramList, string nick)
+        public static void CheckHandler(IList<string> paramList, string nick)
         {
             if (!(paramList.Count() <= 1))
             {
@@ -213,22 +213,8 @@ namespace EdgeBot.Classes
                             Username = (string)jObject["stats"].SelectToken("username")
                         };
 
-                        var colorCode = "";
-                        if (fishBans.TotalBans == 0)
-                        {
-                            colorCode = Colors.DarkGreen;
-                        }
-                        else if (fishBans.TotalBans >= 1 && fishBans.TotalBans < 5)
-                        {
-                            colorCode = Colors.Yellow;
-                        }
-                        else if (fishBans.TotalBans > 5)
-                        {
-                            colorCode = Colors.Red;
-                        }
-
                         outputString = String.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
-                            Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, colorCode),
+                            Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, Utils.GetColorCode(fishBans.TotalBans)),
                             Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
                     }
                     else
@@ -240,6 +226,22 @@ namespace EdgeBot.Classes
                     {
                         Utils.SendNotice(outputString, nick);
                     }
+                }, Utils.HandleException);
+
+                Connection.GetPlayerLookup(paramList[1], bans =>
+                {
+                    // only report mcbans if there are bans to report
+                    if (bans == null || bans.Total <= 0) return;
+
+                    var localBans = Utils.FormatColor(bans.Local.Count, Utils.GetColorCode(bans.Local.Count));
+                    var globalBans = Utils.FormatColor(bans.Global.Count, Utils.GetColorCode(bans.Global.Count));
+                    var reputation = Utils.FormatColor(bans.Reputation, Utils.GetColorCode(bans.Reputation));
+
+                    var outputString = String.Concat(Utils.FormatText("MCBans: ", Colors.Bold),
+                        Utils.FormatText("Total: ", Colors.Bold), Utils.FormatColor(bans.Total, Utils.GetColorCode(bans.Total)), " (Local: ", localBans, ", Global: ", globalBans, ") ", Utils.FormatText("Rep: ", Colors.Bold), reputation,
+                        Utils.FormatText(" URL: ", Colors.Bold), "http://www.mcbans.com/player/", paramList[1]);
+
+                    Utils.SendNotice(outputString, nick);
                 }, Utils.HandleException);
             }
             else { Utils.SendNotice("Usage: !check <username>", nick); }
@@ -263,8 +265,8 @@ namespace EdgeBot.Classes
                 {
                     msg = msg + paramList[i] + " ";
                 }
-                Data.AnnounceMsg = msg;
-                Data.AnnounceTimes = timeCount;
+                Announcement.AnnounceMsg = msg;
+                Announcement.AnnounceTimes = timeCount;
                 Program.AnnounceTimer.Enabled = true;
             }
         }
@@ -326,9 +328,9 @@ namespace EdgeBot.Classes
                 // display random quote
                 Connection.GetData(Data.UrlQuote, "get", jObject =>
                 {
-                    if ((bool) jObject["success"])
+                    if ((bool)jObject["success"])
                     {
-                        var quote = (string) jObject["result"].SelectToken("quote");
+                        var quote = (string)jObject["result"].SelectToken("quote");
                         Utils.SendChannel(string.Concat("Random Quote: ", quote));
                     }
                     else
@@ -342,7 +344,7 @@ namespace EdgeBot.Classes
                 if (paramList[1] == "add")
                 {
                     var quote = "";
-                    for (var l = 2; l < paramList.Count(); l ++)
+                    for (var l = 2; l < paramList.Count(); l++)
                     {
                         quote = quote + paramList[l] + " ";
                     }
