@@ -226,7 +226,7 @@ namespace EdgeBot.Classes
                 Utils.Log("Warning, nick serv authentication password is empty.");
             }
 
-            //Utils.Log("Connecting to IRC...");
+            Utils.Log("Connecting to IRC...");
             Client.ConnectAsync();
             while (true)
             {
