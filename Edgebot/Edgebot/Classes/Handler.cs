@@ -375,7 +375,7 @@ namespace EdgeBot.Classes
             // Placeholder method for any future dev related commands
         }
 
-        public static void CommandQuote(IList<string> paramList, IrcUser user)
+        public static void CommandQuote(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
             if (paramList.Count() == 1)
             {
@@ -397,13 +397,21 @@ namespace EdgeBot.Classes
             {
                 if (paramList[1] == "add")
                 {
-                    var quote = "";
-                    for (var l = 2; l < paramList.Count(); l++)
+                    if (isIngameCommand == false)
                     {
-                        quote = quote + paramList[l] + " ";
-                    }
+                        var quote = "";
+                        for (var l = 2; l < paramList.Count(); l++)
+                        {
+                            quote = quote + paramList[l] + " ";
+                        }
 
-                    Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()), "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
+                        Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()),
+                            "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
+                    }
+                    else
+                    {
+                        Utils.SendChannel("This command is restricted to the IRC channel only.");
+                    }
                 }
                 else
                 {

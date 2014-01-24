@@ -52,6 +52,7 @@ namespace EdgeBot.Classes
 
             Client.ChannelMessageRecieved += (sender, args) =>
             {
+                var isIngameCommand = false;
                 // Only listen to !commands
                 //if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
                 var message = args.PrivateMessage.Message;
@@ -67,6 +68,7 @@ namespace EdgeBot.Classes
                             if (ingameMessage[1].StartsWith(" !"))
                             {
                                 paramList = ingameMessage[1].Trim().Split(' ');
+                                isIngameCommand = true;
                             }
                         }
                         catch (Exception)
@@ -201,12 +203,19 @@ namespace EdgeBot.Classes
 
                         // !slap
                         case "slap":
-                            Handler.CommandSlap(paramList, args.PrivateMessage.User.Nick);
+                            if (isIngameCommand == false)
+                            {
+                                Handler.CommandSlap(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is restricted to the IRC channel only.");
+                            }
                             break;
 
                         // !quote add <quote> | !quote
                         case "quote":
-                            Handler.CommandQuote(paramList, args.PrivateMessage.User);
+                            Handler.CommandQuote(paramList, args.PrivateMessage.User, isIngameCommand);
                             break;
                     }
                 }
