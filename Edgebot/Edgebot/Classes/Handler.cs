@@ -448,16 +448,25 @@ namespace EdgeBot.Classes
             }
             else
             {
-                var proc = new System.Diagnostics.Process
+                var gitProc = new System.Diagnostics.Process
                 {
                     EnableRaisingEvents = false,
                     StartInfo = {FileName = "git", Arguments = "pull origin feature/auto-update"}
                 };
 
-                proc.Start();
+                gitProc.Start();
                 Utils.SendNotice("Starting git pull process.", nick);
-                proc.WaitForExit();
+                gitProc.WaitForExit();
                 Utils.SendNotice("Git pull process complete.", nick);
+
+                var xbuildProc = new System.Diagnostics.Process()
+                {
+                    EnableRaisingEvents = false,
+                    StartInfo = { FileName = "xbuild", Arguments = "/home/edgebot/Edgebot/Edgebot/Edgebot.csproj"}
+                };
+
+                xbuildProc.Start();
+                xbuildProc.WaitForExit();
             }
         }
     }
