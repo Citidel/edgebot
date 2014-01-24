@@ -119,7 +119,8 @@ namespace EdgeBot.Classes.Common
             "ear",
             "forehead",
             "chin",
-            "cheek"
+            "cheek",
+            "spine"
         };
 
         public static readonly List<string> SlapItems = new List<string>

@@ -420,9 +420,9 @@ namespace EdgeBot.Classes
             }
             else
             {
-                var target = "_" + paramList[1] + "_";
+                var target = paramList[1];
                 var random = new Random();
-                Utils.SendChannel(string.Format(Data.MessageSlap, "_" + nick + "_", Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
+                Utils.SendChannel(string.Format(Data.MessageSlap, nick, Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
             }
         }
     }
