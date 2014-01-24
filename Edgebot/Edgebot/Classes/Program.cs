@@ -56,7 +56,26 @@ namespace EdgeBot.Classes
                 //if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
-                if (args.PrivateMessage.Message.StartsWith("!"))
+
+                if (args.PrivateMessage.User.Nick == "RR1" || args.PrivateMessage.User.Nick == "RR2")
+                {
+                    var ingameMessage = args.PrivateMessage.Message.Split(':');
+                    if (ingameMessage.Any())
+                    {
+                        try
+                        {
+                            if (ingameMessage[1].StartsWith(" !"))
+                            {
+                                paramList = ingameMessage[1].Trim().Split(' ');
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+                if (args.PrivateMessage.Message.StartsWith("!") || paramList[0].StartsWith("!"))
                 {
                     switch (paramList[0].Substring(1))
                     {
@@ -105,7 +124,7 @@ namespace EdgeBot.Classes
                         case "announce":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                            Handler.CommandAnnounce(paramList, args.PrivateMessage.User.Nick);
+                                Handler.CommandAnnounce(paramList, args.PrivateMessage.User.Nick);
                             }
                             else
                             {
@@ -275,7 +294,7 @@ namespace EdgeBot.Classes
                     {
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
                     }
-                    
+
                     Utils.Log("Server addresses retrieved from API");
                 }
                 else
