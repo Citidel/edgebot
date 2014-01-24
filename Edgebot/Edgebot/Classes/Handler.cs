@@ -451,7 +451,7 @@ namespace EdgeBot.Classes
                 var proc = new System.Diagnostics.Process
                 {
                     EnableRaisingEvents = false,
-                    StartInfo = {FileName = "git", Arguments = "pull origin auto-update"}
+                    StartInfo = {FileName = "git", Arguments = "pull origin feature/auto-update"}
                 };
 
                 proc.Start();
