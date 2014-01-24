@@ -122,7 +122,8 @@ namespace EdgeBot.Classes.Common
             "forehead",
             "chin",
             "cheek",
-            "spine"
+            "spine",
+            "fingers"
         };
 
         public static readonly List<string> SlapItems = new List<string>
@@ -142,7 +143,11 @@ namespace EdgeBot.Classes.Common
             "a bag of smug-looking leaves",
             "a ball of fried dough",
             "a can of moon cheese",
-            "a TARDIS"
-        };
+            "a TARDIS",
+            "a Golden Crash",
+            "a giant spear",
+            "a tiny dagger",
+            "a massive fireball"
+        }; 
     }
 }
