@@ -6,7 +6,7 @@ namespace EdgeBot.Classes.Common
     /// <summary>
     /// Utility methods for EdgeBot
     /// </summary>
-    public class Utils
+    public static class Utils
     {
         /// <summary>
         /// Sends a notice to a set of destinations
@@ -148,6 +148,42 @@ namespace EdgeBot.Classes.Common
             return "Unknown";
         }
 
+        public static string GetColorCode(int bans)
+        {
+            if (bans == 0)
+            {
+                return Colors.DarkGreen;
+            }
+
+            if (bans >= 1 && bans < 5)
+            {
+                return Colors.Yellow;
+            }
+
+            return bans > 5 ? Colors.Red : "";
+        }
+
+        public static string GetColorCode(double reputation)
+        {
+            if (reputation == 10)
+            {
+                return Colors.DarkGreen;
+            }
+
+            if (reputation >= 1 && reputation < 10)
+            {
+                return Colors.Yellow;
+            }
+
+            return reputation == 0 ? Colors.Red : "";
+        }
+
+        public static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
+        }
+
         /// <summary>
         /// Exception handler for the connection class
         /// </summary>
@@ -170,17 +206,6 @@ namespace EdgeBot.Classes.Common
             if (message == null) return;
             Console.WriteLine(message, args);
             System.Diagnostics.Debug.Write(String.Format(message, args) + "\n");
-        }
-
-        /// <summary>
-        /// Logs a message in the console window and to the debug window
-        /// </summary>
-        /// <param name="message"></param>
-        public static void Log(object message)
-        {
-            if (message == null) return;
-            Console.WriteLine(message);
-            System.Diagnostics.Debug.Write(message + "\n");
         }
     }
 }

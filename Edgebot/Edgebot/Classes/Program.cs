@@ -1,37 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Timers;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
-using EdgeBot.Classes.JSON;
-using Newtonsoft.Json;
 
 namespace EdgeBot.Classes
 {
-    class Program
+    static class Program
     {
         public static Timer AnnounceTimer;
         public static IrcClient Client;
         public static readonly List<Server> ServerList = new List<Server>();
-        public static string NickServAuth = "";
-        public static bool HasJoined = false;
+        public static string McBansApiUrl = "";
+        private static string _nickServAuth = "";
 
         static void Main(string[] argArray)
         {
-            if (argArray.Any()) NickServAuth = argArray[0];
+            if (argArray.Any()) _nickServAuth = argArray[0];
             AnnounceTimer = new Timer();
 
-            Client = (!string.IsNullOrEmpty(NickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
+            Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
             Client.ConnectionComplete += (s, e) =>
             {
                 Utils.Log("Connection complete.");
-                if (!string.IsNullOrEmpty(NickServAuth))
+                if (!string.IsNullOrEmpty(_nickServAuth))
                 {
                     Utils.Log("Sending ident message to NickServ");
-                    Utils.SendPm(string.Format("IDENTIFY EdgeBot {0}", NickServAuth), "NickServ");
+                    Utils.SendPm(string.Format("IDENTIFY EdgeBot {0}", _nickServAuth), "NickServ");
                 }
                 else
                 {
@@ -48,15 +47,37 @@ namespace EdgeBot.Classes
                 };
 
                 PopulateServers();
+                McBansApiUrl = GetApiServer();
             };
 
             Client.ChannelMessageRecieved += (sender, args) =>
             {
+                var isIngameCommand = false;
                 // Only listen to !commands
                 //if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
-                if (args.PrivateMessage.Message.StartsWith("!"))
+
+                if (args.PrivateMessage.User.Nick == "RR1" || args.PrivateMessage.User.Nick == "RR2")
+                {
+                    var ingameMessage = args.PrivateMessage.Message.Split(':');
+                    if (ingameMessage.Any())
+                    {
+                        try
+                        {
+                            if (ingameMessage[1].StartsWith(" !"))
+                            {
+                                paramList = ingameMessage[1].Trim().Split(' ');
+                                isIngameCommand = true;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+                if (args.PrivateMessage.Message.StartsWith("!") || paramList[0].StartsWith("!"))
                 {
                     switch (paramList[0].Substring(1))
                     {
@@ -64,7 +85,7 @@ namespace EdgeBot.Classes
                         case "tps":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.TpsHandler(paramList);
+                                Handler.CommandTps(paramList);
                             }
                             else
                             {
@@ -74,14 +95,26 @@ namespace EdgeBot.Classes
 
                         // !wiki <keyword>
                         case "wiki":
-                            Handler.WikiHandler(paramList);
+                            Handler.CommandWiki(paramList);
                             break;
 
                         // !check <username>
                         case "check":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.FishHandler(paramList, args.PrivateMessage.User.Nick);
+                                Handler.CommandCheck(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel(Data.MessageRestricted);
+                            }
+                            break;
+
+                        // !mcb lookup
+                        case "mcb":
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.CommandMcb(paramList, args.PrivateMessage.User.Nick);
                             }
                             else
                             {
@@ -93,7 +126,7 @@ namespace EdgeBot.Classes
                         case "announce":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                            Handler.AnnounceHandler(paramList, args.PrivateMessage.User.Nick);
+                                Handler.CommandAnnounce(paramList, args.PrivateMessage.User.Nick);
                             }
                             else
                             {
@@ -103,20 +136,20 @@ namespace EdgeBot.Classes
 
                         // !update
                         case "update":
-                            Handler.UpdateHandler(paramList, args.PrivateMessage.User.Nick);
+                            Handler.CommandUpdate(paramList, args.PrivateMessage.User.Nick);
                             break;
 
                         // !minecheck | !minestatus
                         case "minecheck":
                         case "minestatus":
-                            Handler.MineCheckHandler();
+                            Handler.CommandMineCheck();
                             break;
 
                         // !log <pack> <server>
                         case "log":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick))
                             {
-                                Handler.LogHandler(paramList);
+                                Handler.CommandLog(paramList);
                             }
                             else
                             {
@@ -126,17 +159,21 @@ namespace EdgeBot.Classes
 
                         // !8 <question>
                         case "8":
-                            Handler.EightBallHandler(paramList);
+                            Handler.CommandEight(paramList);
+                            break;
+
+                        case "auric":
+                            Handler.CommandAuric();
                             break;
 
                         // !dice <number> <sides>
                         case "dice":
-                            Handler.DiceHandler(paramList);
+                            Handler.CommandDice(paramList);
                             break;
 
                         // !help, !help <keyword>
                         case "help":
-                            Handler.HelpHandler(paramList);
+                            Handler.CommandHelp(paramList);
                             break;
 
                         // !dev
@@ -144,7 +181,7 @@ namespace EdgeBot.Classes
                             if (Utils.IsDev(args.PrivateMessage.User.Nick) ||
                                 Utils.IsAdmin(args.PrivateMessage.User.Nick))
                             {
-                                Handler.DevHandler(paramList);
+                                Handler.CommandDev();
                             }
                             else
                             {
@@ -156,7 +193,7 @@ namespace EdgeBot.Classes
                         case "smug":
                             if (Utils.IsOp(args.PrivateMessage.User.Nick) || args.PrivateMessage.User.Nick == "DrSmugleaf" || args.PrivateMessage.User.Nick == "DrSmugleaf_")
                             {
-                                Handler.SmugHandler();
+                                Handler.CommandSmug();
                             }
                             else
                             {
@@ -166,7 +203,19 @@ namespace EdgeBot.Classes
 
                         // !slap
                         case "slap":
-                            Handler.SlapHandler(paramList, args.PrivateMessage.User.Nick);
+                            if (isIngameCommand == false)
+                            {
+                                Handler.CommandSlap(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is restricted to the IRC channel only.");
+                            }
+                            break;
+
+                        // !quote add <quote> | !quote
+                        case "quote":
+                            Handler.CommandQuote(paramList, args.PrivateMessage.User, isIngameCommand);
                             break;
                     }
                 }
@@ -207,6 +256,8 @@ namespace EdgeBot.Classes
                 {
                     Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
                 }
+
+                //Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
 
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
@@ -214,7 +265,7 @@ namespace EdgeBot.Classes
 
             AnnounceTimer.Elapsed += OnTimedEvent;
 
-            if (string.IsNullOrEmpty(NickServAuth))
+            if (string.IsNullOrEmpty(_nickServAuth))
             {
                 Utils.Log("Warning, nick serv authentication password is empty.");
             }
@@ -228,16 +279,16 @@ namespace EdgeBot.Classes
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            if (Convert.ToInt32(Data.AnnounceTimes) == 0)
+            if (Convert.ToInt32(Announcement.AnnounceTimes) == 0)
             {
                 AnnounceTimer.Enabled = false;
             }
             else
             {
-                var count = Convert.ToInt32(Data.AnnounceTimes);
+                var count = Convert.ToInt32(Announcement.AnnounceTimes);
                 count--;
-                Data.AnnounceTimes = count;
-                Utils.SendChannel(Data.AnnounceMsg.ToString());
+                Announcement.AnnounceTimes = count;
+                Utils.SendChannel(Announcement.AnnounceMsg.ToString());
             }
         }
 
@@ -248,22 +299,12 @@ namespace EdgeBot.Classes
             {
                 if ((bool)jObject["success"])
                 {
-                    Utils.Log("HasJoined: {0}", Program.HasJoined);
                     foreach (var row in jObject["result"])
                     {
                         ServerList.Add(new Server { Address = (string)row["address"], ShortCode = (string)row["short_code"], Id = (string)row["server"], Version = (string)row["version"] });
-                        Utils.Log("ServerList {0}", ServerList.Count());
                     }
-                   
-                    if (Program.HasJoined)
-                    {
-                        Utils.SendChannel("Server list reloaded.");
-                        Utils.Log("Server addresses retrieved from API");
-                    }
-                    else
-                    {
-                        Utils.Log("Server addresses retrieved from API");
-                    }
+
+                    Utils.Log("Server addresses retrieved from API");
                 }
                 else
                 {
@@ -272,12 +313,23 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
+        private static string GetApiServer()
+        {
+            var ping = new Ping();
+            var pingList = new Dictionary<string, long>();
+            foreach (var server in Data.McBansApiServerList)
+            {
+                var pingReturn = ping.Send(server);
+                if (pingReturn != null) pingList.Add(server, pingReturn.RoundtripTime);
+            }
+
+            return pingList.Where(pair => pair.Value == pingList.Values.Min()).Select(pair => pair.Key).First();
+        }
+
         private static void JoinChannel()
         {
             Client.JoinChannel(Config.Channel);
             Utils.Log("Joining channel: {0}", Config.Channel);
-            Program.HasJoined = true;
-            Utils.Log("HasJoined: {0}", Program.HasJoined);
         }
     }
 }

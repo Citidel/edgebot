@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EdgeBot.Classes.Common
 {
     /// <summary>
     /// EdgeBot data
     /// </summary>
-    public class Data
+    public static class Data
     {
         // Messages
         public const string MessageJoinChannel = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
         public const string MessageIdentified = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
         public const string MessageRestricted = "This command is restricted to ops only.";
         public const string MessageSlap = "{0} {1} {2}'s {3} with {4}";
-        public static Object AnnounceMsg { get; set; }
-        public static Object AnnounceTimes { get; set; }
 
         public const string RrUpdate = "Please go to: http://www.otegamers.com/topic/6945- for Resonant Rise update info";
         public const string FtbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
         public const string PxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
+
+        public const string McBansApiKey = "83855ea895268ec47f2e7ea0e8a25323f11e189c";
 
         // Devs
         public static readonly List<string> Developers = new List<string>
@@ -37,17 +36,29 @@ namespace EdgeBot.Classes.Common
             "Ryahn"
         }; 
 
-        // URLs
+        // OTE API
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
         public const string UrlAddress = "http://dev.otegamers.com/api/v1/edge/address";
-        public const string UrlFish = "http://api.fishbans.com/stats/";
-        public const string UrlFishLink = "http://www.fishbans.com/u/";
-        public const string UrlVersion = "http://dev.otegamers.com/api/v1/edge/version";
         public const string UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
         public const string UrlHelp = "http://dev.otegamers.com/api/v1/edge/help";
-        public const string UrlMojangStatus = "http://status.mojang.com/check";
         public const string UrlCrashLog = "http://dev.otegamers.com/api/v1/edge/last-crash-log/{0}/{1}";
+        public const string UrlQuote = "http://dev.otegamers.com/api/v1/edge/quote";
+        public const string UrlQuoteAdd = "http://dev.otegamers.com/api/v1/edge/add-quote/{0}/{1}/{2}";
 
+        // URLs
+        public const string UrlFish = "http://api.fishbans.com/stats/";
+        public const string UrlFishLink = "http://www.fishbans.com/u/";
+        public const string UrlMojangStatus = "http://status.mojang.com/check";
+
+        public static readonly List<string> McBansApiServerList = new List<string>
+        {
+            "api01.cluster.mcbans.com",
+            "api02.cluster.mcbans.com",
+            "api03.cluster.mcbans.com",
+            "api.mcbans.com"
+        }; 
+
+        // Responses
         public static readonly List<string> EightBallResponses = new List<string>
         {
             "Signs point to yes.",
@@ -78,6 +89,7 @@ namespace EdgeBot.Classes.Common
             "HUEHUEHUEHUEHUEHUEHUEHUEHUE!!"
         };
 
+        // Slap related
         public static readonly List<string> SlapActions = new List<string>
         {
             "slaps",
@@ -87,7 +99,14 @@ namespace EdgeBot.Classes.Common
             "burninates",
             "deforms",
             "macerates",
-            "nerfs"
+            "nerfs",
+            "chops",
+            "confounds",
+            "prods",
+            "decorates",
+            "draws on",
+            "clones",
+            "pinches"
         };
 
         public static readonly List<string> SlapLocations = new List<string>
@@ -97,7 +116,14 @@ namespace EdgeBot.Classes.Common
             "face",
             "arms",
             "legs",
-            "feet"
+            "feet",
+            "nose",
+            "ear",
+            "forehead",
+            "chin",
+            "cheek",
+            "spine",
+            "fingers"
         };
 
         public static readonly List<string> SlapItems = new List<string>
@@ -112,7 +138,16 @@ namespace EdgeBot.Classes.Common
             "a storm of hubris",
             "a +2 Vajra",
             "a macerator",
-            "a hastily crafted dart of force"
-        };
+            "a hastily crafted dart of force",
+            "a blue screen of death",
+            "a bag of smug-looking leaves",
+            "a ball of fried dough",
+            "a can of moon cheese",
+            "a TARDIS",
+            "a Golden Crash",
+            "a giant spear",
+            "a tiny dagger",
+            "a massive fireball"
+        }; 
     }
 }

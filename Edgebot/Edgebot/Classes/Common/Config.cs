@@ -3,7 +3,7 @@ namespace EdgeBot.Classes.Common
     /// <summary>
     /// IRC related configuration data
     /// </summary>
-    public class Config
+    public static class Config
     {
         public const string Host = "irc.esper.net:5555";
         public const string Nickname = "EdgeBot";

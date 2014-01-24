@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Instances;
 using EdgeBot.Classes.JSON;
@@ -8,9 +9,9 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes
 {
-    class Handler
+    public static class Handler
     {
-        public static void HelpHandler(IList<string> paramList)
+        public static void CommandHelp(IList<string> paramList)
         {
             var filter = "";
             switch (paramList.Count())
@@ -53,7 +54,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void DiceHandler(IList<string> paramList)
+        public static void CommandDice(IList<string> paramList)
         {
             int i;
             // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
@@ -78,7 +79,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void EightBallHandler(ICollection<string> paramList)
+        public static void CommandEight(ICollection<string> paramList)
         {
             if (paramList.Count > 1)
             {
@@ -91,7 +92,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void LogHandler(IList<string> paramList)
+        public static void CommandLog(IList<string> paramList)
         {
             int i;
             // check if params number more than 4, if the pack length is less than 5 and the server is a number
@@ -115,7 +116,7 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void MineCheckHandler()
+        public static void CommandMineCheck()
         {
             Connection.GetServerStatus(status =>
             {
@@ -124,7 +125,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void TpsHandler(IList<string> paramList)
+        public static void CommandTps(IList<string> paramList)
         {
             // Use api to retrieve data from the tps url
             Connection.GetData(Data.UrlTps, "get", jObject =>
@@ -152,7 +153,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void WikiHandler(IList<string> paramList)
+        public static void CommandWiki(IList<string> paramList)
         {
             var filter = "";
             switch (paramList.Count())
@@ -195,7 +196,7 @@ namespace EdgeBot.Classes
             }, Utils.HandleException);
         }
 
-        public static void FishHandler(IList<string> paramList, string nick)
+        public static void CommandCheck(IList<string> paramList, string nick)
         {
             if (!(paramList.Count() <= 1))
             {
@@ -212,22 +213,8 @@ namespace EdgeBot.Classes
                             Username = (string)jObject["stats"].SelectToken("username")
                         };
 
-                        var colorCode = "";
-                        if (fishBans.TotalBans == 0)
-                        {
-                            colorCode = Colors.DarkGreen;
-                        }
-                        else if (fishBans.TotalBans >= 1 && fishBans.TotalBans < 5)
-                        {
-                            colorCode = Colors.Yellow;
-                        }
-                        else if (fishBans.TotalBans > 5)
-                        {
-                            colorCode = Colors.Red;
-                        }
-
                         outputString = String.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
-                            Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, colorCode),
+                            Utils.FormatText(" Total Bans: ", Colors.Bold), Utils.FormatColor(fishBans.TotalBans, Utils.GetColorCode(fishBans.TotalBans)),
                             Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
                     }
                     else
@@ -240,11 +227,75 @@ namespace EdgeBot.Classes
                         Utils.SendNotice(outputString, nick);
                     }
                 }, Utils.HandleException);
+
+                Connection.GetPlayerLookup(paramList[1], bans =>
+                {
+                    // only report mcbans if there are bans to report
+                    if (bans == null || bans.Total <= 0) return;
+
+                    var localBans = Utils.FormatColor(bans.Local.Count, Utils.GetColorCode(bans.Local.Count));
+                    var globalBans = Utils.FormatColor(bans.Global.Count, Utils.GetColorCode(bans.Global.Count));
+                    var reputation = Utils.FormatColor(bans.Reputation, Utils.GetColorCode(bans.Reputation));
+
+                    var outputString = String.Concat(Utils.FormatText("MCBans: ", Colors.Bold),
+                        Utils.FormatText("Total: ", Colors.Bold), Utils.FormatColor(bans.Total, Utils.GetColorCode(bans.Total)), " (Local: ", localBans, ", Global: ", globalBans, ") ", Utils.FormatText("Rep: ", Colors.Bold), reputation,
+                        Utils.FormatText(" URL: ", Colors.Bold), "http://www.mcbans.com/player/", paramList[1]);
+
+                    Utils.SendNotice(outputString, nick);
+                }, Utils.HandleException);
             }
             else { Utils.SendNotice("Usage: !check <username>", nick); }
         }
 
-        public static void AnnounceHandler(IList<string> paramList, string nick)
+        public static void CommandMcb(IList<string> paramList, string nick)
+        {
+            if (paramList.Count() == 1)
+            {
+                Utils.SendNotice("Usage: !mcb <name> <optional:number>", nick);
+            }
+            else
+            {
+                Connection.GetPlayerLookup(paramList[1], bans =>
+                {
+                    if (bans.Local != null && bans.Local.Any())
+                    {
+                        var limit = 1;
+                        int i;
+                        if (paramList.Count() == 3 && Int32.TryParse(paramList[2], out i))
+                        {
+                            // a count is given
+                            limit = int.Parse(paramList[2]);
+                        }
+
+                        for (var j = 0; j < limit; j++)
+                        {
+                            var localBan =
+                                bans.Local[j].Replace("\r\n", "")
+                                    .Replace("\r", "")
+                                    .Replace("\n", "")
+                                    .Replace("\0", "")
+                                    .Split(' ');
+
+                            var banReason = "";
+                            for (var k = 4; k < localBan.Count(); k++)
+                            {
+                                banReason += localBan[k] + " ";
+                            }
+
+                            Utils.SendNotice(
+                                string.Concat("Server: ", localBan[2], ", Reason: ",
+                                    Utils.Truncate(banReason.Trim(), 25), " URL: ", "http://www.mcbans.com/ban/" + localBan[1]), nick);
+                        }
+                    }
+                    else
+                    {
+                        Utils.SendNotice("This player does not have any local bans.", nick);
+                    }
+                }, Utils.HandleException);
+            }
+        }
+
+        public static void CommandAnnounce(IList<string> paramList, string nick)
         {
             if (paramList.Count < 3)
             {
@@ -262,13 +313,19 @@ namespace EdgeBot.Classes
                 {
                     msg = msg + paramList[i] + " ";
                 }
-                Data.AnnounceMsg = msg;
-                Data.AnnounceTimes = timeCount;
+                Announcement.AnnounceMsg = msg;
+                Announcement.AnnounceTimes = timeCount;
                 Program.AnnounceTimer.Enabled = true;
             }
         }
 
-        public static void UpdateHandler(IList<string> paramList, string nick)
+        public static void CommandAuric()
+        {
+            var serverList = new List<string> { "RR1", "RR2", "Unleashed", "Pixelmon", "MagicFarm" };
+            Utils.SendChannel(serverList[new Random().Next(0, 5)] + ": Server appears to have stopped responding");
+        }
+
+        public static void CommandUpdate(IList<string> paramList, string nick)
         {
             if (paramList.Count < 2)
             {
@@ -313,18 +370,63 @@ namespace EdgeBot.Classes
             }
         }
 
-        public static void DevHandler(IList<string> paramList)
+        public static void CommandDev()
         {
             // Placeholder method for any future dev related commands
         }
 
-        public static void SmugHandler()
+        public static void CommandQuote(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            var random = new Random().Next(1, 2) - 1;
+            if (paramList.Count() == 1)
+            {
+                // display random quote
+                Connection.GetData(Data.UrlQuote, "get", jObject =>
+                {
+                    if ((bool)jObject["success"])
+                    {
+                        var quote = (string)jObject["result"].SelectToken("quote");
+                        Utils.SendChannel(string.Concat("Random Quote: ", quote));
+                    }
+                    else
+                    {
+                        Utils.SendChannel("No quotes found.");
+                    }
+                }, Utils.HandleException);
+            }
+            else
+            {
+                if (paramList[1] == "add")
+                {
+                    if (isIngameCommand == false)
+                    {
+                        var quote = "";
+                        for (var l = 2; l < paramList.Count(); l++)
+                        {
+                            quote = quote + paramList[l] + " ";
+                        }
+
+                        Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()),
+                            "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
+                    }
+                    else
+                    {
+                        Utils.SendChannel("This command is restricted to the IRC channel only.");
+                    }
+                }
+                else
+                {
+                    Utils.SendChannel("Usage: !quote add <message>");
+                }
+            }
+        }
+
+        public static void CommandSmug()
+        {
+            var random = new Random().Next(0, 2);
             Utils.SendChannel(Data.SmugResponses[random]);
         }
 
-        public static void SlapHandler(IList<string> paramList, string nick)
+        public static void CommandSlap(IList<string> paramList, string nick)
         {
             if (paramList.Count() == 1)
             {
@@ -332,9 +434,9 @@ namespace EdgeBot.Classes
             }
             else
             {
-                var target = "_" + paramList[1] + "_";
+                var target = paramList[1];
                 var random = new Random();
-                Utils.SendChannel(string.Format(Data.MessageSlap, "_" + nick + "_", Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
+                Utils.SendChannel(string.Format(Data.MessageSlap, nick, Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
             }
         }
     }
