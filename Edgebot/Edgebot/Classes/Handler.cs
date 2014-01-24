@@ -474,7 +474,7 @@ namespace EdgeBot.Classes
                 // xbuild project
                 var xbuildProc = new System.Diagnostics.Process()
                 {
-                    EnableRaisingEvents = false,
+                    EnableRaisingEvents = true,
                     StartInfo = { FileName = "xbuild", Arguments = "/home/edgebot/Edgebot/Edgebot/Edgebot.csproj"}
                 };
 
@@ -483,7 +483,7 @@ namespace EdgeBot.Classes
                 xbuildProc.WaitForExit();
                 Utils.SendNotice("Xbuild completed.", nick);
 
-                xbuildProc.OutputDataReceived += (sender, args) =>
+                xbuildProc.Exited += (sender, args) =>
                 {
                     // cp bin/Debug/* bin/Release/*
                     var cpProc = new System.Diagnostics.Process
