@@ -483,16 +483,19 @@ namespace EdgeBot.Classes
                 xbuildProc.WaitForExit();
                 Utils.SendNotice("Xbuild completed.", nick);
 
-                // cp bin/Debug/* bin/Release/*
-                var cpProc = new System.Diagnostics.Process
+                xbuildProc.OutputDataReceived += (sender, args) =>
                 {
-                    EnableRaisingEvents = false,
-                    StartInfo = { FileName = "cp", Arguments = "/home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release/*" }
-                };
+                    // cp bin/Debug/* bin/Release/*
+                    var cpProc = new System.Diagnostics.Process
+                    {
+                        EnableRaisingEvents = false,
+                        StartInfo = { FileName = "cp", Arguments = "/home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release/*" }
+                    };
 
-                cpProc.Start();
-                cpProc.WaitForExit();
-                Utils.SendNotice("Build files copied to Release", nick);
+                    cpProc.Start();
+                    cpProc.WaitForExit();
+                    Utils.SendNotice("Build files copied to Release", nick);
+                };
             }
         }
     }
