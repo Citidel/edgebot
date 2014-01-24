@@ -57,21 +57,24 @@ namespace EdgeBot.Classes
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
                 if(args.PrivateMessage.User.Nick == "RR1" | args.PrivateMessage.User.Nick == "RR2"  )
-                { 
-                var ingameMessage = args.PrivateMessage.Message.Split(':');
-                    if (ingameMessage[1].StartsWith(" !"))
+                {
+                    var ingameTemp = args.PrivateMessage.Message.Replace(": ", ":");
+                    var ingameMessage  = ingameTemp.Split(':');
+                    if (ingameMessage.Count() > 1)
                     {
-                        var ingameTemp = ingameMessage[1].Split(' ');
-                        for(int i = 1; i < ingameTemp.Count(); i++)
+                        if (ingameMessage[1].StartsWith("!"))
                         {
-                            paramList[i-1] = ingameTemp[i];
-                            Utils.SendNotice(paramList[i - 1], "Citidel");
-                            Utils.SendNotice(paramList[i - 1].Substring(1), "Citidel");
+
+                            for (int i = 0; i < ingameMessage.Count() - 1; i++)
+                            {
+                                paramList[i] = ingameMessage[i + 1];
+                                Utils.SendNotice(paramList[i], "Citidel");
+                                Utils.SendNotice(paramList[i].Substring(1), "Citidel");
+                            }
+
+
                         }
-                
-                        
                     }
-                    
                 }
                 if (args.PrivateMessage.Message.StartsWith("!") | paramList[0].StartsWith("!"))
                 {
