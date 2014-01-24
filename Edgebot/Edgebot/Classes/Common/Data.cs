@@ -17,6 +17,8 @@ namespace EdgeBot.Classes.Common
         public const string FtbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
         public const string PxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
 
+        public const string McBansApiKey = "83855ea895268ec47f2e7ea0e8a25323f11e189c";
+
         // Devs
         public static readonly List<string> Developers = new List<string>
         {
