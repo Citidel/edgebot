@@ -439,5 +439,26 @@ namespace EdgeBot.Classes
                 Utils.SendChannel(string.Format(Data.MessageSlap, nick, Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
             }
         }
+
+        public static void CommandEdgebot(IEnumerable<string> paramList, string nick)
+        {
+            if (paramList.Count() == 1)
+            {
+                Utils.SendChannel("Usage: !edgebot update");
+            }
+            else
+            {
+                var proc = new System.Diagnostics.Process
+                {
+                    EnableRaisingEvents = false,
+                    StartInfo = {FileName = "git", Arguments = "pull origin auto-update"}
+                };
+
+                proc.Start();
+                Utils.SendNotice("Starting git pull process.", nick);
+                proc.WaitForExit();
+                Utils.SendNotice("Git pull process complete.", nick);
+            }
+        }
     }
 }

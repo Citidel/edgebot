@@ -217,6 +217,19 @@ namespace EdgeBot.Classes
                         case "quote":
                             Handler.CommandQuote(paramList, args.PrivateMessage.User, isIngameCommand);
                             break;
+
+                        // !edgebot update
+                        case "edgebot":
+                            if (Utils.IsDev(args.PrivateMessage.User.Nick) ||
+                                Utils.IsAdmin(args.PrivateMessage.User.Nick))
+                            {
+                                Handler.CommandEdgebot(paramList, args.PrivateMessage.User.Nick);
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is restricted to developers or server admins only.");
+                            }
+                            break;
                     }
                 }
 
