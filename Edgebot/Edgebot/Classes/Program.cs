@@ -141,6 +141,10 @@ namespace EdgeBot.Classes
                             Handler.CommandEight(paramList);
                             break;
 
+                        case "auric":
+                            Handler.CommandAuric();
+                            break;
+
                         // !dice <number> <sides>
                         case "dice":
                             Handler.CommandDice(paramList);

@@ -319,6 +319,12 @@ namespace EdgeBot.Classes
             }
         }
 
+        public static void CommandAuric()
+        {
+            var serverList = new List<string> { "RR1", "RR2", "Unleashed", "Pixelmon", "MagicFarm" };
+            Utils.SendChannel(serverList[new Random().Next(0, 5)] + ": Server has stopped responding.");
+        }
+
         public static void CommandUpdate(IList<string> paramList, string nick)
         {
             if (paramList.Count < 2)
