@@ -1,0 +1,2 @@
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\bin\Debug\EdgeBot.exe.config
+C:\Users\Citidel\Documents\GitHub\edgebot\Edgebot\Edgebot\obj\x86\Debug\Edgebot.csprojResolveAssemblyReference.cache
