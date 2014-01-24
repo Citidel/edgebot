@@ -448,6 +448,7 @@ namespace EdgeBot.Classes
             }
             else
             {
+                // git pull origin feature/auto-update
                 var gitProc = new System.Diagnostics.Process
                 {
                     EnableRaisingEvents = false,
@@ -459,6 +460,18 @@ namespace EdgeBot.Classes
                 gitProc.WaitForExit();
                 Utils.SendNotice("Git pull process complete.", nick);
 
+                // rm -r bin/Debug/*
+                var rmProc = new System.Diagnostics.Process
+                {
+                    EnableRaisingEvents = false,
+                    StartInfo = { FileName = "rm", Arguments = "-r /home/edgebot/Edgebot/Edgebot/bin/Debug/*" }
+                };
+
+                rmProc.Start();
+                rmProc.WaitForExit();
+                Utils.SendNotice("Old build files removed.", nick);
+
+                // xbuild project
                 var xbuildProc = new System.Diagnostics.Process()
                 {
                     EnableRaisingEvents = false,
@@ -466,7 +479,20 @@ namespace EdgeBot.Classes
                 };
 
                 xbuildProc.Start();
+                Utils.SendNotice("Starting xbuild.", nick);
                 xbuildProc.WaitForExit();
+                Utils.SendNotice("Xbuild completed.", nick);
+
+                // cp bin/Debug/* bin/Release/*
+                var cpProc = new System.Diagnostics.Process
+                {
+                    EnableRaisingEvents = false,
+                    StartInfo = { FileName = "cp", Arguments = "/home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release/*" }
+                };
+
+                cpProc.Start();
+                cpProc.WaitForExit();
+                Utils.SendNotice("Build files copied to Release", nick);
             }
         }
     }
