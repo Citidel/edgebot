@@ -17,12 +17,16 @@ namespace EdgeBot.Classes
         public static readonly List<Blacklist> BlackList = new List<Blacklist>();
         public static string McBansApiUrl = "";
         private static string _nickServAuth = "";
+        private static string _commandPrefix = "";
 
         static void Main(string[] argArray)
         {
             if (argArray.Any()) _nickServAuth = argArray[0];
-            AnnounceTimer = new Timer();
 
+            // set the command prefix to $ if debug mode
+            _commandPrefix = string.IsNullOrEmpty(_nickServAuth) ? "$" : "!";
+
+            AnnounceTimer = new Timer();
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += (s, e) => Utils.Log("Error: " + e.SocketError);
             Client.ConnectionComplete += (s, e) =>
@@ -72,7 +76,7 @@ namespace EdgeBot.Classes
                     {
                         try
                         {
-                            if (ingameMessage[1].StartsWith(" !"))
+                            if (ingameMessage[1].StartsWith(" " + _commandPrefix))
                             {
                                 paramList = ingameMessage[1].Trim().Split(' ');
                                 isIngameCommand = true;
@@ -84,7 +88,7 @@ namespace EdgeBot.Classes
                     }
                 }
 
-                if (args.PrivateMessage.Message.StartsWith("!") || paramList[0].StartsWith("!"))
+                if (args.PrivateMessage.Message.StartsWith(_commandPrefix) || paramList[0].StartsWith(_commandPrefix))
                 {
                     // Only listen to people who are not blacklisted
                     if (BlackList.All(item => item.Ip != args.PrivateMessage.User.Hostname) || Utils.IsAdmin(args.PrivateMessage.User.Nick) || Utils.IsOp(args.PrivateMessage.User.Nick) )
@@ -273,33 +277,37 @@ namespace EdgeBot.Classes
                 }
 
                 //listen for www or http(s)
-                if (args.PrivateMessage.Message.Contains("http://") || args.PrivateMessage.Message.Contains("https://") || args.PrivateMessage.Message.Contains("www."))
+                if (!string.IsNullOrEmpty(_nickServAuth))
                 {
-                    for (var i = 0; i < paramList.Count(); i++)
+                    if (args.PrivateMessage.Message.Contains("http://") ||
+                        args.PrivateMessage.Message.Contains("https://") || args.PrivateMessage.Message.Contains("www."))
                     {
-                        var url = "";
-                        if (paramList[i].Contains("http://") || paramList[i].Contains("https://"))
+                        for (var i = 0; i < paramList.Count(); i++)
                         {
-                            url = paramList[i];
-                        }
-                        else if (paramList[i].Contains("www."))
-                        {
-                            url = string.Concat("http://", paramList[i]);
-                        }
-
-                        if (!string.IsNullOrEmpty(url))
-                        {
-                            Connection.GetLinkTitle(url, title =>
+                            var url = "";
+                            if (paramList[i].Contains("http://") || paramList[i].Contains("https://"))
                             {
-                                if (!string.IsNullOrEmpty(title))
+                                url = paramList[i];
+                            }
+                            else if (paramList[i].Contains("www."))
+                            {
+                                url = string.Concat("http://", paramList[i]);
+                            }
+
+                            if (!string.IsNullOrEmpty(url))
+                            {
+                                Connection.GetLinkTitle(url, title =>
                                 {
-                                    Utils.SendChannel("URL TITLE: " + title);
-                                }
-                                else
-                                {
-                                    Utils.Log("Connection: Result is null");
-                                }
-                            }, Utils.HandleException);
+                                    if (!string.IsNullOrEmpty(title))
+                                    {
+                                        Utils.SendChannel("URL TITLE: " + title);
+                                    }
+                                    else
+                                    {
+                                        Utils.Log("Connection: Result is null");
+                                    }
+                                }, Utils.HandleException);
+                            }
                         }
                     }
                 }
