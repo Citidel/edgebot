@@ -441,8 +441,8 @@ namespace EdgeBot.Classes
         }
         public static void CommandBlacklist(IList<string> paramList, IrcUser user, IrcClient Client)
         {
-            Client.WhoIs(paramList[2], whois => 
-                Connection.GetData(string.Format(Data.UrlBlacklistAdd, whois.User.Hostmask, user.Nick), "get", jObject => Utils.SendChannel("Blacklist successfully added."), Utils.HandleException));
+            Client.WhoIs((string)paramList[2], whois => 
+                Connection.GetData(string.Format(Data.UrlBlacklistAdd,  whois.User.Hostmask.Replace(paramList[2]+"!"+paramList[2]+"@", ""), user.Nick), "get", jObject => Utils.SendChannel("Blacklist successfully added."), Utils.HandleException));
          }
     }
 }
