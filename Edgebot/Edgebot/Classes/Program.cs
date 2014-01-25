@@ -62,8 +62,6 @@ namespace EdgeBot.Classes
             Client.ChannelMessageRecieved += (sender, args) =>
             {
                 var isIngameCommand = false;
-                //Utils.SendNotice((BlackList.Contains(new Blacklist { Ip = blackListCheck }).ToString()),"Citidel");
-                //if (BlackList.Contains(new Blacklist { Ip = blackListCheck})) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
 
@@ -89,7 +87,7 @@ namespace EdgeBot.Classes
                 if (args.PrivateMessage.Message.StartsWith("!") || paramList[0].StartsWith("!"))
                 {
                     // Only listen to people who are not blacklisted
-                    if (BlackList.All(item => item.Ip != args.PrivateMessage.User.Hostname))
+                    if (BlackList.All(item => item.Ip != args.PrivateMessage.User.Hostname) || Utils.IsAdmin(args.PrivateMessage.User.Nick) || Utils.IsOp(args.PrivateMessage.User.Nick) )
                     {
                         switch (paramList[0].Substring(1))
                         {
