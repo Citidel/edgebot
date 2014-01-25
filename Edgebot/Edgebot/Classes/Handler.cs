@@ -444,6 +444,7 @@ namespace EdgeBot.Classes
             if (paramList.Count() < 2)
             {
                 Utils.SendNotice("Usage: !edgebot blacklist IRCUSERNAME", user.Nick);
+                Program.PopulateBlacklist();
             } else
             { 
             Program.Client.WhoIs(paramList[2], whois => Connection.GetData(
