@@ -351,7 +351,7 @@ namespace EdgeBot.Classes
         }
         public static void PopulateBlacklist()
         {
-            ServerList.Clear();
+            BlackList.Clear();
             // pull addresses from api
             Connection.GetData(Data.UrlBlacklist, "get", jObject =>
             {
