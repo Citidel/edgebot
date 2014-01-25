@@ -485,11 +485,11 @@ namespace EdgeBot.Classes
 
                 xbuildProc.Exited += (sender, args) =>
                 {
-                    // cp bin/Debug/* bin/Release/*
+                    // cp -r bin/Debug/* bin/Release/*
                     var cpProc = new System.Diagnostics.Process
                     {
                         EnableRaisingEvents = false,
-                        StartInfo = { FileName = "cp", Arguments = "/home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release" }
+                        StartInfo = { FileName = "cp", Arguments = "-r /home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release" }
                     };
 
                     cpProc.Start();
