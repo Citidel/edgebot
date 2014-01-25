@@ -489,7 +489,7 @@ namespace EdgeBot.Classes
                     var cpProc = new System.Diagnostics.Process
                     {
                         EnableRaisingEvents = false,
-                        StartInfo = { FileName = "cp", Arguments = "/home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release/*" }
+                        StartInfo = { FileName = "cp", Arguments = "/home/edgebot/Edgebot/Edgebot/bin/Debug/* /home/edgebot/Edgebot/Edgebot/bin/Release" }
                     };
 
                     cpProc.Start();
