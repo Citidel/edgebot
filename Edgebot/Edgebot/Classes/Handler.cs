@@ -441,6 +441,11 @@ namespace EdgeBot.Classes
         }
         public static void CommandBlacklist(IList<string> paramList, IrcUser user)
         {
+            if (paramList.Count() < 2)
+            {
+                Utils.SendNotice("Usage: !edgebot blacklist IRCUSERNAME", user.Nick);
+            } else
+            { 
             Program.Client.WhoIs(paramList[2], whois => Connection.GetData(
                 string.Format(Data.UrlBlacklistAdd,
                     whois.User.Hostname, user.Nick), "get",
@@ -449,6 +454,7 @@ namespace EdgeBot.Classes
                     Utils.SendChannel("Blacklist successfully added.");
                     Program.PopulateBlacklist();
                 }, Utils.HandleException));
+            }
          }
     }
 }
