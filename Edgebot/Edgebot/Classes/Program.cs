@@ -14,6 +14,7 @@ namespace EdgeBot.Classes
         public static Timer AnnounceTimer;
         public static IrcClient Client;
         public static readonly List<Server> ServerList = new List<Server>();
+        public static readonly List<Blacklist> BlackList = new List<Blacklist>();
         public static string McBansApiUrl = "";
         private static string _nickServAuth = "";
 
@@ -47,6 +48,7 @@ namespace EdgeBot.Classes
                 };
 
                 PopulateServers();
+                PopulateBlacklist();
                 McBansApiUrl = GetApiServer();
             };
             Client.UserMessageRecieved += (s, e) =>
@@ -60,8 +62,8 @@ namespace EdgeBot.Classes
             Client.ChannelMessageRecieved += (sender, args) =>
             {
                 var isIngameCommand = false;
-                // Only listen to !commands
-                //if (!Utils.IsDev(args.PrivateMessage.User.Nick) || !args.PrivateMessage.Message.StartsWith("!")) return;
+                // Only listen to people who are not blacklisted
+                if (BlackList.Contains(new Blacklist { Ip = args.PrivateMessage.User.Hostmask})) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
 
@@ -235,12 +237,21 @@ namespace EdgeBot.Classes
 
                         // !edgebot shutdown
                         case "edgebot":
-                             if (paramList[1] == "shutdown" ){
+                            if (paramList.Length > 1) { 
                                 if (Utils.IsDev(args.PrivateMessage.User.Nick) || Utils.IsAdmin(args.PrivateMessage.User.Nick))
-                                {
-                                    Environment.Exit(0);
+                                { 
+                                 if (paramList[1] == "shutdown" ){
+                              
+                                    {
+                                        Environment.Exit(0);
+                                    }
+                                 }
+                                 else if (paramList[1] == "blacklist") 
+                                 {
+                                     Handler.CommandBlacklist(paramList, args.PrivateMessage.User, Client);
+                                 }
                                 }
-                             }
+                            }
                          break;
                     }
                 }
@@ -331,6 +342,27 @@ namespace EdgeBot.Classes
                     }
 
                     Utils.Log("Server addresses retrieved from API");
+                }
+                else
+                {
+                    Utils.Log("Failed to query for servers.");
+                }
+            }, Utils.HandleException);
+        }
+        public static void PopulateBlacklist()
+        {
+            ServerList.Clear();
+            // pull addresses from api
+            Connection.GetData(Data.UrlBlacklist, "get", jObject =>
+            {
+                if ((bool)jObject["success"])
+                {
+                    foreach (var row in jObject["result"])
+                    {
+                        BlackList.Add(new Blacklist { Ip = (string)row["ip"]});
+                    }
+
+                    Utils.Log("Bot Blacklist retrieved from API");
                 }
                 else
                 {

@@ -84,6 +84,7 @@
     <Compile Include="Classes\Common\Utils.cs" />
     <Compile Include="Classes\Handler.cs" />
     <Compile Include="Classes\Instances\Announcement.cs" />
+    <Compile Include="Classes\Instances\Blacklist.cs" />
     <Compile Include="Classes\Instances\McBans.cs" />
     <Compile Include="Classes\Instances\Server.cs" />
     <Compile Include="Classes\Instances\FishBans.cs" />

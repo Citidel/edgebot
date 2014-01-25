@@ -43,6 +43,8 @@ namespace EdgeBot.Classes.Common
         public const string UrlCrashLog = "http://dev.otegamers.com/api/v1/edge/last-crash-log/{0}/{1}";
         public const string UrlQuote = "http://dev.otegamers.com/api/v1/edge/quote";
         public const string UrlQuoteAdd = "http://dev.otegamers.com/api/v1/edge/add-quote/{0}/{1}/{2}";
+        public const string UrlBlacklist = "http://dev.otegamers.com/api/v1/edge/blacklist";
+        public const string UrlBlacklistAdd = "http://dev.otegamers.com/api/v1/edge/add-blacklist/{0}/{1}";
 
         // URLs
         public const string UrlFish = "http://api.fishbans.com/stats/";
