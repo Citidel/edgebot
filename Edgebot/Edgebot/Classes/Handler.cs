@@ -441,7 +441,7 @@ namespace EdgeBot.Classes
         }
         public static void CommandBlacklist(IList<string> paramList, IrcUser user)
         {
-            if (paramList.Count() < 2)
+            if (paramList.Count() < 3)
             {
                 Utils.SendNotice("Usage: !edgebot blacklist IRCUSERNAME", user.Nick);
                 Program.PopulateBlacklist();
