@@ -168,9 +168,17 @@ namespace EdgeBot.Classes
                         case "8":
                             Handler.CommandEight(paramList);
                             break;
-
+                        
+                        // !auric
                         case "auric":
-                            Handler.CommandAuric();
+                            if (Utils.IsOp(args.PrivateMessage.User.Nick) || args.PrivateMessage.User.Nick == "Auric" || args.PrivateMessage.User.Nick == "Auric_Polaris")
+                            {
+                                Handler.CommandAuric();
+                            }
+                            else
+                            {
+                                Utils.SendChannel("This command is useless.");
+                            }
                             break;
 
                         // !dice <number> <sides>
@@ -224,13 +232,14 @@ namespace EdgeBot.Classes
                         case "quote":
                             Handler.CommandQuote(paramList, args.PrivateMessage.User, isIngameCommand);
                             break;
+
+                        // !edgebot shutdown
                         case "edgebot":
                              if (paramList[1] == "shutdown" ){
                                 if (Utils.IsDev(args.PrivateMessage.User.Nick) || Utils.IsAdmin(args.PrivateMessage.User.Nick))
                                 {
                                     Environment.Exit(0);
                                 }
-
                              }
                          break;
                     }
@@ -310,6 +319,7 @@ namespace EdgeBot.Classes
 
         public static void PopulateServers()
         {
+            ServerList.Clear();
             // pull addresses from api
             Connection.GetData(Data.UrlAddress, "get", jObject =>
             {
