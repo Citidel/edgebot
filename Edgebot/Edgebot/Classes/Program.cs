@@ -49,7 +49,14 @@ namespace EdgeBot.Classes
                 PopulateServers();
                 McBansApiUrl = GetApiServer();
             };
-
+            Client.UserMessageRecieved += (s, e) =>
+            {
+                if (Utils.IsDev(e.PrivateMessage.User.Nick))             
+                    if (e.PrivateMessage.Message.StartsWith("!msg "))
+                        Utils.SendChannel(e.PrivateMessage.Message.Substring(5));
+                
+                
+            };
             Client.ChannelMessageRecieved += (sender, args) =>
             {
                 var isIngameCommand = false;
@@ -217,6 +224,15 @@ namespace EdgeBot.Classes
                         case "quote":
                             Handler.CommandQuote(paramList, args.PrivateMessage.User, isIngameCommand);
                             break;
+                        case "edgebot":
+                             if (paramList[1] == "shutdown" ){
+                                if (Utils.IsDev(args.PrivateMessage.User.Nick) || Utils.IsAdmin(args.PrivateMessage.User.Nick))
+                                {
+                                    Environment.Exit(0);
+                                }
+
+                             }
+                         break;
                     }
                 }
 
@@ -259,7 +275,7 @@ namespace EdgeBot.Classes
 
                 //Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             };
-
+              
             //_client.ChannelMessageRecieved += (sender, args) => Utils.Log("<{0}> {1}", args.PrivateMessage.User.Nick, args.PrivateMessage.Message);
             Client.UserJoinedChannel += (sender, args) => Utils.SendNotice(String.Format(Data.MessageJoinChannel, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
 
@@ -269,7 +285,7 @@ namespace EdgeBot.Classes
             {
                 Utils.Log("Warning, nick serv authentication password is empty.");
             }
-
+            
             Utils.Log("Connecting to IRC...");
             Client.ConnectAsync();
             while (true)
