@@ -63,10 +63,11 @@ namespace EdgeBot.Classes
             {
                 var isIngameCommand = false;
                 // Only listen to people who are not blacklisted
-                var blackListCheck = "";
-                 Client.WhoIs(args.PrivateMessage.User.Nick, whois => 
-                     blackListCheck = whois.User.Hostmask.Replace(args.PrivateMessage.User.Nick+"!"+args.PrivateMessage.User.Nick+"@", ""));
-                if (BlackList.Contains(new Blacklist { Ip = blackListCheck})) return;
+                bool blackListCheck = false;
+                Client.WhoIs(args.PrivateMessage.User.Nick, whois => blackListCheck = BlackList.Contains(new Blacklist { Ip = whois.User.Hostmask.Replace(args.PrivateMessage.User.Nick + "!" + args.PrivateMessage.User.Nick + "@", "") }));
+                 Utils.SendNotice(blackListCheck.ToString(), "Citidel");
+                 //Utils.SendNotice((BlackList.Contains(new Blacklist { Ip = blackListCheck }).ToString()),"Citidel");
+                //if (BlackList.Contains(new Blacklist { Ip = blackListCheck})) return;
                 var message = args.PrivateMessage.Message;
                 var paramList = message.Split(' ');
 
