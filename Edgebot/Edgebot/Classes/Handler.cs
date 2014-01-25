@@ -439,10 +439,16 @@ namespace EdgeBot.Classes
                 Utils.SendChannel(string.Format(Data.MessageSlap, nick, Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
             }
         }
-        public static void CommandBlacklist(IList<string> paramList, IrcUser user, IrcClient Client)
+        public static void CommandBlacklist(IList<string> paramList, IrcUser user)
         {
-            Client.WhoIs((string)paramList[2], whois => 
-                Connection.GetData(string.Format(Data.UrlBlacklistAdd,  whois.User.Hostmask.Replace(paramList[2]+"!"+paramList[2]+"@", ""), user.Nick), "get", jObject => Utils.SendChannel("Blacklist successfully added."), Utils.HandleException));
+            Program.Client.WhoIs(paramList[2], whois => Connection.GetData(
+                string.Format(Data.UrlBlacklistAdd,
+                    whois.User.Hostname, user.Nick), "get",
+                jObject =>
+                {
+                    Utils.SendChannel("Blacklist successfully added.");
+                    Program.PopulateBlacklist();
+                }, Utils.HandleException));
          }
     }
 }
