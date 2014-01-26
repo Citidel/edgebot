@@ -61,7 +61,7 @@ namespace EdgeBot.Classes.Commands
 
                 case "commands":
                     var commands = Program.Commands.OrderBy(pair => pair.Value.Listener).Aggregate("", (current, item) => current + (item.Value.Listener + " "));
-                    Utils.SendNotice("The following commands are valid for Edgebot: " + commands.Trim(), user.Nick);
+                    Utils.SendChannel("The following commands are valid for Edgebot: " + commands.Trim());
                     break;
             }
         }

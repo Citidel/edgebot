@@ -74,7 +74,7 @@ namespace EdgeBot.Classes
             Client.UserMessageRecieved += (s, e) =>
             {
                 if (!Utils.IsDev(e.PrivateMessage.User.Nick)) return;
-                if (e.PrivateMessage.Message.StartsWith("!msg "))
+                if (e.PrivateMessage.Message.StartsWith(_commandPrefix + "msg "))
                     Utils.SendChannel(e.PrivateMessage.Message.Substring(5));
             };
 
