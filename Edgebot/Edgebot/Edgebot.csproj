@@ -77,12 +77,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Commands\Edgebot.cs" />
+    <Compile Include="Classes\Commands\JokeDice.cs" />
+    <Compile Include="Classes\Commands\JokeEight.cs" />
+    <Compile Include="Classes\Commands\JokeSmug.cs" />
+    <Compile Include="Classes\Commands\JokeSlap.cs" />
+    <Compile Include="Classes\Commands\ServerLog.cs" />
+    <Compile Include="Classes\Commands\JokeAuric.cs" />
+    <Compile Include="Classes\Commands\ServerStatus.cs" />
+    <Compile Include="Classes\Commands\TicksPerSecond.cs" />
+    <Compile Include="Classes\Commands\Announcement.cs" />
+    <Compile Include="Classes\Commands\McBans.cs" />
+    <Compile Include="Classes\Commands\Check.cs" />
+    <Compile Include="Classes\Commands\Quote.cs" />
+    <Compile Include="Classes\Commands\Update.cs" />
+    <Compile Include="Classes\Commands\Help.cs" />
+    <Compile Include="Classes\Commands\Wiki.cs" />
     <Compile Include="Classes\Common\Colors.cs" />
     <Compile Include="Classes\Common\Config.cs" />
     <Compile Include="Classes\Common\Connection.cs" />
     <Compile Include="Classes\Common\Data.cs" />
     <Compile Include="Classes\Common\Utils.cs" />
-    <Compile Include="Classes\Handler.cs" />
+    <Compile Include="Classes\Core\Command.cs" />
+    <Compile Include="Classes\Core\CommandHandler.cs" />
     <Compile Include="Classes\Instances\Announcement.cs" />
     <Compile Include="Classes\Instances\Blacklist.cs" />
     <Compile Include="Classes\Instances\McBans.cs" />
