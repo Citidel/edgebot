@@ -172,9 +172,7 @@ namespace EdgeBot.Classes
 
             Utils.Log("Connecting to IRC...");
             Client.ConnectAsync();
-            while (true)
-            {
-            }
+            Console.ReadKey();
         }
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
