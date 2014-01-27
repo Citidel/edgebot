@@ -22,8 +22,7 @@ namespace EdgeBot.Classes.Commands
                 {
                     if ((bool)jObject["success"])
                     {
-                        var quote = (string)jObject["result"].SelectToken("quote");
-                        Utils.SendChannel(string.Concat("Random Quote: ", quote));
+                        Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
                     }
                     else
                     {
