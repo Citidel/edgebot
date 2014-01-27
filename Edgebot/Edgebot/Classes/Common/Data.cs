@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 
 namespace EdgeBot.Classes.Common
 {
@@ -12,10 +13,7 @@ namespace EdgeBot.Classes.Common
         public const string MessageIdentified = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
         public const string MessageRestricted = "This command is restricted to ops only.";
         public const string MessageSlap = "{0} {1} {2}'s {3} with {4}";
-
-        public const string RrUpdate = "Please go to: http://www.otegamers.com/topic/6945- for Resonant Rise update info";
-        public const string FtbUpdate = "Please go to: http://www.otegamers.com/topic/6383- for Unleashed update info";
-        public const string PxUpdate = "Please go to: http://www.otegamers.com/topic/7683- for Pixelmon update info";
+        public const string MessageUpdate = "Server Version: {0}, Update information: {1}";
 
         public const string McBansApiKey = "83855ea895268ec47f2e7ea0e8a25323f11e189c";
 
@@ -33,7 +31,7 @@ namespace EdgeBot.Classes.Common
             "Cozza38",
             "Cozza38_",
             "Ryahn"
-        }; 
+        };
 
         // OTE API
         public const string UrlTps = "http://dev.otegamers.com/api/v1/edge/tps";
@@ -57,7 +55,14 @@ namespace EdgeBot.Classes.Common
             "api02.cluster.mcbans.com",
             "api03.cluster.mcbans.com",
             "api.mcbans.com"
-        }; 
+        };
+
+        public static readonly Dictionary<KeyValuePair<string, string>, KeyValuePair<string, string>> UpdateDict = new Dictionary<KeyValuePair<string, string>, KeyValuePair<string, string>>
+        {
+            {new KeyValuePair<string, string>("rr","1"), new KeyValuePair<string, string>("rr","http://www.otegamers.com/topic/6945-")},
+            {new KeyValuePair<string, string>("fu","1"), new KeyValuePair<string, string>("unleashed","http://www.otegamers.com/topic/6383-")},
+            {new KeyValuePair<string, string>("px","1"), new KeyValuePair<string, string>("pixelmon","http://www.otegamers.com/topic/7683-")},
+        };
 
         // Responses
         public static readonly List<string> EightBallResponses = new List<string>
@@ -149,6 +154,6 @@ namespace EdgeBot.Classes.Common
             "a giant spear",
             "a tiny dagger",
             "a massive fireball"
-        }; 
+        };
     }
 }

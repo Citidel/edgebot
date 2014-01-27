@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
@@ -14,46 +15,44 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            if (paramList.Count < 2)
+            if (paramList.Count == 1 || paramList.Count > 2)
             {
-                Utils.SendChannel("Current Version: " + Utils.GetVersion("rr", "1"));
-                Utils.SendChannel(Data.RrUpdate);
+                Utils.SendChannel("Usage: !update <type> or !update list to view types.");
+                return;
             }
-            else
+
+            var keyword = paramList[1];
+            switch (keyword)
             {
-                switch (paramList[1])
-                {
-                    case "rr":
-                        Utils.SendChannel("Current Version: " + Utils.GetVersion("rr", "1"));
-                        Utils.SendChannel(Data.RrUpdate);
-                        break;
+                case "reload":
+                    if (Utils.IsOp(user.Nick))
+                    {
+                        Program.PopulateServers();
+                    }
+                    else
+                    {
+                        Utils.SendChannel(Data.MessageRestricted);
+                    }
+                    break;
 
-                    case "ftb":
-                        Utils.SendChannel("Current Version: " + Utils.GetVersion("fu", "1"));
-                        Utils.SendChannel(Data.FtbUpdate);
-                        break;
+                case "list":
+                    var outputString = Data.UpdateDict.Aggregate("Valid servers: ", (current, item) => current + (item.Value.Key + " "));
+                    Utils.SendChannel(outputString.Trim());
+                    break;
 
-                    case "px":
-                        Utils.SendChannel("Current Version: " + Utils.GetVersion("px", "1"));
-                        Utils.SendChannel(Data.PxUpdate);
-                        break;
+                default:
+                    var exists = false;
+                    foreach (var item in Data.UpdateDict.Where(item => item.Value.Key == keyword))
+                    {
+                        Utils.SendChannel(string.Format(Data.MessageUpdate, Utils.GetVersion(item.Key.Key, item.Key.Value), item.Value.Value));
+                        exists = true;
+                    }
 
-                    case "reload":
-                        if (Utils.IsOp(user.Nick))
-                        {
-                            Program.PopulateServers();
-                        }
-                        else
-                        {
-                            Utils.SendChannel(Data.MessageRestricted);
-                        }
-                        break;
-
-                    default:
-                        Utils.SendChannel("Current Version: " + Utils.GetVersion("rr", "1"));
-                        Utils.SendChannel(Data.RrUpdate);
-                        break;
-                }
+                    if (!exists)
+                    {
+                        Utils.SendChannel("Invalid server. Type !update list for a list of valid servers.");
+                    }
+                    break;
             }
         }
     }
