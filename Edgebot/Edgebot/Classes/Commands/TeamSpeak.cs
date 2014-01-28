@@ -31,6 +31,90 @@ namespace EdgeBot.Classes.Commands
                     }
                 }, Utils.HandleException);
             }
+            else
+            {
+                if (Utils.IsOp(user.Nick))
+                {
+                    switch (paramList[1])
+                    {
+                        case "next":
+                            Connection.GetTs3(Data.UrlTs3Next, s =>
+                            {
+                                Utils.SendChannel("Music Bot: Next Track");
+
+                            }, Utils.HandleException);
+                            break;
+                        case "prev":
+                            Connection.GetTs3(Data.UrlTs3Prev, s =>
+                            {
+                                Utils.SendChannel("Music Bot: Previous Track");
+
+                            }, Utils.HandleException);
+                            break;
+                        case "vol":
+                            if (Utils.IsAdmin(user.Nick) || Utils.IsDev(user.Nick))
+                            {
+                                if (paramList.Count < 3)
+                                {
+                                    Utils.SendChannel("To set the Volume use: !ts vol 0 to 100");
+                                }
+                                else
+                                {
+                                    Connection.GetTs3(string.Format(Data.UrlTs3Vol, paramList[2]), s =>
+                                    {
+                                        Utils.SendChannel("Music Bot Volume set to: " + paramList[2]);
+
+                                    }, Utils.HandleException);
+
+                                }
+                            }
+                            else
+                            {
+                                Utils.SendChannel("Only Admins can set the Bot Volume from IRC");
+                            }
+                            break;
+                        case "stop":
+                            Connection.GetTs3(Data.UrlTs3Stop, s =>
+                            {
+                                Utils.SendChannel("Music Bot Stoppig Music");
+
+                            }, Utils.HandleException);
+
+                            break;
+                        case "play":
+                            Connection.GetTs3(Data.UrlTs3Pause, s =>
+                            {
+                                Utils.SendChannel("Music Bot: Play\\Pause button Pressed");
+
+                            }, Utils.HandleException);
+                            break;
+                        case "classic":
+                            Connection.GetTs3(Data.UrlStation1, s =>
+                            {
+                                Utils.SendChannel("Music Bot Staion changed to: Classic Rock FM1");
+
+                            }, Utils.HandleException);
+                            break;
+
+                        case "ngr":
+                            Connection.GetTs3(Data.UrlStation2, s =>
+                            {
+                                Utils.SendChannel("Music Bot Staion changed to: NetGamesRadio");
+
+                            }, Utils.HandleException);
+                            break;
+
+                    }
+                }
+                else
+                {
+                    Utils.SendChannel("Only Ops can control the bot from IRC");
+                }
+
+            }
         }
+
     }
 }
+
+

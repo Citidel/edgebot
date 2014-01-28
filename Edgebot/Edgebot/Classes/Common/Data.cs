@@ -45,10 +45,13 @@ namespace EdgeBot.Classes.Common
 
         // TS3 API
         public const string UrlTs3NowPlaying = "http://otegamers.com:8080/getnowPlaying";
-        public const string UrlTs3Next = "http://otegamers.com:8080/getnowPlaying";
-        public const string UrlTs3Prev = "http://otegamers.com:8080/getnowPlaying";
-        public const string UrlTs3Stop = "http://otegamers.com:8080/getnowPlaying";
+        public const string UrlTs3Next = "http://otegamers.com:8080/next";
+        public const string UrlTs3Prev = "http://otegamers.com:8080/prev";
+        public const string UrlTs3Stop = "http://otegamers.com:8080/stop";
+        public const string UrlTs3Pause = "http://otegamers.com:8080/pause";
         public const string UrlTs3Vol = "http://otegamers.com:8080/setvolume?vol={0}";
+        public const string UrlStation1 = "http://otegamers.com:8080/play?folder=radio&file=1.fm%20Classic%20Rock%20Replay.pls";
+        public const string UrlStation2 = "http://otegamers.com:8080/play?folder=radio&file=netgameradio.pls";
 
         // URLs
         public const string UrlFish = "http://api.fishbans.com/stats/";

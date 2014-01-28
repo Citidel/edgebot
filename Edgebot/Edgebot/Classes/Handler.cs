@@ -445,7 +445,7 @@ namespace EdgeBot.Classes
             WebClient client = new WebClient();
             client.Method = "GET";
             var returnString = client.DownloadString(url);
-            var regex = new Regex(@"(\[url\]*.*)", RegexOptions.IgnoreCase);
+            var regex = new Regex(@"\'*.*\.", RegexOptions.IgnoreCase);
             returnString = regex.Match(returnString).Value.Trim();
             Utils.SendNotice(returnString, "Citidel");
 
