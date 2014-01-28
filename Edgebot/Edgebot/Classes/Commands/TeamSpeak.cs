@@ -56,7 +56,7 @@ namespace EdgeBot.Classes.Commands
                             {
                                 if (paramList.Count < 3)
                                 {
-                                    Utils.SendChannel("To set the Volume use: !ts vol 0 to 100");
+                                    Utils.SendNotice("To set the Volume use: !ts vol 0 to 100", user.Nick);
                                 }
                                 else
                                 {
@@ -70,7 +70,7 @@ namespace EdgeBot.Classes.Commands
                             }
                             else
                             {
-                                Utils.SendChannel("Only Admins can set the Bot Volume from IRC");
+                                Utils.SendNotice(user.Nick + "  Only Admins can set the Bot Volume from IRC", user.Nick);
                             }
                             break;
                         case "stop":
