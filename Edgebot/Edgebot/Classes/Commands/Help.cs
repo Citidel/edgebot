@@ -18,45 +18,46 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            var filter = "";
-            switch (paramList.Count())
+            if (paramList.Count == 1)
             {
-                case 1:
-                    break;
-                case 2:
-                    filter = paramList[1];
-                    break;
-
-                default:
-                    Utils.SendChannel("Usage: !help");
-                    return;
+                Utils.SendChannel("Usage: !help <keyword>, !help list to see keywords.");
             }
-
-            var url = !String.IsNullOrEmpty(filter) ? Data.UrlHelp + "/" + filter : Data.UrlHelp + "/all";
-            Connection.GetData(url, "get", jObject =>
+            else if (paramList.Count == 2)
             {
-                if ((bool)jObject["success"])
+                var filter = "";
+                if (paramList[1] != "list")
                 {
-                    string outputString;
-                    const string delimiter = ", ";
-                    if (!String.IsNullOrEmpty(filter))
+                    filter = paramList[1];
+                }
+                var url = !String.IsNullOrEmpty(filter) ? Data.UrlHelp + "/" + filter : Data.UrlHelp + "/all";
+                Connection.GetData(url, "get", jObject =>
+                {
+                    if ((bool) jObject["success"])
                     {
-                        var help = JsonConvert.DeserializeObject<JsonHelp>(jObject["result"].ToString());
-                        outputString = help.Value;
+                        string outputString;
+                        const string delimiter = ", ";
+                        if (!String.IsNullOrEmpty(filter))
+                        {
+                            var help = JsonConvert.DeserializeObject<JsonHelp>(jObject["result"].ToString());
+                            outputString = help.Value;
+                        }
+                        else
+                        {
+                            outputString =
+                                jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonHelp>(row.ToString()))
+                                    .Aggregate("Keywords: ",
+                                        (current, help) => current + (help.Keyword + delimiter));
+                            outputString = outputString.Substring(0, outputString.Length - delimiter.Length);
+                        }
+
+                        Utils.SendChannel(outputString);
                     }
                     else
                     {
-                        outputString = jObject["result"].Select(row => JsonConvert.DeserializeObject<JsonHelp>(row.ToString())).Aggregate("The following keywords are valid: ", (current, help) => current + (help.Keyword + delimiter));
-                        outputString = outputString.Substring(0, outputString.Length - delimiter.Length);
+                        Utils.SendChannel((string) jObject["message"]);
                     }
-
-                    Utils.SendChannel(outputString);
-                }
-                else
-                {
-                    Utils.SendChannel((string)jObject["message"]);
-                }
-            }, Utils.HandleException);
+                }, Utils.HandleException);
+            }
         }
     }
 }
