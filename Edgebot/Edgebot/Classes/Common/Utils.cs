@@ -188,11 +188,12 @@ namespace EdgeBot.Classes.Common
         /// Exception handler for the connection class
         /// </summary>
         /// <param name="exception"></param>
-        public static void HandleException(Exception exception)
+        public static void HandleException(AggregateException exception)
         {
-            if (exception != null)
+            if (exception == null) return;
+            foreach (var ex in exception.Flatten().InnerExceptions)
             {
-                Log(exception.StackTrace);
+                Log(ex.StackTrace);
             }
         }
 
