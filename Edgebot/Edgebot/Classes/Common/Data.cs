@@ -44,6 +44,13 @@ namespace EdgeBot.Classes.Common
         public const string UrlBlacklist = "http://dev.otegamers.com/api/v1/edge/blacklist";
         public const string UrlBlacklistAdd = "http://dev.otegamers.com/api/v1/edge/add-blacklist/{0}/{1}";
 
+        // TS3 API
+        public const string UrlTs3NowPlaying = "http://otegamers.com:8080/getnowPlaying";
+        public const string UrlTs3Next = "http://otegamers.com:8080/getnowPlaying";
+        public const string UrlTs3Prev = "http://otegamers.com:8080/getnowPlaying";
+        public const string UrlTs3Stop = "http://otegamers.com:8080/getnowPlaying";
+        public const string UrlTs3Vol = "http://otegamers.com:8080/setvolume?vol={0}";
+
         // URLs
         public const string UrlFish = "http://api.fishbans.com/stats/";
         public const string UrlFishLink = "http://www.fishbans.com/u/";
