@@ -136,6 +136,18 @@ namespace EdgeBot.Classes.Commands
                                     Utils.SendChannel("Only Ops can control the bot from IRC");
                                 }
                                 break;
+                            case "youtube":
+                              if (Utils.IsOp(user.Nick.ToString()))
+                                    {
+                                        Connection.GetTs3(string.Format(Data.UrlYoutube,paramList[2]), s =>
+                                        {
+                                            Utils.SendChannel("Music Bot Playing Youtube: " + paramList[2]);
+
+                                        }, Utils.HandleException);
+
+                                   }
+                                break;
+                                
 
                     }
                 }

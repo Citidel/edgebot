@@ -52,6 +52,7 @@ namespace EdgeBot.Classes.Common
         public const string UrlTs3Vol = "http://otegamers.com:8080/setvolume?vol={0}";
         public const string UrlStation1 = "http://otegamers.com:8080/play?folder=radio&file=1.fm%20Classic%20Rock%20Replay.pls";
         public const string UrlStation2 = "http://otegamers.com:8080/play?folder=radio&file=netgameradio.pls";
+        public const string UrlYoutube = "http://otegamers.com:8080/playyoutube?link={0}";
 
         // URLs
         public const string UrlFish = "http://api.fishbans.com/stats/";
