@@ -18,15 +18,15 @@ namespace EdgeBot.Classes.Commands
         {
             if (isIngameCommand == false)
             {
+                var random = new Random();
                 if (paramList.Count() == 1)
                 {
-                    Utils.SendChannel("Usage: !slap <target>");
+                    var actionString = Data.SlapActions[random.Next(0, Data.SlapActions.Count)];
+                    Utils.SendChannel(string.Format("{0} looks around for someone to {1}.", user.Nick, actionString.Substring(0, actionString.Length - 1)));
                 }
                 else
                 {
-                    var target = paramList[1];
-                    var random = new Random();
-                    Utils.SendChannel(string.Format(Data.MessageSlap, user.Nick, Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], target, Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
+                    Utils.SendChannel(string.Format(Data.MessageSlap, user.Nick, Data.SlapActions[random.Next(0, Data.SlapLocations.Count)], paramList[1], Data.SlapLocations[random.Next(0, Data.SlapLocations.Count)], Data.SlapItems[random.Next(0, Data.SlapItems.Count)]));
                 }
             }
             else
