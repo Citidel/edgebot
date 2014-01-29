@@ -11,7 +11,7 @@ namespace EdgeBot.Classes.Common
         public const string MessageJoinChannel = "{0}, Welcome to OTEGamers IRC: RR1 and RR2 Version: {1} || Unleashed Version: {2}";
         public const string MessageIdentified = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
         public const string MessageRestricted = "This command is restricted to ops only.";
-        public const string MessageSlap = "{0} {1} {2}'s {3} with {4}";
+        public const string MessageSlap = "{0} {1} {2}'s {3} with {4}.";
         public const string MessageUpdate = "Server Version: {0}, Update information: {1}";
 
         public const string McBansApiKey = "83855ea895268ec47f2e7ea0e8a25323f11e189c";
@@ -105,6 +105,27 @@ namespace EdgeBot.Classes.Common
             "HUEHUEHUEHUEHUEHUEHUEHUEHUE!!"
         };
 
+        public static readonly List<string> BlameResponses = new List<string>
+        {
+            "{0} looks around for someone to blame...",
+            "Hide! {0} is looking for a scapegoat.",
+            "{0} needs a scapegoat to blame!",
+            "{0} is looking for someone to blame!",
+            "{0} casts around for something to blame..."
+        };
+
+        public static readonly List<string> BlameTargetResponses = new List<string>
+        {
+            "It's all {0}'s fault!",
+            "Blame {0} for everything!",
+            "Why {0}? Why...",
+            "{0}... please... why?",
+            "This is a fine predicament you've got us into, {0}!",
+            "Great job {0}! Great job...",
+            "You had one job, {0}, one job!",
+            "Well played {0}... well played."
+        }; 
+
         // Slap related
         public static readonly List<string> SlapActions = new List<string>
         {
@@ -120,9 +141,9 @@ namespace EdgeBot.Classes.Common
             "confounds",
             "prods",
             "decorates",
-            "draws on",
+            "conks",
             "clones",
-            "pinches"
+            "dessicates"
         };
 
         public static readonly List<string> SlapLocations = new List<string>
