@@ -19,7 +19,7 @@ namespace EdgeBot.Classes.Commands
             {
                 Connection.GetTs3(Data.UrlTs3NowPlaying, s =>
                 {
-                    var regex = new Regex(@"^\'*.*\'", RegexOptions.IgnoreCase);
+                    var regex = new Regex(@"^\'*.*\'|\'\'", RegexOptions.IgnoreCase);
                     var returnString = regex.Match(s).Value.Trim();
                     if (string.IsNullOrEmpty(returnString))
                     {

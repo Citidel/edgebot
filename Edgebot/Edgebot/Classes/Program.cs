@@ -75,7 +75,7 @@ namespace EdgeBot.Classes
 
         private static void OnUserJoinedChannel(object sender, ChannelUserEventArgs args)
         {
-            Utils.SendNotice(String.Format(Data.MessageJoinChannel, args.User.Nick, Utils.GetVersion("rr", "1"), Utils.GetVersion("fu", "1")), args.User.Nick);
+            Utils.SendNotice(String.Format(Data.MessageJoinChannel, args.User.Nick), args.User.Nick);
         }
 
         private static void OnUserMessageRecieved(object s, PrivateMessageEventArgs e)

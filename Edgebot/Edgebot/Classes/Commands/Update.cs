@@ -15,7 +15,7 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            if (paramList.Count == 1 || paramList.Count > 2)
+            if (paramList.Count == 1 || paramList.Count > 3)
             {
                 Utils.SendChannel("Usage: !update <type> or !update list to view types.");
                 return;
@@ -41,6 +41,40 @@ namespace EdgeBot.Classes.Commands
                     break;
 
                 default:
+                    switch (keyword.ToLower())
+                    {
+                        case "resonant":
+                        case "rr1":
+                        case "rr2":
+                            keyword = "rr";
+                            break;
+                        case "magicfarm":
+                        case "mf2":
+                            keyword = "mf1";
+                            break;
+                        case "px":
+                        case "potemon":
+                            keyword = "pixelmon";
+                            break;
+                        case "direwolf20":
+                        case "dw20":
+                        case "dw":
+                            keyword = "dw20";
+                            break;
+                        case "horizons":
+                        case "hz":
+                            keyword = "fh1";
+                            break;
+                        case "unleased":
+                        case "un":
+                            keyword = "fu1";
+                            break;
+                        case "tppi":
+                            keyword = "tp1";
+                            break;
+
+
+                    }
                     var exists = false;
                     foreach (var item in Data.UpdateDict.Where(item => item.Value.Key == keyword))
                     {
