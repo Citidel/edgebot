@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Classes\Commands\Edgebot.cs" />
     <Compile Include="Classes\Commands\JokeBlame.cs" />
+    <Compile Include="Classes\Commands\jokeConch.cs" />
     <Compile Include="Classes\Commands\JokeDice.cs" />
     <Compile Include="Classes\Commands\JokeEight.cs" />
     <Compile Include="Classes\Commands\JokeSmug.cs" />
