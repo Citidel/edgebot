@@ -87,11 +87,12 @@ namespace EdgeBot.Classes
 
         private static void OnChannelMessageRecieved(object sender, PrivateMessageEventArgs args)
         {
+            var serverList = new List<string> {"RR1", "RR2", "MagicFarm", "Dire20", "Unleashed", "Pixelmon", "TPPI", "Horizons"};
             var isIngameCommand = false;
             var message = args.PrivateMessage.Message;
             var paramList = message.Split(' ');
 
-            if (args.PrivateMessage.User.Nick == "RR1" || args.PrivateMessage.User.Nick == "RR2")
+            if (serverList.Contains(args.PrivateMessage.User.Nick))
             {
                 var ingameMessage = args.PrivateMessage.Message.Split(':');
                 if (ingameMessage.Any())
