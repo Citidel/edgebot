@@ -19,8 +19,8 @@ namespace EdgeBot.Classes.Commands
                 user.Nick == "Auric" ||
                 user.Nick == "Auric_Polaris")
             {
-                var serverList = new List<string> {"RR1", "RR2", "Unleashed", "Pixelmon", "MagicFarm"};
-                Utils.SendChannel(serverList[new Random().Next(0, 5)] + ": Server appears to have stopped responding");
+                var serverList = new List<string> {"RR1", "RR2", "Unleashed", "Pixelmon", "MagicFarm", "Horizons", "Dire20", "TPPI"};
+                Utils.SendChannel(serverList[new Random().Next(0, serverList.Count)] + ": Server appears to have stopped responding");
             }
             else
             {

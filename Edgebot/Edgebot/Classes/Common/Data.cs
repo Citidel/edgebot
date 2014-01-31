@@ -184,7 +184,9 @@ namespace EdgeBot.Classes.Common
             "a Golden Crash",
             "a giant spear",
             "a tiny dagger",
-            "a massive fireball"
+            "a massive fireball",
+            "a wiffle bat",
+            "a Justin Bieber album"
         };
     }
 }
