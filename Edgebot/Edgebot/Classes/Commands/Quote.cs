@@ -15,6 +15,7 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
+            int Num;
             if (paramList.Count() == 1)
             {
                 // display random quote
@@ -30,10 +31,9 @@ namespace EdgeBot.Classes.Commands
                     }
                 }, Utils.HandleException);
             }
-            else
+            else if (paramList[1] == "add")
             {
-                if (paramList[1] == "add")
-                {
+                
                     if (isIngameCommand == false)
                     {
                         var quote = "";
@@ -49,12 +49,29 @@ namespace EdgeBot.Classes.Commands
                     {
                         Utils.SendChannel("This command is restricted to the IRC channel only.");
                     }
-                }
-                else
-                {
-                    Utils.SendChannel("Usage: !quote add <message>");
-                }
             }
+            else if (int.TryParse(paramList[1].ToString(), out Num))
+                {               
+                    if (isIngameCommand == false)
+                    {
+                         Connection.GetData(string.Format(Data.UrlQuoteSpecific,Num), "get", jObject => 
+                         {
+                             if ((bool)jObject["success"])
+                            {
+                                Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
+                            }
+                            else
+                            {
+                                Utils.SendChannel("Quote Not found.");
+                            }
+                         }, Utils.HandleException);
+
+                    }
+                } 
+            else
+                    {
+                        Utils.SendChannel("Usage: !quote add <message>");
+                    }    
         }
     }
 }
