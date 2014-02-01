@@ -23,7 +23,7 @@ namespace EdgeBot.Classes.Commands
                 {
                     if ((bool)jObject["success"])
                     {
-                        Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
+                        Utils.SendChannel((string)jObject["result"].SelectToken("id") + ": " + (string)jObject["result"].SelectToken("quote"));
                     }
                     else
                     {
