@@ -15,7 +15,7 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            if (Utils.IsOp(user.Nick))
+            if (Utils.IsOp(user.Nick)|Utils.IsAdmin(user.Nick))
             {
                 int i;
                 // check if params number more than 4, if the pack length is less than 5 and the server is a number
