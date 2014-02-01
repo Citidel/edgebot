@@ -117,9 +117,9 @@ namespace EdgeBot.Classes
                 // Only listen to people who are not blacklisted
                 if (BlackList.All(item => item.Ip != args.PrivateMessage.User.Hostname) || Utils.IsAdmin(args.PrivateMessage.User.Nick) || Utils.IsOp(args.PrivateMessage.User.Nick))
                 {
-                    if (isLocked == true & Utils.IsOp(args.PrivateMessage.User.Nick) != true)
+                    if (isLocked == true & Utils.IsOp(args.PrivateMessage.User.Nick) != true & !paramList[0].Contains("player"))
                     {
-                        Utils.SendChannel("Edgebot is currently set to Admin Only.");
+                        Utils.SendNotice("Edgebot is currently set to Ops Only.", args.PrivateMessage.User.Nick);
                     }
                     else
                     {
