@@ -21,6 +21,8 @@ namespace EdgeBot.Classes
         private static string _nickServAuth = "";
         private static string _commandPrefix = "";
 
+        public static bool isLocked = false;
+
         public static readonly List<Server> ServerList = new List<Server>();
         public static readonly Dictionary<string, Command> Commands = new Dictionary<string, Command>();
         private static readonly List<Blacklist> BlackList = new List<Blacklist>();
@@ -110,15 +112,21 @@ namespace EdgeBot.Classes
                     }
                 }
             }
-
             if (args.PrivateMessage.Message.StartsWith(_commandPrefix) || paramList[0].StartsWith(_commandPrefix))
             {
                 // Only listen to people who are not blacklisted
                 if (BlackList.All(item => item.Ip != args.PrivateMessage.User.Hostname) || Utils.IsAdmin(args.PrivateMessage.User.Nick) || Utils.IsOp(args.PrivateMessage.User.Nick))
                 {
-                    foreach (var type in Commands.Where(cmd => cmd.Value.Listener == paramList[0].Substring(1)).Select(cmd => Type.GetType(cmd.Key)).Where(type => type != null))
+                    if (isLocked == true & Utils.IsOp(args.PrivateMessage.User.Nick) != true)
                     {
-                        ((CommandHandler)Activator.CreateInstance(type)).HandleCommand(paramList, args.PrivateMessage.User, isIngameCommand);
+                        Utils.SendChannel("Edgebot is currently set to Admin Only.");
+                    }
+                    else
+                    {
+                        foreach (var type in Commands.Where(cmd => cmd.Value.Listener == paramList[0].Substring(1)).Select(cmd => Type.GetType(cmd.Key)).Where(type => type != null))
+                        {
+                            ((CommandHandler)Activator.CreateInstance(type)).HandleCommand(paramList, args.PrivateMessage.User, isIngameCommand);
+                        }
                     }
                 }
                 else

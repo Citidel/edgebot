@@ -84,6 +84,7 @@
     <Compile Include="Classes\Commands\JokeEight.cs" />
     <Compile Include="Classes\Commands\JokeSmug.cs" />
     <Compile Include="Classes\Commands\JokeSlap.cs" />
+    <Compile Include="Classes\Commands\noSpam.cs" />
     <Compile Include="Classes\Commands\ServerLog.cs" />
     <Compile Include="Classes\Commands\JokeAuric.cs" />
     <Compile Include="Classes\Commands\ServerStatus.cs" />
