@@ -17,7 +17,8 @@ namespace EdgeBot.Classes.Commands
         {
             if (paramList.Count == 1 || paramList.Count > 3)
             {
-                Utils.SendChannel("Usage: !update <type> or !update list to view types.");
+                var outputString = Data.UpdateDict.Aggregate("Valid servers: ", (current, item) => current + (item.Value.Key + " "));
+                Utils.SendChannel("Usage: !update <server>. " + outputString.Trim());
                 return;
             }
 
