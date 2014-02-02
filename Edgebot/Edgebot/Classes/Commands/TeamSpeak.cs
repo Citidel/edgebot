@@ -114,7 +114,7 @@ namespace EdgeBot.Classes.Commands
                                 {
                             Connection.GetTs3(Data.UrlStation1, s =>
                             {
-                                Utils.SendChannel("Music Bot Staion changed to: Classic Rock FM1");
+                                Utils.SendChannel("Music Bot Station changed to: Classic Rock FM1");
 
                             }, Utils.HandleException);
                              }  else
@@ -128,7 +128,7 @@ namespace EdgeBot.Classes.Commands
                                     {
                                 Connection.GetTs3(Data.UrlStation2, s =>
                                 {
-                                    Utils.SendChannel("Music Bot Staion changed to: NetGamesRadio");
+                                    Utils.SendChannel("Music Bot Station changed to: NetGamesRadio");
 
                                 }, Utils.HandleException);
                                 }  else
