@@ -187,7 +187,34 @@ namespace EdgeBot.Classes.Common
             "a tiny dagger",
             "a massive fireball",
             "a wiffle bat",
-            "a Justin Bieber album"
+            "a Justin Bieber album",
+            "a +6 Ban Hammer!"
+        };
+
+        public static readonly List<string> HatActions = new List<string>
+        {
+            "shoves",
+            "thrusts", 
+            "crams", 
+            "jabs",
+            "digs"
+        };
+        public static readonly List<string> HatItems = new List<string>
+        {
+            "a large ferret.",
+            "a rabbit.",
+            "a chicken.",
+            "a raven.",
+            "a massive tarantula.",
+            "an adorable puppy.",
+            "an adorable kitten.",
+            "a wild ostrich.",
+            "a relentless baby dragon.",
+            "another hat.",
+            "a wild Golden Crash!",
+            "Pooky.",
+            "Zot!",
+            "a +6 Ban Hammer!"
         };
     }
 }
