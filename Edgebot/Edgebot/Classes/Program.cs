@@ -21,7 +21,7 @@ namespace EdgeBot.Classes
         private static string _nickServAuth = "";
         private static string _commandPrefix = "";
 
-        public static bool isLocked = false;
+        public static bool IsLocked;
 
         public static readonly List<Server> ServerList = new List<Server>();
         public static readonly Dictionary<string, Command> Commands = new Dictionary<string, Command>();
@@ -117,7 +117,7 @@ namespace EdgeBot.Classes
                 // Only listen to people who are not blacklisted
                 if (BlackList.All(item => item.Ip != args.PrivateMessage.User.Hostname) || Utils.IsAdmin(args.PrivateMessage.User.Nick) || Utils.IsOp(args.PrivateMessage.User.Nick))
                 {
-                    if (isLocked == true & Utils.IsOp(args.PrivateMessage.User.Nick) != true & !paramList[0].Contains("player"))
+                    if (IsLocked & Utils.IsOp(args.PrivateMessage.User.Nick) != true & !paramList[0].Contains("player"))
                     {
                         Utils.SendNotice("Edgebot is currently set to Ops Only.", args.PrivateMessage.User.Nick);
                     }

@@ -6,9 +6,9 @@ using EdgeBot.Classes.Core;
 namespace EdgeBot.Classes.Commands
 {
     [Command("nospam")]
-    public class noSpam : CommandHandler
+    public class NoSpam : CommandHandler
     {
-        public noSpam()
+        public NoSpam()
         {
         }
 
@@ -16,14 +16,14 @@ namespace EdgeBot.Classes.Commands
         {
             if (Utils.IsOp(user.Nick))
             {
-                if (Program.isLocked == false)
+                if (Program.IsLocked == false)
                 {
-                    Program.isLocked = true;
+                    Program.IsLocked = true;
                     Utils.SendChannel("Bot command are now locked to Ops Only.");
                 }
                 else
                 {
-                    Program.isLocked = false;
+                    Program.IsLocked = false;
                     Utils.SendChannel("Bot commands are unlocked.");
                 }
             }

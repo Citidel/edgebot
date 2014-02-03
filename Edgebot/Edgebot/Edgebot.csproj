@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Commands\Edgebot.cs" />
+    <Compile Include="Classes\Commands\Google.cs" />
     <Compile Include="Classes\Commands\JokeBlame.cs" />
     <Compile Include="Classes\Commands\JokeConch.cs" />
     <Compile Include="Classes\Commands\JokeDice.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Classes\Commands\JokeHat.cs" />
     <Compile Include="Classes\Commands\JokeSmug.cs" />
     <Compile Include="Classes\Commands\JokeSlap.cs" />
-    <Compile Include="Classes\Commands\noSpam.cs" />
+    <Compile Include="Classes\Commands\NoSpam.cs" />
     <Compile Include="Classes\Commands\ServerLog.cs" />
     <Compile Include="Classes\Commands\JokeAuric.cs" />
     <Compile Include="Classes\Commands\ServerStatus.cs" />
