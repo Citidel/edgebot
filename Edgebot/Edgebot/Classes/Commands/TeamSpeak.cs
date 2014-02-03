@@ -36,7 +36,7 @@ namespace EdgeBot.Classes.Commands
                      switch (paramList[1])
                     {
                         case "next":
-                             if (Utils.IsOp(user.Nick.ToString()))
+                             if (Utils.IsOp(user.Nick)|Utils.IsAdmin(user.Nick))
                                 {
                                     Connection.GetTs3(Data.UrlTs3Next, s =>
                                     {
@@ -49,7 +49,7 @@ namespace EdgeBot.Classes.Commands
                                     }
                             break;
                         case "prev":
-                             if (Utils.IsOp(user.Nick.ToString()))
+                            if (Utils.IsOp(user.Nick) | Utils.IsAdmin(user.Nick))
                                 {
                             Connection.GetTs3(Data.UrlTs3Prev, s =>
                             {
@@ -84,7 +84,7 @@ namespace EdgeBot.Classes.Commands
                             }
                             break;
                         case "stop":
-                             if (Utils.IsOp(user.Nick.ToString()))
+                            if (Utils.IsOp(user.Nick) | Utils.IsAdmin(user.Nick))
                                 {
                             Connection.GetTs3(Data.UrlTs3Stop, s =>
                             {
@@ -97,7 +97,7 @@ namespace EdgeBot.Classes.Commands
                             }
                             break;
                         case "play":
-                             if (Utils.IsOp(user.Nick.ToString()))
+                            if (Utils.IsOp(user.Nick) | Utils.IsAdmin(user.Nick))
                                 {
                             Connection.GetTs3(Data.UrlTs3Pause, s =>
                             {
@@ -110,7 +110,7 @@ namespace EdgeBot.Classes.Commands
                             }
                             break;
                         case "classic":
-                             if (Utils.IsOp(user.Nick.ToString()))
+                            if (Utils.IsOp(user.Nick) | Utils.IsAdmin(user.Nick))
                                 {
                             Connection.GetTs3(Data.UrlStation1, s =>
                             {
@@ -124,7 +124,7 @@ namespace EdgeBot.Classes.Commands
                                 break;
 
                             case "ngr":
-                                if (Utils.IsOp(user.Nick.ToString()))
+                                if (Utils.IsOp(user.Nick) | Utils.IsAdmin(user.Nick))
                                     {
                                 Connection.GetTs3(Data.UrlStation2, s =>
                                 {
@@ -137,7 +137,7 @@ namespace EdgeBot.Classes.Commands
                                 }
                                 break;
                             case "youtube":
-                              if (Utils.IsOp(user.Nick.ToString()))
+                                if (Utils.IsOp(user.Nick) | Utils.IsAdmin(user.Nick))
                                     {
                                         Connection.GetTs3(string.Format(Data.UrlYoutube,paramList[2]), s =>
                                         {
