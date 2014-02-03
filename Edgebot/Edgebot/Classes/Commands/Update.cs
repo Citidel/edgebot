@@ -51,7 +51,7 @@ namespace EdgeBot.Classes.Commands
                             break;
                         case "magicfarm":
                         case "mf2":
-                            keyword = "mf1";
+                            keyword = "mf2";
                             break;
                         case "px":
                         case "potemon":
@@ -66,7 +66,7 @@ namespace EdgeBot.Classes.Commands
                         case "hz":
                             keyword = "fh1";
                             break;
-                        case "unleased":
+                        case "unleashed":
                         case "un":
                             keyword = "fu1";
                             break;
