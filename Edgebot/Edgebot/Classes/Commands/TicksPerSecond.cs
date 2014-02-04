@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("tps")]
+    [CommandAttribute("tps")]
     public class TicksPerSecond : CommandHandler
     {
         public TicksPerSecond()
@@ -46,5 +46,13 @@ namespace EdgeBot.Classes.Commands
                 Utils.SendChannel(Data.MessageRestricted);
             }
         }
+    }
+
+    public class JsonTps
+    {
+        public string Server { get; set; }
+        public float Tps { get; set; }
+        public int Count { get; set; }
+        public string Name { get; set; }
     }
 }

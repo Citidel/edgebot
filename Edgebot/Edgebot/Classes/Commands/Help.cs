@@ -4,12 +4,11 @@ using System.Linq;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
-using EdgeBot.Classes.JSON;
 using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("help")]
+    [CommandAttribute("help")]
     public class Help : CommandHandler
     {
         public Help()
@@ -59,5 +58,11 @@ namespace EdgeBot.Classes.Commands
                 }, Utils.HandleException);
             }
         }
+    }
+
+    public class JsonHelp
+    {
+        public string Keyword { get; set; }
+        public string Value { get; set; }
     }
 }
