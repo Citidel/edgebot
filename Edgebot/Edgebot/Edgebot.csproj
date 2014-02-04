@@ -96,8 +96,9 @@
     <Compile Include="Classes\Commands\Check.cs" />
     <Compile Include="Classes\Commands\Quote.cs" />
     <Compile Include="Classes\Commands\Update.cs" />
-    <Compile Include="Classes\Commands\Help.cs" />
+    <Compile Include="Classes\Commands\Info.cs" />
     <Compile Include="Classes\Commands\TeamSpeak.cs" />
+    <Compile Include="Classes\Commands\Help.cs" />
     <Compile Include="Classes\Commands\Wiki.cs" />
     <Compile Include="Classes\Common\Colors.cs" />
     <Compile Include="Classes\Common\Config.cs" />
