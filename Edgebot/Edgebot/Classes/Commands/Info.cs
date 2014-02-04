@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("info", "")]
+    [CommandAttribute("info", "Usage: !info <keyword>, !help list to see keywords.")]
     public class Info : CommandHandler
     {
         public Info()
@@ -17,11 +17,7 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            if (paramList.Count == 1)
-            {
-                Utils.SendChannel("Usage: !help <keyword>, !help list to see keywords.");
-            }
-            else if (paramList.Count == 2)
+            if (paramList.Count == 2)
             {
                 var filter = "";
                 if (paramList[1] != "list")
