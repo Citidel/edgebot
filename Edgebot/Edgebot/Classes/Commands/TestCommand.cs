@@ -6,9 +6,9 @@ using EdgeBot.Classes.Core;
 namespace EdgeBot.Classes.Commands
 {
     [CommandAttribute("nospam")]
-    public class NoSpam : CommandHandler
+    public class TestCommand : CommandHandler
     {
-        public NoSpam()
+        public TestCommand()
         {
         }
 
