@@ -39,8 +39,8 @@ namespace EdgeBot.Classes
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += OnNetworkError;
             Client.ConnectionComplete += OnConnectionComplete;
-            Client.UserMessageRecieved += OnUserMessageRecieved;
-            Client.ChannelMessageRecieved += OnChannelMessageRecieved;
+            Client.UserMessageRecieved += OnUserMessageReceived;
+            Client.ChannelMessageRecieved += OnChannelMessageReceived;
             Client.UserJoinedChannel += OnUserJoinedChannel;
 
             AnnounceTimer = new Timer();
@@ -80,18 +80,18 @@ namespace EdgeBot.Classes
             Utils.SendNotice(String.Format(Data.MessageJoinChannel, args.User.Nick), args.User.Nick);
         }
 
-        private static void OnUserMessageRecieved(object s, PrivateMessageEventArgs e)
+        private static void OnUserMessageReceived(object s, PrivateMessageEventArgs e)
         {
             if (!Utils.IsDev(e.PrivateMessage.User.Nick)) return;
             if (e.PrivateMessage.Message.StartsWith(_commandPrefix + "msg "))
                 Utils.SendChannel(e.PrivateMessage.Message.Substring(5));
         }
 
-        private static void OnChannelMessageRecieved(object sender, PrivateMessageEventArgs args)
+        private static void OnChannelMessageReceived(object sender, PrivateMessageEventArgs args)
         {
             var serverList = new List<string> {"RR1", "RR2", "MagicFarm", "Dire20", "Unleashed", "Pixelmon", "TPPI", "Horizons"};
             var isIngameCommand = false;
-            var message = args.PrivateMessage.Message;
+            var message = args.PrivateMessage.Message.Trim();
             var paramList = message.Split(' ');
 
             if (serverList.Contains(args.PrivateMessage.User.Nick))
