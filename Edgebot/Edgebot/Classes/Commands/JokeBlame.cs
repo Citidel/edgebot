@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("blame")]
+    [CommandAttribute("blame", "")]
     public class JokeBlame : CommandHandler
     {
         public JokeBlame()
@@ -26,7 +26,7 @@ namespace EdgeBot.Classes.Commands
             }
             else
             {
-                Utils.SendChannel("This command is restricted to the IRC channel only.");
+                Utils.SendChannel(Data.MessageRestrictedIrc);
             }
         }
     }

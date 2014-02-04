@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("hat")]
+    [CommandAttribute("hat", "")]
     public class JokeHat : CommandHandler
     {
         public JokeHat()
@@ -23,7 +23,7 @@ namespace EdgeBot.Classes.Commands
             }
             else
             {
-                Utils.SendChannel("This command is restricted to the IRC channel only.");
+                Utils.SendChannel(Data.MessageRestrictedIrc);
             }
         }
     }

@@ -10,7 +10,10 @@ namespace EdgeBot.Classes.Common
         // Messages
         public const string MessageJoinChannel = "{0}, Welcome to OTEGamers IRC: use !update to get Modpack Update Info!";
         public const string MessageIdentified = ":NickServ!NickServ@services.esper.net NOTICE EdgeBot :You are now identified for EdgeBot.";
+
         public const string MessageRestricted = "This command is restricted to ops only.";
+        public const string MessageRestrictedIrc = "This command is restricted to the IRC channel only.";
+
         public const string MessageSlap = "{0} {1} {2}'s {3} with {4}.";
         public const string MessageUpdate = "Server Version: {0}, Update information: {1}";
 

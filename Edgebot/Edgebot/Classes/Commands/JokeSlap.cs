@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("slap")]
+    [CommandAttribute("slap", "")]
     public class JokeSlap : CommandHandler
     {
         public JokeSlap()
@@ -31,7 +31,7 @@ namespace EdgeBot.Classes.Commands
             }
             else
             {
-                Utils.SendChannel("This command is restricted to the IRC channel only.");
+                Utils.SendChannel(Data.MessageRestrictedIrc);
             }
         }
     }
