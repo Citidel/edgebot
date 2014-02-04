@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("smug")]
+    [CommandAttribute("smug", "")]
     public class JokeSmug : CommandHandler
     {
         public JokeSmug()

@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("update")]
+    [CommandAttribute("update", "")]
     public class Update : CommandHandler
     {
         public Update()

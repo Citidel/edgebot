@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("mcb")]
+    [CommandAttribute("mcb", "")]
     public class McBans : CommandHandler
     {
         public McBans()

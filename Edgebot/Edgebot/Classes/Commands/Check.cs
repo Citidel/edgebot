@@ -8,7 +8,7 @@ using EdgeBot.Classes.Instances;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("check")]
+    [CommandAttribute("check", "")]
     public class Fishbans : CommandHandler
     {
         public Fishbans()

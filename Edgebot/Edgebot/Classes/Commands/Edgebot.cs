@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("edgebot")]
+    [CommandAttribute("edgebot", "")]
     public class Edgebot : CommandHandler
     {
         public Edgebot()

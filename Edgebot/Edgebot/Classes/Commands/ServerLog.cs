@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("log")]
+    [CommandAttribute("log", "")]
     public class ServerLog : CommandHandler
     {
         public ServerLog()

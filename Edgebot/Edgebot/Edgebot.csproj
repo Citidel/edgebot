@@ -104,7 +104,7 @@
     <Compile Include="Classes\Common\Connection.cs" />
     <Compile Include="Classes\Common\Data.cs" />
     <Compile Include="Classes\Common\Utils.cs" />
-    <Compile Include="Classes\Core\Command.cs" />
+    <Compile Include="Classes\Core\CommandAttribute.cs" />
     <Compile Include="Classes\Core\CommandHandler.cs" />
     <Compile Include="Classes\Instances\Announcement.cs" />
     <Compile Include="Classes\Instances\Blacklist.cs" />
@@ -112,9 +112,6 @@
     <Compile Include="Classes\Instances\Server.cs" />
     <Compile Include="Classes\Instances\FishBans.cs" />
     <Compile Include="Classes\Instances\MojangStatus.cs" />
-    <Compile Include="Classes\JSON\JsonTps.cs" />
-    <Compile Include="Classes\JSON\JsonHelp.cs" />
-    <Compile Include="Classes\JSON\JsonWiki.cs" />
     <Compile Include="Classes\Program.cs">
       <SubType>Code</SubType>
     </Compile>

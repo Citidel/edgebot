@@ -5,7 +5,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("google")]
+    [CommandAttribute("google", "")]
     public class Google : CommandHandler
     {
         public Google()
