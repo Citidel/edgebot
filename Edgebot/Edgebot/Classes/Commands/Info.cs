@@ -8,10 +8,10 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("help", "")]
-    public class Help : CommandHandler
+    [CommandAttribute("info", "")]
+    public class Info : CommandHandler
     {
-        public Help()
+        public Info()
         {
         }
 
