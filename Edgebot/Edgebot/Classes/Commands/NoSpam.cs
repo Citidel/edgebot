@@ -14,7 +14,7 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            if (Utils.IsOp(user.Nick))
+            if (Utils.IsOp(user.Nick) || Utils.IsAdmin(user.Nick))
             {
                 if (Program.IsLocked == false)
                 {
