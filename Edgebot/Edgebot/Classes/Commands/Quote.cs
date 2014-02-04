@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("quote")]
+    [CommandAttribute("quote")]
     public class Quote : CommandHandler
     {
         public Quote()

@@ -24,7 +24,7 @@ namespace EdgeBot.Classes
         public static bool IsLocked;
 
         public static readonly List<Server> ServerList = new List<Server>();
-        public static readonly Dictionary<string, Command> Commands = new Dictionary<string, Command>();
+        public static readonly Dictionary<string, CommandAttribute> Commands = new Dictionary<string, CommandAttribute>();
         private static readonly List<Blacklist> BlackList = new List<Blacklist>();
 
         static void Main(string[] argArray)
@@ -65,7 +65,7 @@ namespace EdgeBot.Classes
 
             foreach (var cls in classes)
             {
-                var attrib = cls.GetCustomAttributes(typeof(Command), true).FirstOrDefault() as Command;
+                var attrib = cls.GetCustomAttributes(typeof(CommandAttribute), true).FirstOrDefault() as CommandAttribute;
                 Commands.Add(cls.FullName, attrib);
             }
         }

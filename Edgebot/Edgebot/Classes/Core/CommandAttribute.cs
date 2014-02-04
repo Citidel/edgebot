@@ -2,11 +2,11 @@
 
 namespace EdgeBot.Classes.Core
 {
-    public class Command : Attribute
+    public class CommandAttribute : Attribute
     {
         public string Listener { get; set; }
 
-        public Command(string listener)
+        public CommandAttribute(string listener)
         {
             Listener = listener;
         }

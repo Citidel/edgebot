@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("update")]
+    [CommandAttribute("update")]
     public class Update : CommandHandler
     {
         public Update()
@@ -28,6 +28,7 @@ namespace EdgeBot.Classes.Commands
                 case "reload":
                     if (Utils.IsOp(user.Nick))
                     {
+                        Utils.SendNotice("Reloading server list.", user.Nick);
                         Program.PopulateServers();
                     }
                     else

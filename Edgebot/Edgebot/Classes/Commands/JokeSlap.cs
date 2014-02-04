@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("slap")]
+    [CommandAttribute("slap")]
     public class JokeSlap : CommandHandler
     {
         public JokeSlap()

@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("ts")]
+    [CommandAttribute("ts")]
     public class TeamSpeak : CommandHandler
     {
         public TeamSpeak()

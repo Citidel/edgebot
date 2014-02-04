@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("announce")]
+    [CommandAttribute("announce")]
     public class Announcement : CommandHandler
     {
         public Announcement()

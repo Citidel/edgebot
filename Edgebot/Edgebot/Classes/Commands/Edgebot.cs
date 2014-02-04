@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [Command("edgebot")]
+    [CommandAttribute("edgebot")]
     public class Edgebot : CommandHandler
     {
         public Edgebot()
@@ -22,11 +22,12 @@ namespace EdgeBot.Classes.Commands
                 case "shutdown":
                     if (Utils.IsDev(user.Nick) || Utils.IsAdmin(user.Nick))
                     {
+                        Utils.SendNotice("Shutting down bot.", user.Nick);
                         Environment.Exit(0);
                     }
                     else
                     {
-                        Utils.SendChannel("This is a restricted command.");
+                        Utils.SendNotice("This is a restricted command.", user.Nick);
                     }
                     break;
 
@@ -45,12 +46,14 @@ namespace EdgeBot.Classes.Commands
                     else
                     {
                         Utils.SendChannel(Data.MessageRestricted);
+                        Program.Client.
                     }
                     break;
 
                 case "reload":
                     if (Utils.IsOp(user.Nick))
                     {
+                        Utils.SendNotice("Reloading blacklist.", user.Nick);
                         Program.PopulateBlacklist();
                     }
                     else
