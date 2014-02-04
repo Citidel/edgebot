@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("update", "")]
+    [CommandAttribute("update", "Usage: !update <server>, !update list or !update to view valid servers")]
     public class Update : CommandHandler
     {
         public Update()

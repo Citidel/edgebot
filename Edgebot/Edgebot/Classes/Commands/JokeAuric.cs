@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("auric", "")]
+    [CommandAttribute("auric", "This command is useless")]
     public class JokeAuric : CommandHandler
     {
         public JokeAuric()

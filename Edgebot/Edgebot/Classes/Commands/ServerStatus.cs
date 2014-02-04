@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("minecheck", "")]
+    [CommandAttribute("minecheck", "Displays Minecraft-related status information")]
     public class ServerStatus : CommandHandler
     {
         public ServerStatus()

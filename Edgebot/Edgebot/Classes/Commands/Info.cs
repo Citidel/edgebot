@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("info", "Usage: !info <keyword>, !help list to see keywords.")]
+    [CommandAttribute("info", "Usage: !info list to list keywords, !info <keyword> to see info")]
     public class Info : CommandHandler
     {
         public Info()

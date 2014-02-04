@@ -5,7 +5,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("google", "")]
+    [CommandAttribute("google", "Usage: !google <search terms>")]
     public class Google : CommandHandler
     {
         public Google()
@@ -22,10 +22,6 @@ namespace EdgeBot.Classes.Commands
                     queryString = queryString + (paramList[i] + "+");
                 }
                 Utils.SendChannel(queryString.Substring(0, queryString.Length - 1));
-            }
-            else
-            {
-                Utils.SendChannel("Usage: !google <search terms>");
             }
         }
     }

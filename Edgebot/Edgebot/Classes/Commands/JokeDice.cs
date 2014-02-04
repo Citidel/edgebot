@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("dice", "")]
+    [CommandAttribute("dice", "Usage: !dice <number 1-4 > <sides 1 - 100>")]
     public class JokeDice : CommandHandler
     {
         public JokeDice()
@@ -18,7 +18,9 @@ namespace EdgeBot.Classes.Commands
         {
             int i;
             // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
-            if (paramList.Count() == 3 && Int32.TryParse(paramList[1], out i) && Int32.TryParse(paramList[2], out i) && (Int32.Parse(paramList[1]) > 0) && (Int32.Parse(paramList[2]) > 0) && (Int32.Parse(paramList[1]) <= 4) && (Int32.Parse(paramList[2]) <= 100))
+            if (paramList.Count() == 3 && Int32.TryParse(paramList[1], out i) && Int32.TryParse(paramList[2], out i) &&
+                (Int32.Parse(paramList[1]) > 0) && (Int32.Parse(paramList[2]) > 0) && (Int32.Parse(paramList[1]) <= 4) &&
+                (Int32.Parse(paramList[2]) <= 100))
             {
                 var dice = Int32.Parse(paramList[1]);
                 var sides = Int32.Parse(paramList[2]);
@@ -30,7 +32,8 @@ namespace EdgeBot.Classes.Commands
                     diceList.Add(random.Next(1, sides));
                 }
 
-                var outputString = String.Format("Rolling a {0} sided die, {1} time{2}: {3}", sides, dice, (dice > 1) ? "s" : "", diceList.Aggregate("", (current, roll) => current + roll + " ").Trim());
+                var outputString = String.Format("Rolling a {0} sided die, {1} time{2}: {3}", sides, dice,
+                    (dice > 1) ? "s" : "", diceList.Aggregate("", (current, roll) => current + roll + " ").Trim());
                 Utils.SendChannel(outputString);
             }
             else

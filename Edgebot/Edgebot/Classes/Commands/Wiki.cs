@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("wiki", "")]
+    [CommandAttribute("wiki", "Usage: !wiki")]
     public class Wiki : CommandHandler
     {
         public Wiki()

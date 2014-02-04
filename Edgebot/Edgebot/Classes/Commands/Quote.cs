@@ -6,7 +6,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("quote", "")]
+    [CommandAttribute("quote", "Usage: !quote add <quote> to add quote, !quote <number> for a specific quote, !quote for random quote")]
     public class Quote : CommandHandler
     {
         public Quote()
@@ -15,7 +15,7 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            int Num;
+            int num;
             if (paramList.Count() == 1)
             {
                 // display random quote
@@ -33,45 +33,45 @@ namespace EdgeBot.Classes.Commands
             }
             else if (paramList[1] == "add")
             {
-                
-                    if (isIngameCommand == false)
-                    {
-                        var quote = "";
-                        for (var l = 2; l < paramList.Count(); l++)
-                        {
-                            quote = quote + paramList[l] + " ";
-                        }
 
-                        Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()),
-                            "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
-                    }
-                    else
+                if (isIngameCommand == false)
+                {
+                    var quote = "";
+                    for (var l = 2; l < paramList.Count(); l++)
                     {
-                        Utils.SendChannel("This command is restricted to the IRC channel only.");
+                        quote = quote + paramList[l] + " ";
                     }
+
+                    Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()),
+                        "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
+                }
+                else
+                {
+                    Utils.SendChannel("This command is restricted to the IRC channel only.");
+                }
             }
-            else if (int.TryParse(paramList[1].ToString(), out Num))
-                {               
-                    if (isIngameCommand == false)
+            else if (int.TryParse(paramList[1].ToString(), out num))
+            {
+                if (isIngameCommand == false)
+                {
+                    Connection.GetData(string.Format(Data.UrlQuoteSpecific, num), "get", jObject =>
                     {
-                         Connection.GetData(string.Format(Data.UrlQuoteSpecific,Num), "get", jObject => 
-                         {
-                             if ((bool)jObject["success"])
-                            {
-                                Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
-                            }
-                            else
-                            {
-                                Utils.SendChannel("Quote Not found.");
-                            }
-                         }, Utils.HandleException);
+                        if ((bool)jObject["success"])
+                        {
+                            Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
+                        }
+                        else
+                        {
+                            Utils.SendChannel("Quote Not found.");
+                        }
+                    }, Utils.HandleException);
 
-                    }
-                } 
+                }
+            }
             else
-                    {
-                        Utils.SendChannel("Usage: !quote add <message>");
-                    }    
+            {
+                Utils.SendChannel("Usage: !quote add <message>");
+            }
         }
     }
 }

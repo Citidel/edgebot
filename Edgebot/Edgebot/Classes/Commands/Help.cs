@@ -7,7 +7,7 @@ using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("help", "")]
+    [CommandAttribute("help", "Usage: !help to list commands, !help <command> for more information.")]
     public class Help : CommandHandler
     {
         public Help()
