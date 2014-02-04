@@ -4,7 +4,6 @@ using System.Linq;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
-using EdgeBot.Classes.JSON;
 using Newtonsoft.Json;
 
 namespace EdgeBot.Classes.Commands

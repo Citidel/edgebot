@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
@@ -46,7 +45,6 @@ namespace EdgeBot.Classes.Commands
                     else
                     {
                         Utils.SendChannel(Data.MessageRestricted);
-                        Program.Client.
                     }
                     break;
 
@@ -60,11 +58,6 @@ namespace EdgeBot.Classes.Commands
                     {
                         Utils.SendChannel(Data.MessageRestricted);
                     }
-                    break;
-
-                case "commands":
-                    var commands = Program.Commands.OrderBy(pair => pair.Value.Listener).Aggregate("", (current, item) => current + (item.Value.Listener + " "));
-                    Utils.SendChannel("The following commands are valid for Edgebot: " + commands.Trim());
                     break;
             }
         }
