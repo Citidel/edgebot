@@ -20,7 +20,25 @@ namespace EdgeBot.Classes.Commands
                 user.Nick == "DrSmugleaf_")
             {
                 var random = new Random().Next(0, 2);
-                Utils.SendChannel(Data.SmugResponses[random]);
+                if (paramList.Count > 1)
+                {
+                    switch (paramList[1])
+                    {
+                        case "1":
+                            Utils.SendChannel(Data.SmugResponses[0]);
+                            break;
+                        case "2":
+                            Utils.SendChannel(Data.SmugResponses[1]);
+                            break;
+                        default:
+                            Utils.SendChannel(Data.SmugResponses[random]);
+                            break;
+                    }
+                }
+                else
+                {
+                    Utils.SendChannel(Data.SmugResponses[random]);
+                }
             }
             else
             {
