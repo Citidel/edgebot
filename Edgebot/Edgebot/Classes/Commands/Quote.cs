@@ -23,7 +23,8 @@ namespace EdgeBot.Classes.Commands
                 {
                     if ((bool)jObject["success"])
                     {
-                        Utils.SendChannel((string)jObject["result"].SelectToken("id") + ": " + (string)jObject["result"].SelectToken("quote"));
+                        Utils.SendChannel((string)jObject["result"].SelectToken("id") + ": " +
+                                          (string)jObject["result"].SelectToken("quote"));
                     }
                     else
                     {
@@ -33,7 +34,6 @@ namespace EdgeBot.Classes.Commands
             }
             else if (paramList[1] == "add")
             {
-
                 if (isIngameCommand == false)
                 {
                     var quote = "";
@@ -43,30 +43,26 @@ namespace EdgeBot.Classes.Commands
                     }
 
                     Connection.GetData(string.Format(Data.UrlQuoteAdd, user.Nick, user.Hostmask, quote.Trim()),
-                        "get", jObject => Utils.SendChannel("Quote successfully added."), Utils.HandleException);
+                        "get", jObject => Utils.SendChannel(string.Format("Quote #{0} has been added.", jObject["result"].SelectToken("id"))), Utils.HandleException);
                 }
                 else
                 {
                     Utils.SendChannel("This command is restricted to the IRC channel only.");
                 }
             }
-            else if (int.TryParse(paramList[1].ToString(), out num))
+            else if (int.TryParse(paramList[1], out num))
             {
-                if (isIngameCommand == false)
+                Connection.GetData(string.Format(Data.UrlQuoteSpecific, num), "get", jObject =>
                 {
-                    Connection.GetData(string.Format(Data.UrlQuoteSpecific, num), "get", jObject =>
+                    if ((bool)jObject["success"])
                     {
-                        if ((bool)jObject["success"])
-                        {
-                            Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
-                        }
-                        else
-                        {
-                            Utils.SendChannel("Quote Not found.");
-                        }
-                    }, Utils.HandleException);
-
-                }
+                        Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
+                    }
+                    else
+                    {
+                        Utils.SendChannel("Specific quote not found.");
+                    }
+                }, Utils.HandleException);
             }
             else
             {

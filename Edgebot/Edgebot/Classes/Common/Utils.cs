@@ -184,6 +184,16 @@ namespace EdgeBot.Classes.Common
             return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
         }
 
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unixTimeStamp).ToLocalTime();
+        }
+
+        public static double DateTimeToUnixTimestamp(DateTime dateTime)
+        {
+            return (dateTime - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+        }
+
         /// <summary>
         /// Exception handler for the connection class
         /// </summary>
