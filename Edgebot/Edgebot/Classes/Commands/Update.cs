@@ -50,29 +50,37 @@ namespace EdgeBot.Classes.Commands
                         case "rr2":
                             keyword = "rr";
                             break;
+
+                        case "mf":
                         case "magicfarm":
                         case "mf2":
                             keyword = "mf2";
                             break;
+
                         case "px":
                         case "potemon":
                             keyword = "pixelmon";
                             break;
+
                         case "direwolf20":
                         case "dw20":
                         case "dw":
                             keyword = "dw20";
                             break;
-                        case "horizons":
-                        case "hz":
-                            keyword = "fh1";
+
+                        case "monster":
+                        case "mon":
+                            keyword = "monster";
                             break;
+
                         case "unleashed":
                         case "un":
-                            keyword = "fu1";
+                            keyword = "unleashed";
                             break;
+
+                        case "tp":
                         case "tppi":
-                            keyword = "tp1";
+                            keyword = "tppi";
                             break;
 
 

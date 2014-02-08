@@ -77,6 +77,9 @@ namespace EdgeBot.Classes.Common
             {new KeyValuePair<string, string>("fu","1"), new KeyValuePair<string, string>("unleashed","http://www.otegamers.com/topic/6383-")},
             {new KeyValuePair<string, string>("px","1"), new KeyValuePair<string, string>("pixelmon","http://www.otegamers.com/topic/7683-")},
             {new KeyValuePair<string, string>("mf","1"), new KeyValuePair<string, string>("mf2","http://www.otegamers.com/topic/8174-")},
+            {new KeyValuePair<string, string>("fm","1"), new KeyValuePair<string, string>("monster","http://www.otegamers.com/topic/8173-")},
+            {new KeyValuePair<string, string>("dw","1"), new KeyValuePair<string, string>("dw20","http://www.otegamers.com/topic/8322-")},
+            {new KeyValuePair<string, string>("tp","1"), new KeyValuePair<string, string>("tppi","http://www.otegamers.com/topic/8321-")},
         };
 
         // Responses
