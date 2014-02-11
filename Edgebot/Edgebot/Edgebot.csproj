@@ -86,6 +86,7 @@
     <Compile Include="Classes\Commands\JokeHat.cs" />
     <Compile Include="Classes\Commands\JokeSmug.cs" />
     <Compile Include="Classes\Commands\JokeSlap.cs" />
+    <Compile Include="Classes\Commands\JokeVelo.cs" />
     <Compile Include="Classes\Commands\NoSpam.cs" />
     <Compile Include="Classes\Commands\ServerLog.cs" />
     <Compile Include="Classes\Commands\JokeAuric.cs" />

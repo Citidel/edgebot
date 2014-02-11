@@ -24,7 +24,9 @@ namespace EdgeBot.Classes.Common
         {
             "Helkarakse",
             "Citidel",
-            "Citidel_"
+            "Citidel_",
+            "djdarkstorm",
+            "djdarkstorm|AFK"
         };
 
         // Server Admin
@@ -222,6 +224,18 @@ namespace EdgeBot.Classes.Common
             "Pooky.",
             "Zot!",
             "a +6 Ban Hammer!"
+        };
+        public static readonly List<string> GamerPoop = new List<string>
+        {
+            "umY9aO2dXsQ", "ZU2vIAryZU4", "Q4SXtMmcdUo", "6xtjLnyMyo4",
+            "BCtsFtPs1fY", "LG46DboDfhk", "yOpdnWYZ_ic", "nR9gMg4hKfY",
+            "ZPllpzxmM5k", "9qMdd96Dqko", "CpeRk1YFn8s", "jpJ7NihviVU",
+            "DM8krWnU0uQ", "crgEIhI3y_o", "pSawGT5bgdM", "gawughIGjK0",
+            "Rs_ty7I3X8w", "azI_RlDHTBE", "BUOw3JyPRlQ", "661dbFQYbgU",
+            "60sn_8qXsTA", "qsIS17jJH7A", "voc9TrSVVOA", "7vo5xhRTOjU",
+            "k5FRbZ1zZm4", "8WzT2fnkfPk", "V-tgSGYU9fw", "mM-bfn8vZ_w",
+            "GQ1ISnkS5oY", "TTUrDkBUtfk", "EM1RXZGWiqo", "SjIeo5cOGQs",
+            "YmqlrhCNiMU", "HycTcUN6H0M", "HqQMS4vYSkM", "4xQLjIDjcIs",
         };
     }
 }
