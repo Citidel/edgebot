@@ -26,7 +26,6 @@ namespace EdgeBot.Classes.Common
             "Citidel",
             "Citidel_",
             "djdarkstorm",
-            "djdarkstorm|AFK"
         };
 
         // Server Admin

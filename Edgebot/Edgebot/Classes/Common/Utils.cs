@@ -55,7 +55,7 @@ namespace EdgeBot.Classes.Common
         /// <returns></returns>
         public static bool IsDev(string nickname)
         {
-            return Data.Developers.Any(str => str.Equals(nickname));
+            return Data.Developers.Any(str => str.Equals(nickname.Split('|').First().ToLower()));
         }
 
         /// <summary>
