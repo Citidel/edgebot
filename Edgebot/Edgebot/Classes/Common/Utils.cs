@@ -75,7 +75,7 @@ namespace EdgeBot.Classes.Common
         /// <returns></returns>
         public static bool IsOp(string nickname)
         {
-            return Program.Client.Channels.Select(channel => channel.UsersByMode['o']).Any(users => users.Contains(nickname));
+            return (from channel in Program.Client.Channels where channel.Name == Config.Channel.ToLower() select channel.UsersByMode['o'] into opUsers from item in opUsers select item).Select(item => item.Nick.Split('|').First().ToLower()).Any(nick => nick == nickname.Split('|').First().ToLower());
         }
 
         /// <summary>
