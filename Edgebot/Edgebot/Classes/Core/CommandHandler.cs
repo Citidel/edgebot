@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 
@@ -22,6 +24,14 @@ namespace EdgeBot.Classes.Core
             {
                 Utils.SendChannel("Command not found.");
             }
+        }
+
+        protected static int GenerateRandom(int min, int max)
+        {
+            var random = RandomNumberGenerator.Create();
+            var b = new byte[4];
+            random.GetBytes(b);
+            return (int)Math.Round(((double) BitConverter.ToUInt32(b, 0) / UInt32.MaxValue) * (max - min)) + min;
         }
     }
 }
