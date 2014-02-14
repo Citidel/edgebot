@@ -20,6 +20,7 @@ namespace EdgeBot.Classes
         public static string McBansApiUrl = "";
         private static string _nickServAuth = "";
         private static string _commandPrefix = "";
+        private static bool _devMode;
 
         public static bool IsLocked;
 
@@ -35,6 +36,7 @@ namespace EdgeBot.Classes
 
             //set the command prefix to $ if debug mode
             _commandPrefix = string.IsNullOrEmpty(_nickServAuth) ? "$" : "!";
+            _devMode = string.IsNullOrEmpty(_nickServAuth);
 
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += OnNetworkError;
@@ -276,8 +278,8 @@ namespace EdgeBot.Classes
 
         private static void JoinChannel()
         {
-            Client.JoinChannel(Config.Channel);
-            Utils.Log("Joining channel: {0}", Config.Channel);
+            Client.JoinChannel(_devMode ? Config.DevChannel : Config.Channel);
+            Utils.Log("Joining channel: {0}", _devMode ? Config.DevChannel : Config.Channel);
         }
     }
 }
