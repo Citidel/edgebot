@@ -14,7 +14,7 @@ namespace EdgeBot.Classes.Common
         public const string MessageRestricted = "This command is restricted to ops only.";
         public const string MessageRestrictedIrc = "This command is restricted to the IRC channel only.";
 
-        public const string MessageSlap = "{0} {1} {2}'s {3} with {4}.";
+        public const string MessageSlap = "{0} {1} {2}'s {3} with {4}!";
         public const string MessageUpdate = "Server Version: {0}, Update information: {1}";
 
         public const string McBansApiKey = "83855ea895268ec47f2e7ea0e8a25323f11e189c";
@@ -152,7 +152,15 @@ namespace EdgeBot.Classes.Common
             "decorates",
             "conks",
             "clones",
-            "dessicates"
+            "dessicates",
+            "clouds",
+            "pings",
+            "annoys",
+            "smooshes",
+            "squeezes",
+            "stabs",
+            "slices",
+            "fillets"
         };
 
         public static readonly List<string> SlapLocations = new List<string>
@@ -180,14 +188,16 @@ namespace EdgeBot.Classes.Common
             "a cicada",
             "a rubber chicken",
             "a magic missile",
+            "a spray of color",
+            "a pair of burning hands",
             "a smuggled wonton",
-            "a storm of hubris",
+            "a dark and stormy cloud of arbitrarily formed hubris",
             "a +2 Vajra",
             "a macerator",
             "a hastily crafted dart of force",
             "a blue screen of death",
             "a bag of smug-looking leaves",
-            "a ball of fried dough",
+            "a doughnut",
             "a can of moon cheese",
             "a TARDIS",
             "a Golden Crash",
@@ -196,7 +206,15 @@ namespace EdgeBot.Classes.Common
             "a massive fireball",
             "a wiffle bat",
             "a Justin Bieber album",
-            "a +6 Ban Hammer!"
+            "a +14 enchanted hammer of ban",
+            "a piece of Gregorian technology",
+            "a tungstensteel hammer",
+            "an Industrial Blarb Furnace",
+            "a sacrifice to the ARB GARB",
+            "a finely filigreed filleting fish finger",
+            "ALDUIN! EATER OF WORLDS",
+            "FUS RO DAH",
+            "a mudkip"
         };
 
         public static readonly List<string> HatActions = new List<string>
@@ -222,7 +240,9 @@ namespace EdgeBot.Classes.Common
             "a wild Golden Crash!",
             "Pooky.",
             "Zot!",
-            "a +6 Ban Hammer!"
+            "a +6 Ban Hammer!",
+            "a mudkip.",
+            "ALDUIN! EATER OF WORLDS!"
         };
         public static readonly List<string> GamerPoop = new List<string>
         {
