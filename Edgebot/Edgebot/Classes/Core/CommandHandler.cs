@@ -31,7 +31,7 @@ namespace EdgeBot.Classes.Core
             var random = RandomNumberGenerator.Create();
             var b = new byte[4];
             random.GetBytes(b);
-            return (int)Math.Round(((double) BitConverter.ToUInt32(b, 0) / UInt32.MaxValue) * (max - min)) + min;
+            return (int)Math.Round(((double) BitConverter.ToUInt32(b, 0) / UInt32.MaxValue) * (max - min - 1)) + min;
         }
     }
 }
