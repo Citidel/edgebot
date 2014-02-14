@@ -31,7 +31,7 @@ namespace EdgeBot.Classes.Common
         {
             const string illegalCharacters = "\r\n\0";
             if (illegalCharacters.Any(message.Contains)) throw new ArgumentException("Illegal characters are present in message.", "message");
-            Program.Client.SendRawMessage("PRIVMSG {0} :{1}", Config.Channel, message);
+            Program.Client.SendRawMessage("PRIVMSG {0} :{1}", Program.DevMode ? Config.DevChannel : Config.Channel, message);
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace EdgeBot.Classes.Commands
                 user.Nick == "DrSmugleaf" ||
                 user.Nick == "DrSmugleaf_")
             {
-                var random = new Random().Next(0, 2);
+                var random = GenerateRandom(0, 2);
                 if (paramList.Count > 1)
                 {
                     switch (paramList[1])

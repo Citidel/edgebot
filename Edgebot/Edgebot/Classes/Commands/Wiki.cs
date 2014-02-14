@@ -18,7 +18,7 @@ namespace EdgeBot.Classes.Commands
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
             var filter = "";
-            switch (paramList.Count())
+            switch (paramList.Count)
             {
                 case 1:
                     break;

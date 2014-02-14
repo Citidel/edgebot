@@ -18,10 +18,9 @@ namespace EdgeBot.Classes.Commands
         {
             if (isIngameCommand == false)
             {
-                var random = new Random();
-                Utils.SendChannel(paramList.Count() == 1
-                    ? string.Format(Data.BlameResponses[random.Next(0, Data.BlameResponses.Count)], user.Nick)
-                    : string.Format(Data.BlameTargetResponses[random.Next(0, Data.BlameTargetResponses.Count)],
+                Utils.SendChannel(paramList.Count == 1
+                    ? string.Format(Data.BlameResponses[GenerateRandom(0, Data.BlameResponses.Count)], user.Nick)
+                    : string.Format(Data.BlameTargetResponses[GenerateRandom(0, Data.BlameResponses.Count)],
                         paramList[1]));
             }
             else

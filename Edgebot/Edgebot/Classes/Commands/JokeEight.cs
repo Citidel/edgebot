@@ -17,7 +17,7 @@ namespace EdgeBot.Classes.Commands
         {
             if (paramList.Count > 1)
             {
-                var response = Data.EightBallResponses[new Random().Next(0, Data.EightBallResponses.Count)];
+                var response = Data.EightBallResponses[GenerateRandom(0, Data.EightBallResponses.Count)];
                 Utils.SendChannel("The magic 8 ball responds with: " + response);
             }
             else

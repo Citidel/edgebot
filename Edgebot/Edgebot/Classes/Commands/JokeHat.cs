@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
@@ -16,15 +14,11 @@ namespace EdgeBot.Classes.Commands
 
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
-            if (isIngameCommand == false)
-            {
-                var random = new Random();
-                Utils.SendChannel(string.Format("{0} their hand into a giant top hat and produces {1}", Data.HatActions[random.Next(0, Data.HatActions.Count())], Data.HatItems[random.Next(0, Data.HatItems.Count())]));
-            }
-            else
-            {
-                Utils.SendChannel(Data.MessageRestrictedIrc);
-            }
+            Utils.SendChannel(isIngameCommand == false
+                ? string.Format("{0} their hand into a giant top hat and produces {1}",
+                    Data.HatActions[GenerateRandom(0, Data.HatActions.Count)],
+                    Data.HatItems[GenerateRandom(0, Data.HatItems.Count)])
+                : Data.MessageRestrictedIrc);
         }
     }
 }

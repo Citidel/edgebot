@@ -16,7 +16,7 @@ namespace EdgeBot.Classes.Commands
         public override void HandleCommand(IList<string> paramList, IrcUser user, bool isIngameCommand)
         {
             int num;
-            if (paramList.Count() == 1)
+            if (paramList.Count == 1)
             {
                 // display random quote
                 Connection.GetData(Data.UrlQuote, "get", jObject =>
@@ -37,7 +37,7 @@ namespace EdgeBot.Classes.Commands
                 if (isIngameCommand == false)
                 {
                     var quote = "";
-                    for (var l = 2; l < paramList.Count(); l++)
+                    for (var l = 2; l < paramList.Count; l++)
                     {
                         quote = quote + paramList[l] + " ";
                     }

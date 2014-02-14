@@ -18,18 +18,17 @@ namespace EdgeBot.Classes.Commands
         {
             int i;
             // check if the params number 4, that the number/sides are integers, and that number and sides are both greater than 0
-            if (paramList.Count() == 3 && Int32.TryParse(paramList[1], out i) && Int32.TryParse(paramList[2], out i) &&
+            if (paramList.Count == 3 && Int32.TryParse(paramList[1], out i) && Int32.TryParse(paramList[2], out i) &&
                 (Int32.Parse(paramList[1]) > 0) && (Int32.Parse(paramList[2]) > 0) && (Int32.Parse(paramList[1]) <= 4) &&
                 (Int32.Parse(paramList[2]) <= 100))
             {
                 var dice = Int32.Parse(paramList[1]);
                 var sides = Int32.Parse(paramList[2]);
-                var random = new Random();
 
                 var diceList = new List<int>();
                 for (var j = 0; j < dice; j++)
                 {
-                    diceList.Add(random.Next(1, sides));
+                    diceList.Add(GenerateRandom(1, sides));
                 }
 
                 var outputString = String.Format("Rolling a {0} sided die, {1} time{2}: {3}", sides, dice,

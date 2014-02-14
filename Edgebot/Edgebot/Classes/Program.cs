@@ -20,8 +20,8 @@ namespace EdgeBot.Classes
         public static string McBansApiUrl = "";
         private static string _nickServAuth = "";
         private static string _commandPrefix = "";
-        private static bool _devMode;
 
+        public static bool DevMode;
         public static bool IsLocked;
 
         public static readonly List<Server> ServerList = new List<Server>();
@@ -36,7 +36,7 @@ namespace EdgeBot.Classes
 
             //set the command prefix to $ if debug mode
             _commandPrefix = string.IsNullOrEmpty(_nickServAuth) ? "$" : "!";
-            _devMode = string.IsNullOrEmpty(_nickServAuth);
+            DevMode = string.IsNullOrEmpty(_nickServAuth);
 
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += OnNetworkError;
@@ -114,6 +114,7 @@ namespace EdgeBot.Classes
                     }
                 }
             }
+
             if (args.PrivateMessage.Message.StartsWith(_commandPrefix) || paramList[0].StartsWith(_commandPrefix))
             {
                 // Only listen to people who are not blacklisted
@@ -142,16 +143,16 @@ namespace EdgeBot.Classes
             {
                 if (args.PrivateMessage.Message.Contains("http://") || args.PrivateMessage.Message.Contains("https://") || args.PrivateMessage.Message.Contains("www."))
                 {
-                    for (var i = 0; i < paramList.Count(); i++)
+                    foreach (var item in paramList)
                     {
                         var url = "";
-                        if (paramList[i].Contains("http://") || paramList[i].Contains("https://"))
+                        if (item.Contains("http://") || item.Contains("https://"))
                         {
-                            url = paramList[i];
+                            url = item;
                         }
-                        else if (paramList[i].Contains("www."))
+                        else if (item.Contains("www."))
                         {
-                            url = string.Concat("http://", paramList[i]);
+                            url = string.Concat("http://", item);
                         }
 
                         if (!string.IsNullOrEmpty(url))
@@ -278,8 +279,8 @@ namespace EdgeBot.Classes
 
         private static void JoinChannel()
         {
-            Client.JoinChannel(_devMode ? Config.DevChannel : Config.Channel);
-            Utils.Log("Joining channel: {0}", _devMode ? Config.DevChannel : Config.Channel);
+            Client.JoinChannel(DevMode ? Config.DevChannel : Config.Channel);
+            Utils.Log("Joining channel: {0}", DevMode ? Config.DevChannel : Config.Channel);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace EdgeBot.Classes.Commands
         {
             if (Utils.IsOp(user.Nick))
             {
-                if (!(paramList.Count() <= 1))
+                if (!(paramList.Count <= 1))
                 {
                     var url = Data.UrlFish + paramList[1];
                     Connection.GetData(url, "get", jObject =>

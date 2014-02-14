@@ -18,7 +18,7 @@ namespace EdgeBot.Classes.Commands
         {
             if (Utils.IsOp(user.Nick))
             {
-                if (paramList.Count() == 1)
+                if (paramList.Count == 1)
                 {
                     Utils.SendNotice("Usage: !mcb <name> <optional:number>", user.Nick);
                 }
@@ -30,7 +30,7 @@ namespace EdgeBot.Classes.Commands
                         {
                             var limit = 1;
                             int i;
-                            if (paramList.Count() == 3 && Int32.TryParse(paramList[2], out i))
+                            if (paramList.Count == 3 && Int32.TryParse(paramList[2], out i))
                             {
                                 // a count is given
                                 limit = int.Parse(paramList[2]);

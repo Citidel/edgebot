@@ -2,7 +2,6 @@
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
-using System;
 
 namespace EdgeBot.Classes.Commands
 {
@@ -20,8 +19,7 @@ namespace EdgeBot.Classes.Commands
                 user.Nick == "Velo|PackDev" ||
                 user.Nick == "Velo|Food")
             {
-                var random = new Random().Next(0, Data.GamerPoop.Count);
-                Utils.SendChannel("http://www.youtube.com/watch?v="+Data.GamerPoop[random]);
+                Utils.SendChannel("http://www.youtube.com/watch?v=" + Data.GamerPoop[GenerateRandom(0, Data.GamerPoop.Count)]);
             }
             else
             {
