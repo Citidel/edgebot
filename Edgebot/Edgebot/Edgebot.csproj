@@ -77,6 +77,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Commands\Coordinates.cs" />
     <Compile Include="Classes\Commands\Dev.cs" />
     <Compile Include="Classes\Commands\Edgebot.cs" />
     <Compile Include="Classes\Commands\Google.cs" />
