@@ -17,7 +17,63 @@ namespace EdgeBot.Classes.Commands
         {
             Connection.GetServerStatus(status =>
             {
-                var message = String.Concat("MCStatus: ", Utils.FormatStatus("Accounts", status.Account), ", ", Utils.FormatStatus("Session", status.Session), ", ", Utils.FormatStatus("Auth", status.Authentication), ", ", Utils.FormatStatus("Site", status.Website), ", ", Utils.FormatStatus("Login", status.Login));
+                var message = "MCStatus: Accounts[";
+                switch (status.Account)
+                {
+                    case true:
+                        message = string.Concat(message, Utils.FormatStatus("U", true));
+                        break;
+                    case false:
+                        message = string.Concat(message, Utils.FormatStatus("D", false));
+                        break;
+
+                }
+                message = string.Concat(message, "] Session[");
+                switch (status.Session)
+                {
+                    case true:
+                        message = string.Concat(message, Utils.FormatStatus("U", true));
+                        break;
+                    case false:
+                        message = string.Concat(message, Utils.FormatStatus("D", false));
+                        break;
+
+                }
+                message = string.Concat(message, "] Auth[");
+                switch (status.Authentication)
+                {
+                    case true:
+                        message = string.Concat(message, Utils.FormatStatus("U", true));
+                        break;
+                    case false:
+                        message = string.Concat(message, Utils.FormatStatus("D", false));
+                        break;
+
+                }
+                message = string.Concat(message, "] Site[");
+                switch (status.Website)
+                {
+                    case true:
+                        message = string.Concat(message, Utils.FormatStatus("U", true));
+                        break;
+                    case false:
+                        message = string.Concat(message, Utils.FormatStatus("D", false));
+                        break;
+
+                }
+                message = string.Concat(message, "] Login[");
+                switch (status.Login)
+                {
+                    case true:
+                        message = string.Concat(message, Utils.FormatStatus("U", true));
+                        break;
+                    case false:
+                        message = string.Concat(message, Utils.FormatStatus("D", false));
+                        break;
+
+                }
+                message = string.Concat(message, "]");
+
                 Utils.SendChannel(message);
             }, Utils.HandleException);
         }
