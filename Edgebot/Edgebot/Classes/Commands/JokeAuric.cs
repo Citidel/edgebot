@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
 
 namespace EdgeBot.Classes.Commands
 {
-    [CommandAttribute("auric", "This command is useless")]
+    // [CommandAttribute("auric", "This command is useless")]
     public class JokeAuric : CommandHandler
     {
         public JokeAuric()
