@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -91,7 +91,6 @@
     <Compile Include="Classes\Commands\JokeVelo.cs" />
     <Compile Include="Classes\Commands\NoSpam.cs" />
     <Compile Include="Classes\Commands\ServerLog.cs" />
-    <Compile Include="Classes\Commands\JokeAuric.cs" />
     <Compile Include="Classes\Commands\ServerStatus.cs" />
     <Compile Include="Classes\Commands\TicksPerSecond.cs" />
     <Compile Include="Classes\Commands\Announcement.cs" />
