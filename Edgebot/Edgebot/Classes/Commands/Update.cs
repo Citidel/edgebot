@@ -82,6 +82,11 @@ namespace EdgeBot.Classes.Commands
                         case "tppi":
                             keyword = "tppi";
                             break;
+                        case "sky":
+                        case "skyblock":
+                        case "skyfactory":
+                            keyword = "sky";
+                            break;
 
 
                     }
