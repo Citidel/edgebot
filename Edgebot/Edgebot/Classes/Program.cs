@@ -91,7 +91,7 @@ namespace EdgeBot.Classes
 
         private static void OnChannelMessageReceived(object sender, PrivateMessageEventArgs args)
         {
-            var serverList = new List<string> {"RR1", "RR2", "MagicFarm", "Dire20", "Unleashed", "Pixelmon", "TPPI", "Horizons"};
+            var serverList = new List<string> {"RR1", "RR2", "MagicFarm", "Dire20", "Unleashed", "Pixelmon", "TPPI", "YOGS"};
             var isIngameCommand = false;
             var message = args.PrivateMessage.Message.Trim();
             var paramList = message.Split(' ');
