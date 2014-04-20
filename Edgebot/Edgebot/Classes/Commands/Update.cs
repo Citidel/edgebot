@@ -51,44 +51,48 @@ namespace EdgeBot.Classes.Commands
                             keyword = "rr";
                             break;
 
-                        case "mf":
-                        case "magicfarm":
-                        case "mf2":
-                            keyword = "mf2";
-                            break;
+                        //case "mf":
+                        //case "magicfarm":
+                        //case "mf2":
+                        //    keyword = "mf2";
+                        //    break;
 
-                        case "px":
-                        case "potemon":
-                            keyword = "pixelmon";
-                            break;
+                        //case "px":
+                        //case "potemon":
+                        //    keyword = "pixelmon";
+                        //    break;
 
-                        case "direwolf20":
-                        case "dw20":
-                        case "dw":
-                            keyword = "dw20";
-                            break;
+                        //case "direwolf20":
+                        //case "dw20":
+                        //case "dw":
+                        //    keyword = "dw20";
+                        //    break;
 
-                        case "monster":
-                        case "mon":
-                            keyword = "monster";
-                            break;
+                        //case "monster":
+                        //case "mon":
+                        //    keyword = "monster";
+                        //    break;
 
-                        case "unleashed":
-                        case "un":
-                            keyword = "unleashed";
-                            break;
+                        //case "unleashed":
+                        //case "un":
+                        //    keyword = "unleashed";
+                        //    break;
 
-                        case "tp":
-                        case "tppi":
-                            keyword = "tppi";
-                            break;
+                        //case "tp":
+                        //case "tppi":
+                        //    keyword = "tppi";
+                        //    break;
+
                         case "sky":
                         case "skyblock":
                         case "skyfactory":
                             keyword = "sky";
                             break;
 
-
+                        case "yogs":
+                        case "yogscomplete":
+                            keyword = "yogs";
+                            break;
                     }
                     var exists = false;
                     foreach (var item in Data.UpdateDict.Where(item => item.Value.Key == keyword))

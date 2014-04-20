@@ -74,13 +74,14 @@ namespace EdgeBot.Classes.Common
         public static readonly Dictionary<KeyValuePair<string, string>, KeyValuePair<string, string>> UpdateDict = new Dictionary<KeyValuePair<string, string>, KeyValuePair<string, string>>
         {
             {new KeyValuePair<string, string>("rr","1"), new KeyValuePair<string, string>("rr","http://www.otegamers.com/topic/6945-")},
-            {new KeyValuePair<string, string>("fu","1"), new KeyValuePair<string, string>("unleashed","http://www.otegamers.com/topic/6383-")},
-            {new KeyValuePair<string, string>("px","1"), new KeyValuePair<string, string>("pixelmon","http://www.otegamers.com/topic/7683-")},
-            {new KeyValuePair<string, string>("mf","1"), new KeyValuePair<string, string>("mf2","http://www.otegamers.com/topic/8174-")},
-            {new KeyValuePair<string, string>("fm","1"), new KeyValuePair<string, string>("monster","http://www.otegamers.com/topic/8173-")},
-            {new KeyValuePair<string, string>("dw","1"), new KeyValuePair<string, string>("dw20","http://www.otegamers.com/topic/8322-")},
-            {new KeyValuePair<string, string>("tp","1"), new KeyValuePair<string, string>("tppi","http://www.otegamers.com/topic/8321-")},
+            //{new KeyValuePair<string, string>("fu","1"), new KeyValuePair<string, string>("unleashed","http://www.otegamers.com/topic/6383-")},
+            //{new KeyValuePair<string, string>("px","1"), new KeyValuePair<string, string>("pixelmon","http://www.otegamers.com/topic/7683-")},
+            //{new KeyValuePair<string, string>("mf","1"), new KeyValuePair<string, string>("mf2","http://www.otegamers.com/topic/8174-")},
+            //{new KeyValuePair<string, string>("fm","1"), new KeyValuePair<string, string>("monster","http://www.otegamers.com/topic/8173-")},
+            //{new KeyValuePair<string, string>("dw","1"), new KeyValuePair<string, string>("dw20","http://www.otegamers.com/topic/8322-")},
+            //{new KeyValuePair<string, string>("tp","1"), new KeyValuePair<string, string>("tppi","http://www.otegamers.com/topic/8321-")},
             {new KeyValuePair<string, string>("sky","1"), new KeyValuePair<string, string>("sky","http://www.otegamers.com/forum/228-")},
+            {new KeyValuePair<string, string>("yogs","1"), new KeyValuePair<string, string>("yogs","http://www.otegamers.com/topic/9503-")},
         };
 
         // Responses
