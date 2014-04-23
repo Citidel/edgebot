@@ -155,8 +155,8 @@ namespace EdgeBot.Classes.Common
             McBans mcBans = null;
             if (Program.McBansApiUrl != null)
             {
-                var url = string.Format("http://{0}/v2/{1}", Program.McBansApiUrl, Data.McBansApiKey);
-                var postData = "exec=playerLookup&player=" + playerName;
+                var url = string.Format("http://{0}/v3/{1}", Program.McBansApiUrl, Data.McBansApiKey);
+                var postData = "exec=playerLookup&admin=Cozza38&player=" + playerName;
                 var byteArray = Encoding.UTF8.GetBytes(postData);
 
                 var webRequest = (HttpWebRequest)WebRequest.Create(url);
