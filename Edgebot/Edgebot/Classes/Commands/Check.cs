@@ -24,48 +24,55 @@ namespace EdgeBot.Classes.Commands
                     Connection.GetData(url, "get", jObject =>
                     {
                         string outputString;
-                        if ((bool) jObject["success"])
+                        var detailedBanInfo = "";
+                        if ((bool)jObject["success"])
                         {
                             var fishBans = new FishBans
                             {
-                                TotalBans = (int) jObject["stats"].SelectToken("totalbans"),
+                                TotalBans = (int)jObject["stats"].SelectToken("totalbans"),
                                 Url = Data.UrlFishLink + paramList[1],
-                                Username = (string) jObject["stats"].SelectToken("username")
+                                Username = (string)jObject["stats"].SelectToken("username")
                             };
 
                             outputString = String.Concat(Utils.FormatText("Username: ", Colors.Bold), fishBans.Username,
                                 Utils.FormatText(" Total Bans: ", Colors.Bold),
                                 Utils.FormatColor(fishBans.TotalBans, Utils.GetColorCode(fishBans.TotalBans)),
                                 Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
+
+                            detailedBanInfo = "Detailed Ban Info: http://dev.otegamers.com/edge/lookup/" +
+                                                  fishBans.Username;
                         }
                         else
                         {
-                            outputString = Utils.FormatText("Error: ", Colors.Bold) + (string) jObject["error"];
+                            outputString = Utils.FormatText("Error: ", Colors.Bold) + (string)jObject["error"];
                         }
 
                         if (!String.IsNullOrEmpty(outputString))
                         {
+                            Utils.SendNotice(detailedBanInfo, user.Nick);
                             Utils.SendNotice(outputString, user.Nick);
                         }
                     }, Utils.HandleException);
 
-                    Connection.GetPlayerLookup(paramList[1], bans =>
-                    {
-                        // only report mcbans if there are bans to report
-                        if (bans == null || bans.Total <= 0) return;
 
-                        var localBans = Utils.FormatColor(bans.Local.Count, Utils.GetColorCode(bans.Local.Count));
-                        var globalBans = Utils.FormatColor(bans.Global.Count, Utils.GetColorCode(bans.Global.Count));
-                        var reputation = Utils.FormatColor(bans.Reputation, Utils.GetColorCode(bans.Reputation));
 
-                        var outputString = String.Concat(Utils.FormatText("MCBans: ", Colors.Bold),
-                            Utils.FormatText("Total: ", Colors.Bold),
-                            Utils.FormatColor(bans.Total, Utils.GetColorCode(bans.Total)), " (Local: ", localBans,
-                            ", Global: ", globalBans, ") ", Utils.FormatText("Rep: ", Colors.Bold), reputation,
-                            Utils.FormatText(" URL: ", Colors.Bold), "http://www.mcbans.com/player/", paramList[1]);
+                    //Connection.GetPlayerLookup(paramList[1], bans =>
+                    //{
+                    //    // only report mcbans if there are bans to report
+                    //    if (bans == null || bans.Total <= 0) return;
 
-                        Utils.SendNotice(outputString, user.Nick);
-                    }, Utils.HandleException);
+                    //    var localBans = Utils.FormatColor(bans.Local.Count, Utils.GetColorCode(bans.Local.Count));
+                    //    var globalBans = Utils.FormatColor(bans.Global.Count, Utils.GetColorCode(bans.Global.Count));
+                    //    var reputation = Utils.FormatColor(bans.Reputation, Utils.GetColorCode(bans.Reputation));
+
+                    //    var outputString = String.Concat(Utils.FormatText("MCBans: ", Colors.Bold),
+                    //        Utils.FormatText("Total: ", Colors.Bold),
+                    //        Utils.FormatColor(bans.Total, Utils.GetColorCode(bans.Total)), " (Local: ", localBans,
+                    //        ", Global: ", globalBans, ") ", Utils.FormatText("Rep: ", Colors.Bold), reputation,
+                    //        Utils.FormatText(" URL: ", Colors.Bold), "http://www.mcbans.com/player/", paramList[1]);
+
+                    //    Utils.SendNotice(outputString, user.Nick);
+                    //}, Utils.HandleException);
                 }
                 else
                 {
