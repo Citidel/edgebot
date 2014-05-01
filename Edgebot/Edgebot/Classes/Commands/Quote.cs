@@ -4,6 +4,7 @@ using System.Linq;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
+using MySql.Data.MySqlClient;
 
 namespace EdgeBot.Classes.Commands
 {
@@ -62,17 +63,33 @@ namespace EdgeBot.Classes.Commands
             }
             else if (int.TryParse(paramList[1], out num))
             {
-                Connection.GetData(string.Format(Data.UrlQuoteSpecific, num), "get", jObject =>
+                //Connection.GetData(string.Format(Data.UrlQuoteSpecific, num), "get", jObject =>
+                //{
+                //    if ((bool)jObject["success"])
+                //    {
+                //        Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
+                //    }
+                //    else
+                //    {
+                //        Utils.SendChannel("Specific quote not found.");
+                //    }
+                //}, Utils.HandleException);
+
+                GetResult(string.Format("SELECT quote FROM edge_quote WHERE status = '1' AND id = '{0}' LIMIT 1", num), reader =>
                 {
-                    if ((bool)jObject["success"])
+                    if (reader.HasRows)
                     {
-                        Utils.SendChannel((string)jObject["result"].SelectToken("quote"));
+                        while (reader.Read())
+                        {
+                            Utils.SendChannel(reader.GetString(0));
+                        }
                     }
                     else
                     {
                         Utils.SendChannel("Specific quote not found.");
                     }
-                }, Utils.HandleException);
+                    reader.Close();
+                });
             }
             else
             {
