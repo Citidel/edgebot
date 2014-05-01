@@ -31,7 +31,22 @@ namespace EdgeBot.Classes.Core
             var random = RandomNumberGenerator.Create();
             var b = new byte[4];
             random.GetBytes(b);
-            return (int)Math.Round(((double) BitConverter.ToUInt32(b, 0) / UInt32.MaxValue) * (max - min - 1)) + min;
+            return (int)Math.Round(((double)BitConverter.ToUInt32(b, 0) / UInt32.MaxValue) * (max - min - 1)) + min;
+        }
+
+        protected static void GetResult(string query)
+        {
+            var command = Program.DbConnection.CreateCommand();
+            command.CommandText = query;
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                for (var i = 0; i < reader.FieldCount; i++)
+                {
+                    Utils.Log((string) reader.GetValue(i));
+                }
+            }
+            Program.DbConnection.Close();
         }
     }
 }
