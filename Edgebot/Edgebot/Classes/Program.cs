@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Timers;
+using MySql.Data.MySqlClient;
 
 namespace EdgeBot.Classes
 {
@@ -19,6 +20,7 @@ namespace EdgeBot.Classes
 
         public static string McBansApiUrl = "";
         private static string _nickServAuth = "";
+        private static string _dbPassword = "";
         private static string _commandPrefix = "";
 
         public static bool DevMode;
@@ -28,15 +30,34 @@ namespace EdgeBot.Classes
         public static readonly Dictionary<string, CommandAttribute> Commands = new Dictionary<string, CommandAttribute>();
         private static readonly List<Blacklist> BlackList = new List<Blacklist>();
 
+        public static MySqlConnection DbConnection;
+
         static void Main(string[] argArray)
         {
             InitClasses();
 
-            if (argArray.Any()) _nickServAuth = argArray[0];
+            if (argArray.Any())
+            {
+                _nickServAuth = argArray[0];
+                _dbPassword = argArray[1];
+            }
 
             //set the command prefix to $ if debug mode
             _commandPrefix = string.IsNullOrEmpty(_nickServAuth) ? "$" : "!";
             DevMode = string.IsNullOrEmpty(_nickServAuth);
+
+            // initialise mysql connection
+            const string dbUser = "otegamers";
+            const string dbName = "otegamers";
+            const string dbHost = "localhost";
+
+            if (DevMode)
+            {
+                _dbPassword = "test";
+            }
+
+            DbConnection = new MySqlConnection(string.Format("SERVER={0};DATABASE={1};UID={2};PASSWORD={3};", dbHost, dbName, dbUser, _dbPassword));
+            DbConnection.Open();
 
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += OnNetworkError;
@@ -91,7 +112,7 @@ namespace EdgeBot.Classes
 
         private static void OnChannelMessageReceived(object sender, PrivateMessageEventArgs args)
         {
-            var serverList = new List<string> {"RR1", "RR2", "YOGS", "SkyFactory", "Creative"};
+            var serverList = new List<string> { "RR1", "RR2", "YOGS", "SkyFactory", "Creative" };
             var isIngameCommand = false;
             var message = args.PrivateMessage.Message.Trim();
             var paramList = message.Split(' ');
