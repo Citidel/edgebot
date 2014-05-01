@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using ChatSharp;
 using EdgeBot.Classes.Common;
+using MySql.Data.MySqlClient;
 
 namespace EdgeBot.Classes.Core
 {
@@ -34,19 +35,12 @@ namespace EdgeBot.Classes.Core
             return (int)Math.Round(((double)BitConverter.ToUInt32(b, 0) / UInt32.MaxValue) * (max - min - 1)) + min;
         }
 
-        protected static void GetResult(string query)
+        protected static void GetResult(string query, Action<MySqlDataReader> taskAction)
         {
             var command = Program.DbConnection.CreateCommand();
             command.CommandText = query;
             var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                for (var i = 0; i < reader.FieldCount; i++)
-                {
-                    Utils.Log((string) reader.GetValue(i));
-                }
-            }
-            Program.DbConnection.Close();
+            taskAction(reader);
         }
     }
 }
