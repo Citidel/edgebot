@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ChatSharp;
 using EdgeBot.Classes.Common;
@@ -19,18 +20,27 @@ namespace EdgeBot.Classes.Commands
             if (paramList.Count == 1)
             {
                 // display random quote
-                Connection.GetData(Data.UrlQuote, "get", jObject =>
+                //Connection.GetData(Data.UrlQuote, "get", jObject =>
+                //{
+                //    if ((bool)jObject["success"])
+                //    {
+                //        Utils.SendChannel((string)jObject["result"].SelectToken("id") + ": " +
+                //                          (string)jObject["result"].SelectToken("quote"));
+                //    }
+                //    else
+                //    {
+                //        Utils.SendChannel("No quotes found.");
+                //    }
+                //}, Utils.HandleException);
+
+                GetResult("SELECT id, quote FROM edge_quote WHERE status = '1' ORDER BY RAND() LIMIT 1", reader =>
                 {
-                    if ((bool)jObject["success"])
+                    while (reader.Read())
                     {
-                        Utils.SendChannel((string)jObject["result"].SelectToken("id") + ": " +
-                                          (string)jObject["result"].SelectToken("quote"));
+                        Utils.SendChannel(reader.GetUInt32(0) + ": " + reader.GetString(1));
                     }
-                    else
-                    {
-                        Utils.SendChannel("No quotes found.");
-                    }
-                }, Utils.HandleException);
+                    reader.Close();
+                });
             }
             else if (paramList[1] == "add")
             {
