@@ -120,33 +120,43 @@ namespace EdgeBot.Classes.Common
             webRequest.Method = method.ToUpper();
             webRequest.ContentType = "application/json";
             webRequest.KeepAlive = true;
+            webRequest.Accept = "*/*";
+            webRequest.UserAgent = "runscope/0.1";
 
-            using (var webResponse = webRequest.GetResponse() as HttpWebResponse)
+            try
             {
-                JObject jsonResult = null;
-                if (webResponse != null && webResponse.StatusCode == HttpStatusCode.OK)
+                using (var webResponse = webRequest.GetResponse() as HttpWebResponse)
                 {
-                    using (var reader = new StreamReader(webResponse.GetResponseStream()))
+                    JObject jsonResult = null;
+                    if (webResponse != null && webResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        try
+                        using (var reader = new StreamReader(webResponse.GetResponseStream()))
                         {
-                            jsonResult = JObject.Parse(reader.ReadToEnd());
-                        }
-                        catch (Exception)
-                        {
-                            Utils.Log("Connection: Unable to parse stream response: {0}", reader.ReadToEnd());
-                            return null;
+                            try
+                            {
+                                jsonResult = JObject.Parse(reader.ReadToEnd());
+                            }
+                            catch (Exception)
+                            {
+                                Utils.Log("Connection: Unable to parse stream response: {0}", reader.ReadToEnd());
+                                return null;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    if (webResponse != null)
-                        Utils.Log("Connection: Error fetching data. Server returned status code : {0}",
-                            webResponse.StatusCode);
-                }
+                    else
+                    {
+                        if (webResponse != null)
+                            Utils.Log("Connection: Error fetching data. Server returned status code : {0}",
+                                webResponse.StatusCode);
+                    }
 
-                return jsonResult;
+                    return jsonResult;
+                }
+            }
+            catch (WebException exception)
+            {
+                Utils.Log("WebException-Message: ", exception.Message);
+                return null;
             }
         }
 
@@ -263,7 +273,7 @@ namespace EdgeBot.Classes.Common
             try
             {
                 Utils.Log("Connection: Getting response from {0}", url);
-                var webRequest = (HttpWebRequest) WebRequest.Create(url);
+                var webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = "GET";
                 webRequest.ContentType = "application/json";
                 webRequest.KeepAlive = true;

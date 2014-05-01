@@ -178,6 +178,16 @@ namespace EdgeBot.Classes.Common
             return reputation == 0 ? Colors.Red : "";
         }
 
+        public static string UcFirst(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
+
+            return char.ToUpper(input[0]) + input.Substring(1);
+        }
+
         public static string Truncate(string value, int maxLength)
         {
             if (string.IsNullOrEmpty(value)) return value;
