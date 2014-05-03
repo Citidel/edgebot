@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ChatSharp;
 using EdgeBot.Classes.Common;
 using EdgeBot.Classes.Core;
@@ -33,11 +34,18 @@ namespace EdgeBot.Classes.Commands
 
                 GetResult("SELECT id, quote FROM edge_quote WHERE status = '1' ORDER BY RAND() LIMIT 1", reader =>
                 {
-                    while (reader.Read())
+                    try
                     {
-                        Utils.SendChannel(reader.GetUInt32(0) + ": " + reader.GetString(1));
+                        while (reader.Read())
+                        {
+                            Utils.SendChannel(reader.GetUInt32(0) + ": " + reader.GetString(1));
+                        }
+                        reader.Close();
                     }
-                    reader.Close();
+                    catch (Exception e)
+                    {
+                        Utils.Log(e.Message);
+                    }
                 });
             }
             else if (paramList[1] == "add")
@@ -74,18 +82,25 @@ namespace EdgeBot.Classes.Commands
 
                 GetResult(string.Format("SELECT quote FROM edge_quote WHERE status = '1' AND id = '{0}' LIMIT 1", num), reader =>
                 {
-                    if (reader.HasRows)
+                    try
                     {
-                        while (reader.Read())
+                        if (reader.HasRows)
                         {
-                            Utils.SendChannel(reader.GetString(0));
+                            while (reader.Read())
+                            {
+                                Utils.SendChannel(reader.GetString(0));
+                            }
                         }
+                        else
+                        {
+                            Utils.SendChannel("Specific quote not found.");
+                        }
+                        reader.Close();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Utils.SendChannel("Specific quote not found.");
+                        Utils.Log(e.Message);
                     }
-                    reader.Close();
                 });
             }
             else
