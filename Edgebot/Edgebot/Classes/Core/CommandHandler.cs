@@ -37,10 +37,12 @@ namespace EdgeBot.Classes.Core
 
         protected static void GetResult(string query, Action<MySqlDataReader> taskAction)
         {
+            Program.DbConnection.Open();
             var command = Program.DbConnection.CreateCommand();
             command.CommandText = query;
             var reader = command.ExecuteReader();
             taskAction(reader);
+            Program.DbConnection.Close();
         }
     }
 }

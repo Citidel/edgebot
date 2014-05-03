@@ -57,7 +57,6 @@ namespace EdgeBot.Classes
             }
 
             DbConnection = new MySqlConnection(string.Format("SERVER={0};DATABASE={1};UID={2};PASSWORD={3};", dbHost, dbName, dbUser, _dbPassword));
-            DbConnection.Open();
 
             Client = (!string.IsNullOrEmpty(_nickServAuth)) ? new IrcClient(Config.Host, new IrcUser(Config.Nickname, Config.Username)) : new IrcClient(Config.Host, new IrcUser(Config.NickTest, Config.UserTest));
             Client.NetworkError += OnNetworkError;
