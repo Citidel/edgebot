@@ -40,8 +40,16 @@ namespace EdgeBot.Classes.Core
             Program.DbConnection.Open();
             var command = Program.DbConnection.CreateCommand();
             command.CommandText = query;
-            var reader = command.ExecuteReader();
-            taskAction(reader);
+            try
+            {
+                var reader = command.ExecuteReader();
+                taskAction(reader);
+            }
+            catch (MySqlException e)
+            {
+                Utils.Log("MYSQLException: " + e.Message);
+            }
+
             Program.DbConnection.Close();
         }
     }

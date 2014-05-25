@@ -41,11 +41,10 @@ namespace EdgeBot.Classes.Common
         public const string UrlWiki = "http://dev.otegamers.com/api/v1/edge/wiki";
         public const string UrlHelp = "http://dev.otegamers.com/api/v1/edge/help";
         public const string UrlCrashLog = "http://dev.otegamers.com/api/v1/edge/last-crash-log/{0}/{1}";
-        public const string UrlQuote = "http://dev.otegamers.com/api/v1/edge/quote";
         public const string UrlQuoteAdd = "http://dev.otegamers.com/api/v1/edge/add-quote/{0}/{1}/{2}";
         public const string UrlBlacklist = "http://dev.otegamers.com/api/v1/edge/blacklist";
         public const string UrlBlacklistAdd = "http://dev.otegamers.com/api/v1/edge/add-blacklist/{0}/{1}";
-        public const string UrlQuoteSpecific = "http://dev.otegamers.com/api/v1/edge/specific-quote/{0}";
+        public const string UrlBanCheck = "http://dev.otegamers.com/api/v1/edge/bans/{0}";
 
         // TS3 API
         public const string UrlTs3NowPlaying = "http://otegamers.com:8080/getnowPlaying";

@@ -39,40 +39,31 @@ namespace EdgeBot.Classes.Commands
                                 Utils.FormatColor(fishBans.TotalBans, Utils.GetColorCode(fishBans.TotalBans)),
                                 Utils.FormatText(" URL: ", Colors.Bold), fishBans.Url);
 
-                            detailedBanInfo = "Detailed Ban Info: http://dev.otegamers.com/edge/lookup/" +
-                                                  fishBans.Username;
+                            Connection.GetData(string.Format(Data.UrlBanCheck, paramList[1]), "get", apiObject =>
+                            {
+                                if ((string)apiObject["result"].SelectToken("bans") == "true")
+                                {
+                                    detailedBanInfo = "OTEAPI: Bans found - http://dev.otegamers.com/edge/lookup/" +
+                                                      fishBans.Username;
+                                }
+                                else
+                                {
+                                    detailedBanInfo = "OTEAPI: No bans found.";
+                                }
+
+                                Utils.SendNotice(detailedBanInfo, user.Nick);
+                            }, Utils.HandleException);
+
+
                         }
                         else
                         {
                             outputString = Utils.FormatText("Error: ", Colors.Bold) + (string)jObject["error"];
                         }
 
-                        if (!String.IsNullOrEmpty(outputString))
-                        {
-                            Utils.SendNotice(detailedBanInfo, user.Nick);
-                            Utils.SendNotice(outputString, user.Nick);
-                        }
+                        if (String.IsNullOrEmpty(outputString)) return;
+                        Utils.SendNotice(outputString, user.Nick);
                     }, Utils.HandleException);
-
-
-
-                    //Connection.GetPlayerLookup(paramList[1], bans =>
-                    //{
-                    //    // only report mcbans if there are bans to report
-                    //    if (bans == null || bans.Total <= 0) return;
-
-                    //    var localBans = Utils.FormatColor(bans.Local.Count, Utils.GetColorCode(bans.Local.Count));
-                    //    var globalBans = Utils.FormatColor(bans.Global.Count, Utils.GetColorCode(bans.Global.Count));
-                    //    var reputation = Utils.FormatColor(bans.Reputation, Utils.GetColorCode(bans.Reputation));
-
-                    //    var outputString = String.Concat(Utils.FormatText("MCBans: ", Colors.Bold),
-                    //        Utils.FormatText("Total: ", Colors.Bold),
-                    //        Utils.FormatColor(bans.Total, Utils.GetColorCode(bans.Total)), " (Local: ", localBans,
-                    //        ", Global: ", globalBans, ") ", Utils.FormatText("Rep: ", Colors.Bold), reputation,
-                    //        Utils.FormatText(" URL: ", Colors.Bold), "http://www.mcbans.com/player/", paramList[1]);
-
-                    //    Utils.SendNotice(outputString, user.Nick);
-                    //}, Utils.HandleException);
                 }
                 else
                 {
