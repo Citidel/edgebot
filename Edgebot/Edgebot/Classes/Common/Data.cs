@@ -81,6 +81,7 @@ namespace EdgeBot.Classes.Common
             //{new KeyValuePair<string, string>("tp","1"), new KeyValuePair<string, string>("tppi","http://www.otegamers.com/topic/8321-")},
             {new KeyValuePair<string, string>("sky","1"), new KeyValuePair<string, string>("sky","http://www.otegamers.com/forum/228-")},
             {new KeyValuePair<string, string>("yogs","1"), new KeyValuePair<string, string>("yogs","http://www.otegamers.com/topic/9503-")},
+            {new KeyValuePair<string, string>("pvp","1"), new KeyValuePair<string, string>("pvp","http://www.otegamers.com/topic/11115-")},
         };
 
         // Responses
@@ -105,7 +106,11 @@ namespace EdgeBot.Classes.Common
             "Ask again later.",
             "My reply is no.",
             "Outlook good.",
-            "Don't count on it."
+            "Don't count on it.",
+            "It's totes gonna happen.",
+            "It's totes never gonna happen.",
+            "It's totes gonna never happen at all.",
+            "It's totes gonna not not not not not not not not not not not not not not happen."
         };
 
         public static readonly List<string> SmugResponses = new List<string>
@@ -177,7 +182,11 @@ namespace EdgeBot.Classes.Common
             "chin",
             "cheek",
             "spine",
-            "fingers"
+            "fingers",
+            "ankles",
+            "ankle",
+            "finger",
+            "ears"
         };
 
         public static readonly List<string> SlapItems = new List<string>
@@ -214,7 +223,20 @@ namespace EdgeBot.Classes.Common
             "a finely filigreed filleting fish finger",
             "ALDUIN! EATER OF WORLDS",
             "FUS RO DAH",
-            "a mudkip"
+            "a mudkip",
+            "an ancient dinosaur species known only as the Auricbertusaurus",
+            "a tote of goats",
+            "a cranberry souffle",
+            "a beard-comb",
+            "a bottle of Maker's Mark",
+            "a tube of herbal turtle jelly",
+            "a rolled up newspaper",
+            "Zoidberg",
+            "a can of Soylent Green",
+            "Van Persie's magical header",
+            "a gold star",
+            "a supernova",
+            "a bag of sausages"
         };
 
         public static readonly List<string> HatActions = new List<string>
@@ -242,7 +264,8 @@ namespace EdgeBot.Classes.Common
             "Zot!",
             "a +6 Ban Hammer!",
             "a mudkip.",
-            "ALDUIN! EATER OF WORLDS!"
+            "ALDUIN! EATER OF WORLDS!",
+            "a bottle of Maker's Mark!"
         };
         public static readonly List<string> GamerPoop = new List<string>
         {
