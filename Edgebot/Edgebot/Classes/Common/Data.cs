@@ -82,6 +82,7 @@ namespace EdgeBot.Classes.Common
             {new KeyValuePair<string, string>("sky","1"), new KeyValuePair<string, string>("sky","http://www.otegamers.com/forum/228-")},
             {new KeyValuePair<string, string>("yogs","1"), new KeyValuePair<string, string>("yogs","http://www.otegamers.com/topic/9503-")},
             {new KeyValuePair<string, string>("pvp","1"), new KeyValuePair<string, string>("pvp","http://www.otegamers.com/topic/11115-")},
+            {new KeyValuePair<string, string>("bnb","1"), new KeyValuePair<string, string>("bnb","http://www.otegamers.com/topic/11212-")},
         };
 
         // Responses

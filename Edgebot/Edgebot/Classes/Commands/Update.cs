@@ -66,6 +66,10 @@ namespace EdgeBot.Classes.Commands
                         case "crackpack":
                             keyword = "pvp";
                             break;
+
+                        case "bnb":
+                            keyword = "bnb";
+                            break;
                     }
                     var exists = false;
                     foreach (var item in Data.UpdateDict.Where(item => item.Value.Key == keyword))
